@@ -16,30 +16,61 @@
 
 package com.hustunique.androidassistant;
 
+import android.app.ActivityManager;
+import android.app.ActivityManager.MemoryInfo;
+import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
 import android.widget.TextView;
+import com.hustunique.androidassistant.model.AppInfo;
 import com.hustunique.androidassistant.receiver.PowerReceiver;
 import com.hustunique.androidassistant.receiver.PowerReceiver.BatteryCallback;
+import com.hustunique.androidassistant.service.MyPowerManager;
+import com.hustunique.androidassistant.util.LogUtil;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
+    private static final String TAG = "MainActivity";
     private PowerReceiver mPowerReceiver;
     private TextView mTextView;
+    private Button mBtnKill;
+    private MyPowerManager mPowerManager;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mTextView = (TextView) findViewById(R.id.battery);
+        mBtnKill = (Button) findViewById(R.id.kill_proc);
+        mPowerManager = new MyPowerManager(this);
+        mBtnKill.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ActivityManager am = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
+                MemoryInfo mi = new MemoryInfo();
+                am.getMemoryInfo(mi);
+                double availableMegs = mi.availMem / 0x100000L;
+                LogUtil.d(TAG, "availableMegs in mb " + availableMegs);
+                List<AppInfo> list = mPowerManager.getRecentUsedApps();
+
+            }
+        });
         mPowerReceiver = new PowerReceiver(new BatteryCallback() {
             @Override
             public void onUpdated(int pct) {
                 mTextView.setText("battery pct: " + pct + "%");
             }
         });
+
     }
+
+
 
     @Override
     protected void onResume() {
