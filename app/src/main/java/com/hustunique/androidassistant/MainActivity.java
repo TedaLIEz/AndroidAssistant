@@ -16,9 +16,6 @@
 
 package com.hustunique.androidassistant;
 
-import android.app.ActivityManager;
-import android.app.ActivityManager.MemoryInfo;
-import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
@@ -52,13 +49,10 @@ public class MainActivity extends AppCompatActivity {
         mBtnKill.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                ActivityManager am = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
-                MemoryInfo mi = new MemoryInfo();
-                am.getMemoryInfo(mi);
-                double availableMegs = mi.availMem / 0x100000L;
-                LogUtil.d(TAG, "availableMegs in mb " + availableMegs);
+                long mem = mPowerManager.getAvailableMemory();
+                LogUtil.d(TAG, "availableMegs in mb " + mem);
                 List<AppInfo> list = mPowerManager.getRecentUsedApps();
-
+                mPowerManager.killProcesses(list);
             }
         });
         mPowerReceiver = new PowerReceiver(new BatteryCallback() {

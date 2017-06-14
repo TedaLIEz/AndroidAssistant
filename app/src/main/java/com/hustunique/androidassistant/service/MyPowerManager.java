@@ -17,7 +17,8 @@
 package com.hustunique.androidassistant.service;
 
 import android.app.ActivityManager;
-import android.app.ActivityManager.RecentTaskInfo;
+import android.app.ActivityManager.MemoryInfo;
+import android.app.ActivityManager.RunningAppProcessInfo;
 import android.app.AppOpsManager;
 import android.app.usage.UsageStats;
 import android.app.usage.UsageStatsManager;
@@ -25,10 +26,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
+import android.content.pm.PackageManager.NameNotFoundException;
 import android.os.Build.VERSION_CODES;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
+import android.widget.Toast;
+import com.hustunique.androidassistant.R;
 import com.hustunique.androidassistant.model.AppInfo;
 import com.hustunique.androidassistant.util.LogUtil;
 import com.hustunique.androidassistant.util.Util;
@@ -36,7 +40,6 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -54,19 +57,20 @@ public class MyPowerManager {
     }
 
     /**
-     *
      * Return list of recently used user applications
      * we define the least recently used as :
      * <p>
-     *     1) longest  last used timestamp
-     *     2) shortest period in foreground
+     * 1) longest  last used timestamp
+     * 2) shortest period in foreground
      * </p>
+     *
      * @return list of {@link AppInfo}
      */
     public List<AppInfo> getRecentUsedApps() {
         List<AppInfo> rst;
         if (Util.isLollipop()) {
             if (!checkUsageAccess()) {
+                Toast.makeText(mContext, mContext.getString(R.string.grant_usage_access), Toast.LENGTH_LONG).show();
                 Intent intent = new Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS);
                 mContext.startActivity(intent);
             }
@@ -89,32 +93,42 @@ public class MyPowerManager {
         return mode == AppOpsManager.MODE_ALLOWED;
     }
 
+    @NonNull
     private List<AppInfo> getRecentUsedAppsInternal() {
         List<AppInfo> rst = new ArrayList<>();
         ActivityManager am = (ActivityManager) mContext.getSystemService(Context.ACTIVITY_SERVICE);
-        // FIXME: 6/13/17 Is Integer.MAX_VALUE Good here
-        List<RecentTaskInfo> infos = am
-            .getRecentTasks(Integer.MAX_VALUE, ActivityManager.RECENT_WITH_EXCLUDED);
-        // TODO: 6/13/17 Filter to this info list
-        Class<RecentTaskInfo> clz = RecentTaskInfo.class;
+        List<RunningAppProcessInfo> infos = am.getRunningAppProcesses();
+        Class<RunningAppProcessInfo> clz = RunningAppProcessInfo.class;
         try {
-            Field firstActiveTimeField = clz.getDeclaredField("firstActiveTime");
-            Field lastActiveTimeField = clz.getDeclaredField("lastActiveTime");
-            for (RecentTaskInfo info : infos) {
-                if (info.id != -1) {
-                    int firstActiveTime = (int) firstActiveTimeField.get(info);
-                    int lastActiveTime = (int) lastActiveTimeField.get(info);
-                    String packageName = info.origActivity.getPackageName();
-                    float p = 1 - firstActiveTime / lastActiveTime;
-                    AppInfo appInfo = new AppInfo(packageName, p);
-                    rst.add(appInfo);
+            Field flagField = clz.getField("flags");
+            for (RunningAppProcessInfo info : infos) {
+                if (info.pid != 0) {
+                    String[] pkgList = info.pkgList;
+                    int flags = flagField.getInt(info);
+                    if (flags == 0) {
+                        // no last time used
+                        // we use importance here instead
+                        float importance = info.importance;
+                        if (importance >= RunningAppProcessInfo.IMPORTANCE_VISIBLE) {
+                            //  importance over VISIBLE should be foreground
+                            for (String p : pkgList) {
+                                if (!p.equals(mContext.getPackageName())) {
+                                    AppInfo appInfo = new AppInfo(p, importance);
+                                    rst.add(appInfo);
+                                }
+
+                            }
+                        }
+                    }
+
                 }
             }
         } catch (NoSuchFieldException e) {
-            e.printStackTrace();
+            LogUtil.wtf(TAG, e);
         } catch (IllegalAccessException e) {
-            e.printStackTrace();
+            LogUtil.wtf(TAG, e);
         }
+
         Collections.sort(rst, new Comparator<AppInfo>() {
             @Override
             public int compare(AppInfo o1, AppInfo o2) {
@@ -127,65 +141,73 @@ public class MyPowerManager {
 
     @NonNull
     @RequiresApi(api = VERSION_CODES.LOLLIPOP)
+    @SuppressWarnings("ResourceType")
+    // As usagestats is explicitly declared until api 22 but exists in api 21, we use it manually
     private List<AppInfo> getRecentUsedApps21Internal() {
         List<AppInfo> rst = new ArrayList<>();
         UsageStatsManager mUsageStatsManager = (UsageStatsManager) mContext.getSystemService(
             "usagestats");
         long time = System.currentTimeMillis();
-        // We get usage stats for the last 30 seconds
+        // We get usage stats for the last 5 mins
         List<UsageStats> stats = mUsageStatsManager
-            .queryUsageStats(UsageStatsManager.INTERVAL_DAILY, time - 1000 * 30, time);
-
+            .queryUsageStats(UsageStatsManager.INTERVAL_DAILY, time - 1000 * 300, time);
         if (stats != null) {
-            List<ApplicationInfo> infos = getUserInstalledApplications();
             for (UsageStats stat : stats) {
-                if (stat.getPackageName().equals(mContext.getPackageName())) {
-                    // skip this package
-                    continue;
-                }
-                for (ApplicationInfo info : infos) {
-                    if (stat.getPackageName().equals(info.packageName)) {
-                        float p = stat.getTotalTimeInForeground() == 0 ? Float.MAX_VALUE :
-                            stat.getLastTimeUsed() / stat.getTotalTimeInForeground();
-                        AppInfo appInfo = new AppInfo(stat.getPackageName(), p);
-                        rst.add(appInfo);
-                        break;
-                    }
+                if (!isSystemApp(stat.getPackageName()) && !stat.getPackageName()
+                    .equals(mContext.getPackageName())) {
+                    float p = stat.getTotalTimeInForeground() == 0 ? Float.MAX_VALUE :
+                        stat.getLastTimeUsed() / stat.getTotalTimeInForeground();
+                    AppInfo appInfo = new AppInfo(stat.getPackageName(), p);
+                    rst.add(appInfo);
                 }
             }
+            // Sort the stats by the priority
+            // priority = lastTimeUsed / totalTimeInForeground
+            Collections.sort(rst, new Comparator<AppInfo>() {
+                @Override
+                public int compare(AppInfo o1, AppInfo o2) {
+                    return -Float.compare(o1.getPriority(), o2.getPriority());
+                }
+            });
+            return rst;
+        } else {
+            Toast.makeText(mContext, mContext.getString(R.string.get_usage_fail), Toast.LENGTH_LONG).show();
+            LogUtil.e(TAG, "get recent used apps failed");
+            return rst;
         }
-        // Sort the stats by the priority
-        // priority = lastTimeUsed / totalTimeInForeground
-        Collections.sort(rst, new Comparator<AppInfo>() {
-            @Override
-            public int compare(AppInfo o1, AppInfo o2) {
-                return -Float.compare(o1.getPriority(), o2.getPriority());
-            }
-        });
-        return rst;
+    }
+
+    /**
+     * Get available memory approximately in mb
+     * @return available memory approximately in mb
+     */
+    public long getAvailableMemory() {
+        ActivityManager am = (ActivityManager) mContext.getSystemService(Context.ACTIVITY_SERVICE);
+        MemoryInfo mi = new MemoryInfo();
+        am.getMemoryInfo(mi);
+        return mi.availMem / 0x100000L;
     }
 
 
-
-    private List<ApplicationInfo> getUserInstalledApplications() {
-        // Get installed applications
-        final PackageManager packageManager = mContext.getPackageManager();
-        List<ApplicationInfo> installedApplications =
-            packageManager.getInstalledApplications(PackageManager.GET_META_DATA);
-
-        // Remove system apps
-        Iterator<ApplicationInfo> it = installedApplications.iterator();
-        while (it.hasNext()) {
-            ApplicationInfo appInfo = it.next();
-            if ((appInfo.flags & ApplicationInfo.FLAG_SYSTEM) != 0) {
-                it.remove();
-            }
+    private boolean isSystemApp(String packageName) {
+        final PackageManager pm = mContext.getPackageManager();
+        try {
+            ApplicationInfo info = pm.getApplicationInfo(packageName, PackageManager.GET_META_DATA);
+            return (info.flags & ApplicationInfo.FLAG_SYSTEM) != 0;
+        } catch (NameNotFoundException e) {
+            LogUtil.wtf(TAG, e);
+            return false;
         }
-
-        // Return installed applications
-        return installedApplications;
     }
 
+    @Deprecated
+    // be private in future
+    public void killProcesses(List<AppInfo> appInfos) {
+        ActivityManager am = (ActivityManager) mContext.getSystemService(Context.ACTIVITY_SERVICE);
+        for (AppInfo i : appInfos) {
+            am.killBackgroundProcesses(i.getPackageName());
+        }
+    }
 
     private void dump(List<AppInfo> list) {
         for (AppInfo u : list) {
