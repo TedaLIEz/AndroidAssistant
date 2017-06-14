@@ -28,6 +28,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.TextView;
 
+import com.hustunique.androidassistant.db.BlackList;
 import com.hustunique.androidassistant.receiver.PhoneCallReceiver;
 import com.hustunique.androidassistant.receiver.PowerReceiver;
 import com.hustunique.androidassistant.receiver.PowerReceiver.BatteryCallback;
@@ -53,14 +54,6 @@ public class MainActivity extends AppCompatActivity {
         mCallReceiver = new PhoneCallReceiver();
 
         // FIXME: request permission
-//        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE)
-//                != PackageManager.PERMISSION_GRANTED) {
-//
-//            ActivityCompat.requestPermissions(this,
-//                    new String[]{Manifest.permission.READ_PHONE_STATE},
-//                    MAGIC_NUMBER);
-//
-//        }
         LogUtil.d("MainActivity", "code: " + ContextCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE));
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE)
                 != PackageManager.PERMISSION_GRANTED) {
@@ -68,8 +61,16 @@ public class MainActivity extends AppCompatActivity {
             ActivityCompat.requestPermissions(this,
                     new String[]{Manifest.permission.CALL_PHONE},
                     MY_PERMISSIONS_REQUEST_PHONE_CALL);
-
         }
+
+        // FIXME: test BlackList
+        BlackList blackList = new BlackList(getApplicationContext());
+        blackList.addNewBlackNumber("15171508722");
+        blackList.addNewBlackNumber("17777777777");
+        blackList.addNewBlackNumber("1515");
+        blackList.getAllBlackNumbers();
+        blackList.deleteNumberFromBlackList("17777777777");
+        blackList.getAllBlackNumbers();
 
     }
 
@@ -101,5 +102,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         unregisterReceiver(mPowerReceiver);
+        unregisterReceiver(mCallReceiver);
     }
 }

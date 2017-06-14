@@ -13,6 +13,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.android.internal.telephony.ITelephony;
+import com.hustunique.androidassistant.db.BlackList;
 import com.hustunique.androidassistant.util.LogUtil;
 
 /**
@@ -21,10 +22,12 @@ import com.hustunique.androidassistant.util.LogUtil;
 
 public class PhoneCallStateListener extends PhoneStateListener {
     private Context context;
+    private BlackList mBlackList;
     private static final String TAG = "CallListener";
 
     public PhoneCallStateListener(Context context){
         this.context = context;
+        mBlackList = new BlackList(context);
     }
 
 
@@ -36,7 +39,6 @@ public class PhoneCallStateListener extends PhoneStateListener {
 
             case TelephonyManager.CALL_STATE_RINGING:
 
-//                String block_number = prefs.getString("block_number", null);
                 LogUtil.d(TAG, "a call incoming");
                 AudioManager audioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
                 //Turn ON the mute
@@ -48,10 +50,9 @@ public class PhoneCallStateListener extends PhoneStateListener {
                     method.setAccessible(true);
                     ITelephony telephonyService = (ITelephony) method.invoke(telephonyManager);
                     //Checking incoming call number
-//                    System.out.println("Call "+block_number);
                     LogUtil.d(TAG, "incoming number: " + incomingNumber);
 
-                    if (incomingNumber.equalsIgnoreCase("15171508722")) {
+                    if (mBlackList.ifNumberInBlackList(incomingNumber)) {
                         //telephonyService.silenceRinger();//Security exception problem
                         telephonyService = (ITelephony) method.invoke(telephonyManager);
                         telephonyService.silenceRinger();
