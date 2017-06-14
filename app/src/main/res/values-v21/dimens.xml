@@ -16,10 +16,16 @@
   -->
 
 <resources>
-  <color name="colorPrimary">#03a9f3</color>
-  <color name="colorPrimaryDark">#448afe</color>
-  <color name="colorAccent">#FF4081</color>
+  <dimen name="main_list_paddingtop">8dp</dimen>
+  <dimen name="main_list_padding">16dp</dimen>
+  <dimen name="main_list_minheight">72dp</dimen>
+  <dimen name="main_list_image_width">40dp</dimen>
+  <dimen name="main_list_image_height">40dp</dimen>
 
-  <color name="colorDivider">#1FFFFFFF</color>
-  <color name="colorBgd">#FAFAFA</color>
+
+  <dimen name="primary_text_size">16sp</dimen>
+  <dimen name="secondary_text_size">14sp</dimen>
+  <dimen name="light_text_size">112sp</dimen>
+
+  <dimen name="activity_horizontal_margin">16dp</dimen>
 </resources>

@@ -17,12 +17,41 @@
 <resources>
 
   <!-- Base application theme. -->
-  <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+  <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
     <!-- Customize your theme here. -->
     <item name="colorPrimary">@color/colorPrimary</item>
     <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
     <item name="colorAccent">@color/colorAccent</item>
   </style>
+
+  <style name="Material" parent="AppTheme"/>
+
+  <style name="Material.Item" parent="AppTheme">
+    <item name="android:background">?selectableItemBackground</item>
+    <item name="android:clickable">true</item>
+    <item name="android:layout_width">match_parent</item>
+    <item name="android:layout_height">wrap_content</item>
+    <item name="android:minHeight">@dimen/main_list_minheight</item>
+    <item name="android:paddingStart">?listPreferredItemPaddingLeft</item>
+    <item name="android:paddingLeft">?listPreferredItemPaddingLeft</item>
+    <item name="android:paddingEnd">?listPreferredItemPaddingRight</item>
+    <item name="android:paddingRight">?listPreferredItemPaddingRight</item>
+  </style>
+
+  <style name="Material.Item.TwoLineLayout" parent="Material">
+    <item name="android:layout_width">match_parent</item>
+    <item name="android:layout_height">wrap_content</item>
+    <item name="android:layout_marginLeft">@dimen/main_list_padding</item>
+    <item name="android:layout_marginRight">@dimen/main_list_padding</item>
+    <item name="android:layout_alignWithParentIfMissing">true</item>
+    <item name="android:layout_centerVertical">true</item>
+    <item name="android:layout_gravity">center_vertical</item>
+    <item name="android:paddingTop">@dimen/main_list_padding</item>
+    <item name="android:paddingBottom">@dimen/main_list_padding</item>
+    <item name="android:orientation">vertical</item>
+  </style>
+
+
 
   <style name="TextAppearance" parent="TextAppearance.AppCompat"/>
 
@@ -51,5 +80,6 @@
   <style name="TextAppearance.SubHead" parent="TextAppearance.AppCompat.Subhead">
 
   </style>
+
 
 </resources>

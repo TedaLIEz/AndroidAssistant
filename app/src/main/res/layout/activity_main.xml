@@ -17,26 +17,82 @@
 
 <LinearLayout
   xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
   xmlns:tools="http://schemas.android.com/tools"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
   android:orientation="vertical"
   tools:context="com.hustunique.androidassistant.MainActivity">
 
-  <TextView
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:text="Hello World!"/>
+
+  <android.support.design.widget.AppBarLayout
+    android:layout_width="match_parent"
+    android:layout_height="0dp"
+    android:layout_weight="1">
+
+    <android.support.v7.widget.Toolbar
+      android:id="@+id/toolbar"
+      android:layout_width="match_parent"
+      android:layout_height="?attr/actionBarSize"
+      app:title="@string/main_activity_title"
+      app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
+    <android.support.design.widget.CollapsingToolbarLayout
+      android:layout_width="match_parent"
+      android:layout_height="match_parent">
+
+      <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center">
+        <LinearLayout
+          android:layout_marginTop="@dimen/main_list_padding"
+          android:layout_marginBottom="@dimen/main_list_padding"
+          android:layout_gravity="center"
+          android:layout_width="wrap_content"
+          android:orientation="vertical"
+          android:layout_height="wrap_content">
+          <TextView
+            android:id="@+id/main_tv_title"
+            android:text="@string/main_running_mem"
+            style="@style/TextAppearance.Title"
+            android:layout_gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+          <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <TextView
+              android:text="340"
+              android:id="@+id/main_tv_mem"
+              android:textSize="112sp"
+              android:layout_gravity="center"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"/>
+            <TextView
+              android:text="@string/main_mb"
+              style="@style/TextAppearance.SubHead"
+              android:layout_toRightOf="@+id/main_tv_mem"
+              android:layout_toEndOf="@+id/main_tv_mem"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"/>
+          </RelativeLayout>
+
+          <Button
+            android:text="一键清理后台"
+            android:padding="@dimen/activity_horizontal_margin"
+            android:id="@+id/main_btn_clean"
+
+            style="@android:style/Widget.Holo.Button"
+            android:layout_gravity="center_horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        </LinearLayout>
+      </FrameLayout>
+
+    </android.support.design.widget.CollapsingToolbarLayout>
+  </android.support.design.widget.AppBarLayout>
 
 
-  <TextView
-    android:id="@+id/battery"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"/>
+  <include layout="@layout/content_main"/>
 
-  <Button
-    android:id="@+id/kill_proc"
-    android:text="一键你爹"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"/>
 </LinearLayout>
