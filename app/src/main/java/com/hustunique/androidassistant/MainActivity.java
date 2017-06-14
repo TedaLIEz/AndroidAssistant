@@ -16,18 +16,29 @@
 
 package com.hustunique.androidassistant;
 
+import android.Manifest;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.widget.TextView;
+
+import com.hustunique.androidassistant.receiver.PhoneCallReceiver;
 import com.hustunique.androidassistant.receiver.PowerReceiver;
 import com.hustunique.androidassistant.receiver.PowerReceiver.BatteryCallback;
+import com.hustunique.androidassistant.util.LogUtil;
 
 public class MainActivity extends AppCompatActivity {
 
     private PowerReceiver mPowerReceiver;
+    private PhoneCallReceiver mCallReceiver;
     private TextView mTextView;
+    private final int MY_PERMISSIONS_REQUEST_PHONE_CALL = 1;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,6 +50,42 @@ public class MainActivity extends AppCompatActivity {
                 mTextView.setText("battery pct: " + pct + "%");
             }
         });
+        mCallReceiver = new PhoneCallReceiver();
+
+        // FIXME: request permission
+//        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE)
+//                != PackageManager.PERMISSION_GRANTED) {
+//
+//            ActivityCompat.requestPermissions(this,
+//                    new String[]{Manifest.permission.READ_PHONE_STATE},
+//                    MAGIC_NUMBER);
+//
+//        }
+        LogUtil.d("MainActivity", "code: " + ContextCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE));
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE)
+                != PackageManager.PERMISSION_GRANTED) {
+            LogUtil.d("MainActivity", "request call phone");
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.CALL_PHONE},
+                    MY_PERMISSIONS_REQUEST_PHONE_CALL);
+
+        }
+
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        switch (requestCode) {
+            case MY_PERMISSIONS_REQUEST_PHONE_CALL: {
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    LogUtil.d("MainActivity", "call phone granted!");
+                } else {
+                    LogUtil.d("MainActivity", "call phone denied!!!");
+                }
+                return;
+            }
+        }
     }
 
     @Override
