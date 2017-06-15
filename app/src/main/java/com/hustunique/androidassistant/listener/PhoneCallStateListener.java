@@ -1,20 +1,19 @@
 package com.hustunique.androidassistant.listener;
 
-import java.lang.reflect.Method;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.media.AudioManager;
-import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.telephony.PhoneStateListener;
 import android.telephony.TelephonyManager;
-import android.util.Log;
 import android.widget.Toast;
 
 import com.android.internal.telephony.ITelephony;
 import com.hustunique.androidassistant.db.BlackList;
+import com.hustunique.androidassistant.db.BlockedCallSaver;
 import com.hustunique.androidassistant.util.LogUtil;
+
+import java.lang.reflect.Method;
 
 /**
  * Created by sunpe on 2017/6/13.
@@ -23,11 +22,13 @@ import com.hustunique.androidassistant.util.LogUtil;
 public class PhoneCallStateListener extends PhoneStateListener {
     private Context context;
     private BlackList mBlackList;
+    private BlockedCallSaver mBlockedCallSaver;
     private static final String TAG = "CallListener";
 
     public PhoneCallStateListener(Context context){
         this.context = context;
         mBlackList = new BlackList(context);
+        mBlockedCallSaver = new BlockedCallSaver(context);
     }
 
 
@@ -53,6 +54,7 @@ public class PhoneCallStateListener extends PhoneStateListener {
                     LogUtil.d(TAG, "incoming number: " + incomingNumber);
 
                     if (mBlackList.ifNumberInBlackList(incomingNumber)) {
+                        mBlockedCallSaver.addBlockedCall(incomingNumber);
                         //telephonyService.silenceRinger();//Security exception problem
                         telephonyService = (ITelephony) method.invoke(telephonyManager);
                         telephonyService.silenceRinger();

@@ -4,10 +4,8 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.util.Log;
 
 import com.hustunique.androidassistant.util.LogUtil;
-import com.hustunique.androidassistant.util.Util;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,27 +35,27 @@ public class BlackList {
         SQLiteDatabase db = mDbHelper.getWritableDatabase();
 
         ContentValues values = new ContentValues();
-        values.put(BlackListContract.BlackListEntry.COLUMN_NUMBER, number);
-        values.put(BlackListContract.BlackListEntry.COLUMN_TIME, System.currentTimeMillis());
-        long newRowId = db.insert(BlackListContract.BlackListEntry.TABLE_NAME, null, values);
+        values.put(DatabaseContract.BlackListEntry.COLUMN_NUMBER, number);
+        values.put(DatabaseContract.BlackListEntry.COLUMN_TIME, System.currentTimeMillis());
+        long newRowId = db.insert(DatabaseContract.BlackListEntry.TABLE_NAME, null, values);
 
         db.close();
 
-        return true;
+        return newRowId != -1;
     }
 
     public List<String> getAllBlackNumbers() {
         SQLiteDatabase db = mDbHelper.getReadableDatabase();
 
         String[] projection = {
-                BlackListContract.BlackListEntry._ID,
-                BlackListContract.BlackListEntry.COLUMN_NUMBER,
-                BlackListContract.BlackListEntry.COLUMN_TIME
+                DatabaseContract.BlackListEntry._ID,
+                DatabaseContract.BlackListEntry.COLUMN_NUMBER,
+                DatabaseContract.BlackListEntry.COLUMN_TIME
         };
-        String sortOrder = BlackListContract.BlackListEntry.COLUMN_TIME + " DESC";
+        String sortOrder = DatabaseContract.BlackListEntry.COLUMN_TIME + " DESC";
 
         Cursor c = db.query(
-                BlackListContract.BlackListEntry.TABLE_NAME,
+                DatabaseContract.BlackListEntry.TABLE_NAME,
                 projection,
                 null,
                 null,
@@ -68,7 +66,7 @@ public class BlackList {
         List<String> ret = new ArrayList<String>();
         if (c.moveToFirst()) {
             while (!c.isAfterLast()) {
-                String number = c.getString(c.getColumnIndex(BlackListContract.BlackListEntry.COLUMN_NUMBER));
+                String number = c.getString(c.getColumnIndex(DatabaseContract.BlackListEntry.COLUMN_NUMBER));
                 ret.add(number);
                 LogUtil.d(TAG, number);
                 c.moveToNext();
@@ -84,14 +82,14 @@ public class BlackList {
         SQLiteDatabase db = mDbHelper.getReadableDatabase();
 
         String[] projection = {
-                BlackListContract.BlackListEntry.COLUMN_NUMBER
+                DatabaseContract.BlackListEntry.COLUMN_NUMBER
         };
 
-        String selection = BlackListContract.BlackListEntry.COLUMN_NUMBER + " = ?";
+        String selection = DatabaseContract.BlackListEntry.COLUMN_NUMBER + " = ?";
         String[] selectionArgs = { number };
 
         Cursor c = db.query(
-                BlackListContract.BlackListEntry.TABLE_NAME,
+                DatabaseContract.BlackListEntry.TABLE_NAME,
                 projection,
                 selection,
                 selectionArgs,
@@ -112,10 +110,10 @@ public class BlackList {
         }
         SQLiteDatabase db = mDbHelper.getWritableDatabase();
 
-        String selection = BlackListContract.BlackListEntry.COLUMN_NUMBER + " LIKE ?";
+        String selection = DatabaseContract.BlackListEntry.COLUMN_NUMBER + " LIKE ?";
         String[] selectionArgs = { number };
 
-        db.delete(BlackListContract.BlackListEntry.TABLE_NAME, selection, selectionArgs);
+        db.delete(DatabaseContract.BlackListEntry.TABLE_NAME, selection, selectionArgs);
         db.close();
 
         return true;
