@@ -81,5 +81,10 @@
 
   </style>
 
+  <style name="AppTheme.Button" parent="@android:style/Widget.Holo.Button">
+    <item name="android:background">@drawable/btn_bgd</item>
+    <item name="android:textColor">@android:color/background_dark</item>
+  </style>
+
 
 </resources>

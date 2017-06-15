@@ -52,4 +52,10 @@
 
   </style>
 
+
+
+  <style name="AppTheme.Button" parent="@android:style/Widget.Holo.Button">
+    <item name="background">@drawable/btn_bgd</item>
+
+  </style>
 </resources>
