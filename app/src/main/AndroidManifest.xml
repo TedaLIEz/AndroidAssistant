@@ -25,6 +25,7 @@
         android:maxSdkVersion="20"/>
 
     <application
+        android:name=".app.AssistantApp"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -53,6 +54,7 @@
             android:enabled="true"
             android:exported="true">
         </service>
+
     </application>
 
 </manifest>
