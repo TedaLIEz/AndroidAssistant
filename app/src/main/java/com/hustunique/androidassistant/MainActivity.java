@@ -29,20 +29,18 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.TextView;
+
+import com.hustunique.androidassistant.db.BlackList;
+import com.hustunique.androidassistant.db.BlockedCallSaver;
+import com.hustunique.androidassistant.db.BlockedSMSSaver;
 import com.hustunique.androidassistant.model.AppInfo;
+import com.hustunique.androidassistant.receiver.PhoneCallReceiver;
 import com.hustunique.androidassistant.receiver.PowerReceiver;
 import com.hustunique.androidassistant.receiver.PowerReceiver.BatteryCallback;
 import com.hustunique.androidassistant.service.MyPowerManager;
 import com.hustunique.androidassistant.util.LogUtil;
-import java.util.List;
-import android.util.Log;
-import android.widget.TextView;
 
-import com.hustunique.androidassistant.db.BlackList;
-import com.hustunique.androidassistant.receiver.PhoneCallReceiver;
-import com.hustunique.androidassistant.receiver.PowerReceiver;
-import com.hustunique.androidassistant.receiver.PowerReceiver.BatteryCallback;
-import com.hustunique.androidassistant.util.LogUtil;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -82,8 +80,24 @@ public class MainActivity extends AppCompatActivity {
         // FIXME: request permission
         LogUtil.d("MainActivity", "code: " + ContextCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE));
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE)
+                != PackageManager.PERMISSION_GRANTED &&
+                ContextCompat.checkSelfPermission(this, Manifest.permission.RECEIVE_SMS)
                 != PackageManager.PERMISSION_GRANTED) {
-            LogUtil.d("MainActivity", "request call phone");
+            LogUtil.d("MainActivity", "request call phone&sms");
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.CALL_PHONE,
+                            Manifest.permission.RECEIVE_SMS},
+                    MY_PERMISSIONS_REQUEST_PHONE_CALL);
+        }
+        else if (ContextCompat.checkSelfPermission(this, Manifest.permission.RECEIVE_SMS)
+                != PackageManager.PERMISSION_GRANTED) {
+            LogUtil.d("MainActivity", "request sms permission");
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.RECEIVE_SMS},
+                    MY_PERMISSIONS_REQUEST_PHONE_CALL);
+        }
+        else {
+            LogUtil.d("MainActivity", "request call permission");
             ActivityCompat.requestPermissions(this,
                     new String[]{Manifest.permission.CALL_PHONE},
                     MY_PERMISSIONS_REQUEST_PHONE_CALL);
@@ -97,6 +111,13 @@ public class MainActivity extends AppCompatActivity {
         blackList.getAllBlackNumbers();
         blackList.deleteNumberFromBlackList("17777777777");
         blackList.getAllBlackNumbers();
+
+        //FIXME: test BlockedSMS
+        BlockedSMSSaver smsSaver = new BlockedSMSSaver(getApplicationContext());
+        smsSaver.getAllBlockedSMS();
+
+        BlockedCallSaver callSaver = new BlockedCallSaver(getApplicationContext());
+        callSaver.getAllBlockedCall();
 
     }
 
@@ -130,6 +151,5 @@ public class MainActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         unregisterReceiver(mPowerReceiver);
-        unregisterReceiver(mCallReceiver);
     }
 }
