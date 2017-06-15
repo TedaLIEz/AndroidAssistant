@@ -35,6 +35,7 @@ public class MobileDataService extends Service {
     public void onDestroy() {
         LogUtil.d(TAG,"MobileDataService destroy");
         mHandler.removeCallbacks(mCountDataRunnable);
+        mMobileDataManager.saveMobileData();
         super.onDestroy();
     }
 
@@ -46,7 +47,7 @@ public class MobileDataService extends Service {
     class CountDataRunnable implements Runnable {
         @Override
         public void run() {
-            LogUtil.i(TAG, "Mobile data bytes: " + mMobileDataManager.getTotalMobileData() + " MB");
+            LogUtil.d(TAG, "Mobile data bytes: " + mMobileDataManager.getTotalMobileData());
             mHandler.postDelayed(this,500);
         }
     }

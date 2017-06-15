@@ -16,7 +16,13 @@
 
 package com.hustunique.androidassistant.util;
 
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Build;
+
+import java.util.Calendar;
+import java.util.Date;
 
 /**
  * Created by JianGuo on 6/12/17.
@@ -30,5 +36,20 @@ public class Util {
 
     public static boolean isKitkat() {
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT;
+    }
+
+    public static boolean isMobileType(Context context){
+        ConnectivityManager cm =
+                (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+        return activeNetwork != null &&
+                activeNetwork.getType() == ConnectivityManager.TYPE_MOBILE;
+    }
+
+    public static int getMonth(){
+        Date date = new Date();
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        return calendar.get(Calendar.MONTH);
     }
 }
