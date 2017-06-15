@@ -28,14 +28,15 @@
   <android.support.design.widget.AppBarLayout
     android:layout_width="match_parent"
     android:layout_height="0dp"
+    android:minHeight="400dp"
     android:layout_weight="1">
 
     <android.support.v7.widget.Toolbar
       android:id="@+id/toolbar"
       android:layout_width="match_parent"
       android:layout_height="?attr/actionBarSize"
-      app:title="@string/main_activity_title"
-      app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
+      app:title="@string/title_activity_main"
+      app:theme="@style/ThemeOverlay.AppCompat.Dark"/>
     <android.support.design.widget.CollapsingToolbarLayout
       android:layout_width="match_parent"
       android:layout_height="match_parent">
@@ -52,7 +53,7 @@
           <TextView
             android:id="@+id/main_tv_title"
             android:text="@string/main_running_mem"
-            style="@style/TextAppearance.Title"
+            style="@style/TextAppearance.Title.Inverse"
             android:layout_gravity="center"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
@@ -62,13 +63,14 @@
             <TextView
               android:text="340"
               android:id="@+id/main_tv_mem"
+              android:textColor="@color/textPrimaryColorInverse"
               android:textSize="112sp"
               android:layout_gravity="center"
               android:layout_width="wrap_content"
               android:layout_height="wrap_content"/>
             <TextView
               android:text="@string/main_mb"
-              style="@style/TextAppearance.SubHead"
+              style="@style/TextAppearance.SubHead.Inverse"
               android:layout_toRightOf="@+id/main_tv_mem"
               android:layout_toEndOf="@+id/main_tv_mem"
               android:layout_width="wrap_content"
@@ -76,7 +78,7 @@
           </RelativeLayout>
 
           <Button
-            android:text="一键清理后台"
+            android:text="@string/main_clean_background"
             android:padding="@dimen/activity_horizontal_margin"
             android:id="@+id/main_btn_clean"
 

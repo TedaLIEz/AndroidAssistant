@@ -26,5 +26,13 @@
   <string name="item_block_detail">未开启</string>
   <string name="main_mb">MB</string>
   <string name="main_running_mem">运行内存</string>
-  <string name="main_activity_title">安卓手机助手</string>
+  <string name="title_activity_main">安卓手机助手</string>
+  <string name="title_activity_power">电量管理</string>
+  <string name="power_saving_des">省电模式说明：实时监控后台应用使用情况，关闭您长时间未使用的应用；调整您的屏幕亮度</string>
+  <string name="power_saving_enable">一键省电</string>
+  <string name="power_saving_mode">开启省电模式</string>
+  <string name="power_remain">剩余</string>
+  <string name="power_per">%</string>
+  <string name="power_remain_txt">剩余</string>
+  <string name="main_clean_background">一键清理后台</string>
 </resources>

@@ -16,10 +16,14 @@
   -->
 
 <resources>
-  <color name="colorPrimary">#03a9f3</color>
-  <color name="colorPrimaryDark">#448afe</color>
-  <color name="colorAccent">#FF4081</color>
+  <color name="colorPrimary">#03A9F4</color>
+  <color name="colorPrimaryDark">#0288D1</color>
+  <color name="colorAccent">#448AFF</color>
 
-  <color name="colorDivider">#1FFFFFFF</color>
+  <color name="colorDivider">#BDBDBD</color>
   <color name="colorBgd">#FAFAFA</color>
+
+  <color name="textPrimaryColor">#212121</color>
+  <color name="textPrimaryColorInverse">#FEFEFE</color>
+  <color name="textSecondaryColor">#757575</color>
 </resources>

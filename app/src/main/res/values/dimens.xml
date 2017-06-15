@@ -27,4 +27,6 @@
   <dimen name="secondary_text_size">14sp</dimen>
   <dimen name="light_text_size">112sp</dimen>
   <dimen name="activity_horizontal_margin">16dp</dimen>
+  <dimen name="fab_margin">16dp</dimen>
+  <dimen name="power_circle_padding">32dp</dimen>
 </resources>

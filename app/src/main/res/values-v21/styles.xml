@@ -24,9 +24,11 @@
     <item name="colorAccent">@color/colorAccent</item>
   </style>
 
+
   <style name="Material" parent="AppTheme"/>
 
-  <style name="Material.Item" parent="AppTheme">
+
+  <style name="Material.Item" parent="Material">
     <item name="android:background">?selectableItemBackground</item>
     <item name="android:clickable">true</item>
     <item name="android:layout_width">match_parent</item>
@@ -53,14 +55,16 @@
 
 
 
-  <style name="TextAppearance" parent="TextAppearance.AppCompat"/>
+  <style name="TextAppearance" parent="TextAppearance.AppCompat">
+    <item name="android:textColor">@color/textPrimaryColor</item>
+  </style>
 
   <style name="TextAppearance.Material.Item.TwoLineLayout.Body1" parent="TextAppearance.AppCompat.Body1">
     <item name="android:textSize">@dimen/primary_text_size</item>
   </style>
   <style name="TextAppearance.Material.Item.TwoLineLayout.Body2" parent="TextAppearance.AppCompat.Body2">
     <item name="android:textSize">@dimen/secondary_text_size</item>
-    <item name="android:textColor">?android:attr/textColorSecondary</item>
+    <item name="android:textColor">@color/textSecondaryColor</item>
   </style>
 
 
@@ -78,12 +82,30 @@
 
 
   <style name="TextAppearance.SubHead" parent="TextAppearance.AppCompat.Subhead">
+    <item name="android:textColor">@color/textSecondaryColor</item>
+  </style>
 
+  <style name="TextAppearance.Title.Inverse" parent="TextAppearance.Title">
+    <item name="android:textColor">@color/textPrimaryColorInverse</item>
+  </style>
+
+  <style name="TextAppearance.SubHead.Inverse" parent="TextAppearance.SubHead">
+    <item name="android:textColor">@color/textPrimaryColorInverse</item>
   </style>
 
   <style name="AppTheme.Button" parent="@android:style/Widget.Holo.Button">
     <item name="android:background">@drawable/btn_bgd</item>
     <item name="android:textColor">@android:color/background_dark</item>
+    <item name="android:minWidth">112dp</item>
+  </style>
+
+  <style name="AppTheme.Button.Small" parent="AppTheme.Button">
+    <item name="android:paddingLeft">@dimen/activity_horizontal_margin</item>
+    <item name="android:paddingRight">@dimen/activity_horizontal_margin</item>
+    <item name="android:layout_marginTop">@dimen/activity_horizontal_margin</item>
+    <item name="android:layout_marginBottom">@dimen/activity_horizontal_margin</item>
+    <item name="android:layout_width">wrap_content</item>
+    <item name="android:layout_height">wrap_content</item>
   </style>
 
 
