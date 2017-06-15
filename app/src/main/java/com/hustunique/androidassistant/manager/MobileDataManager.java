@@ -1,6 +1,7 @@
 package com.hustunique.androidassistant.manager;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.net.TrafficStats;
@@ -20,12 +21,15 @@ public class MobileDataManager {
 
     private static PackageManager sPM;
     private final static String sInternetPermission = "android.permission.INTERNET";
-
     private static MobileDataManager sInstance;
-    private TrafficStats mTrafficStats;
+    private SharedPreferences mSharedPreferences;
+    //  record the number of mobile data
+    private long mBytes;
 
     private MobileDataManager(Context context) {
         sPM = context.getPackageManager();
+        mSharedPreferences = context.getSharedPreferences(context.getPackageName(), Context.MODE_PRIVATE);
+        mBytes = retrieveMobileData();
     }
 
     public static MobileDataManager getInstance(Context context) {
@@ -54,10 +58,21 @@ public class MobileDataManager {
         return wrapperList;
     }
 
-    public double getTotalMobileData() {
+    public long getTotalMobileData() {
         long bytes = TrafficStats.getMobileTxBytes() + TrafficStats.getMobileRxBytes();
-        double mbFormat = (double) bytes / 1024 / 1024;
-        LogUtil.i(TAG, "Mobile data bytes: " + mbFormat + " MB");
-        return mbFormat;
+        if (mBytes < bytes) {
+            mBytes = bytes;
+        } else {
+            mBytes += bytes;
+        }
+        return mBytes;
+    }
+
+    public void saveMobileData() {
+        mSharedPreferences.edit().putLong("mobileData", mBytes).apply();
+    }
+
+    private long retrieveMobileData() {
+        return mSharedPreferences.getLong("mobileData", 0);
     }
 }
