@@ -56,13 +56,13 @@ public class Util {
     }
 
     /**
-     * Get available memory approximately in mb
-     * @return available memory approximately in mb
+     * Get remained memory approximately in mb
+     * @return remained memory approximately in mb
      */
-    public static long getAvailableMemory(Context context) {
+    public static long getRemainMemory(Context context) {
         ActivityManager am = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
         MemoryInfo mi = new MemoryInfo();
         am.getMemoryInfo(mi);
-        return mi.availMem / 0x100000L;
+        return (mi.totalMem - mi.availMem) / 0x100000L;
     }
 }

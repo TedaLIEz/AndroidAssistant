@@ -34,6 +34,7 @@ import butterknife.Unbinder;
 import com.hustunique.androidassistant.db.BlackList;
 import com.hustunique.androidassistant.db.BlockedCallSaver;
 import com.hustunique.androidassistant.db.BlockedSMSSaver;
+import com.hustunique.androidassistant.manager.MyPowerManager;
 import com.hustunique.androidassistant.receiver.PhoneCallReceiver;
 import com.hustunique.androidassistant.receiver.PowerReceiver;
 import com.hustunique.androidassistant.receiver.PowerReceiver.BatteryCallback;
@@ -135,7 +136,8 @@ public class MainActivity extends BaseActivity {
 
     @OnClick(R.id.main_btn_clean)
     public void onCleanBtnClicked() {
-        Toast.makeText(this, "TODO", Toast.LENGTH_SHORT).show();
+        new MyPowerManager(this).cleanBackground();
+        mTvMem.setText(String.valueOf(Util.getRemainMemory(this)));
     }
 
     @OnClick(R.id.power_mang)
@@ -159,7 +161,7 @@ public class MainActivity extends BaseActivity {
     protected void onResume() {
         super.onResume();
 
-        mTvMem.setText(String.valueOf(Util.getAvailableMemory(this)));
+        mTvMem.setText(String.valueOf(Util.getRemainMemory(this)));
         IntentFilter intentFilter = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
         intentFilter.addAction(Intent.ACTION_POWER_CONNECTED);
         intentFilter.addAction(Intent.ACTION_POWER_DISCONNECTED);

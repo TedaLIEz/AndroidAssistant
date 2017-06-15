@@ -35,5 +35,5 @@
   <string name="power_per">%</string>
   <string name="power_remain_txt">剩余</string>
   <string name="main_clean_background">一键清理后台</string>
-  <string name="grant_settings_access">请允许修改系统设置!</string>
+  <string name="grant_settings_access">请允许本应用修改系统设置!</string>
 </resources>

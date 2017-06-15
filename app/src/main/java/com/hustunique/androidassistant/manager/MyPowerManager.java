@@ -26,9 +26,10 @@ import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Build.VERSION_CODES;
 import android.provider.Settings;
-import android.provider.Settings.SettingNotFoundException;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 import android.widget.Toast;
@@ -52,23 +53,14 @@ public class MyPowerManager {
     private static final String TAG = "MyPowerManager";
     private Context mContext;
     private static final int SAVE_POWER_BRIGHTNESS = 51;
-    private static final int POWER_SAVE_MODE_BRIGHTNESS = 30;
+    private static final int POWER_SAVE_MODE_BRIGHTNESS = 1;
 
     public MyPowerManager(Context context) {
         mContext = context;
     }
 
-    /**
-     * Return list of recently used user applications
-     * we define the least recently used as :
-     * <p>
-     * 1) longest  last used timestamp
-     * 2) shortest period in foreground
-     * </p>
-     *
-     * @return list of {@link AppInfo}
-     */
-    public List<AppInfo> getRecentUsedApps() {
+
+    private List<AppInfo> getRecentUsedApps() {
         List<AppInfo> rst;
         if (Util.isLollipop()) {
             if (!checkUsageAccess()) {
@@ -150,7 +142,7 @@ public class MyPowerManager {
         List<AppInfo> rst = new ArrayList<>();
         UsageStatsManager mUsageStatsManager = (UsageStatsManager) mContext.getSystemService(
             "usagestats");
-        long time = System.currentTimeMillis();
+        long time = java.lang.System.currentTimeMillis();
         // We get usage stats for the last 5 mins
         List<UsageStats> stats = mUsageStatsManager
             .queryUsageStats(UsageStatsManager.INTERVAL_DAILY, time - 1000 * 300, time);
@@ -183,20 +175,60 @@ public class MyPowerManager {
 
 
     public void savePower() {
-        try {
-            changeBrightness();
-        } catch (SettingNotFoundException e) {
-            LogUtil.wtf(TAG, e);
+        if (changeBrightness(SAVE_POWER_BRIGHTNESS)) {
+            killProcesses();
+            Toast.makeText(mContext, "省电成功", Toast.LENGTH_SHORT).show();
         }
-
     }
 
-    private void changeBrightness() throws SettingNotFoundException {
+    public void powerSaveMode() {
+        if (changeBrightness(POWER_SAVE_MODE_BRIGHTNESS)) {
+            killProcesses();
+            Toast.makeText(mContext, "进入省电模式", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+
+    public void cleanBackground() {
+        killProcesses();
+        Toast.makeText(mContext, "清理后台完成", Toast.LENGTH_SHORT).show();
+    }
+
+
+    @RequiresApi(api = VERSION_CODES.M)
+    private boolean checkSettingsAccess() {
+        if (!Settings.System.canWrite(mContext)) {
+            Toast.makeText(mContext, R.string.grant_settings_access, Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(android.provider.Settings.ACTION_MANAGE_WRITE_SETTINGS);
+            intent.setData(Uri.parse("package:" + mContext.getPackageName()));
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            mContext.startActivity(intent);
+        }
+        return Settings.System.canWrite(mContext);
+    }
+
+
+    private void changeBrightnessInternal(int brightness) {
         Settings.System
             .putInt(mContext.getContentResolver(), Settings.System.SCREEN_BRIGHTNESS_MODE,
                 Settings.System.SCREEN_BRIGHTNESS_MODE_MANUAL);  //this will set the manual mode (set the automatic mode off)
         Settings.System.putInt(mContext.getContentResolver(), Settings.System.SCREEN_BRIGHTNESS,
-            SAVE_POWER_BRIGHTNESS);  //this will set the brightness to maximum (255)
+            brightness);
+    }
+
+    private boolean changeBrightness(int brightness) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (checkSettingsAccess()) {
+                changeBrightnessInternal(brightness);
+            } else {
+                LogUtil.e(TAG, "grant settings access failed");
+                return false;
+            }
+        } else {
+            changeBrightnessInternal(brightness);
+        }
+        return true;
+
     }
 
     private boolean isSystemApp(String packageName) {
@@ -210,11 +242,9 @@ public class MyPowerManager {
         }
     }
 
-    @Deprecated
-    // be private in future
-    public void killProcesses(List<AppInfo> appInfos) {
+    private void killProcesses() {
         ActivityManager am = (ActivityManager) mContext.getSystemService(Context.ACTIVITY_SERVICE);
-        for (AppInfo i : appInfos) {
+        for (AppInfo i : getRecentUsedApps()) {
             am.killBackgroundProcesses(i.getPackageName());
         }
     }
