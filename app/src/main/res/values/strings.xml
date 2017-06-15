@@ -17,7 +17,7 @@
 <resources>
   <string name="app_name">AndroidAssistant</string>
   <string name="item_power_mang">电量管理</string>
-  <string name="item_power_detail">当前剩余电量34%</string>
+  <string name="item_power_detail">当前剩余电量%1$d%%</string>
   <string name="item_data">流量管理</string>
   <string name="item_data_detail">本月已使用流量340M</string>
   <string name="item_block">骚扰拦截</string>
@@ -33,4 +33,5 @@
   <string name="power_per">%</string>
   <string name="power_remain_txt">剩余</string>
   <string name="main_clean_background">一键清理后台</string>
+  <string name="grant_settings_access">请允许修改系统设置!</string>
 </resources>

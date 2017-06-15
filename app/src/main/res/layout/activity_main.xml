@@ -61,7 +61,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
             <TextView
-              android:text="340"
+              tools:text="340"
               android:id="@+id/main_tv_mem"
               android:textColor="@color/textPrimaryColorInverse"
               android:textSize="112sp"

@@ -16,6 +16,8 @@
 
 package com.hustunique.androidassistant.util;
 
+import android.app.ActivityManager;
+import android.app.ActivityManager.MemoryInfo;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -51,5 +53,16 @@ public class Util {
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(date);
         return calendar.get(Calendar.MONTH);
+    }
+
+    /**
+     * Get available memory approximately in mb
+     * @return available memory approximately in mb
+     */
+    public static long getAvailableMemory(Context context) {
+        ActivityManager am = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
+        MemoryInfo mi = new MemoryInfo();
+        am.getMemoryInfo(mi);
+        return mi.availMem / 0x100000L;
     }
 }

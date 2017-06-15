@@ -35,6 +35,10 @@ public class PowerReceiver extends BroadcastReceiver {
         void onUpdated(int pct);
     }
 
+    public PowerReceiver() {
+        super();
+    }
+
     private BatteryCallback mCallback;
     public PowerReceiver(BatteryCallback callback) {
         super();

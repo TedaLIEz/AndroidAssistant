@@ -34,6 +34,7 @@
     android:layout_marginTop="@dimen/main_list_paddingtop">
 
     <RelativeLayout
+      android:id="@+id/power_mang"
       style="@style/Material.Item">
       <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/list_power_avator"
@@ -60,7 +61,7 @@
           style="@style/TextAppearance.Material.Item.TwoLineLayout.Body2"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
-          android:text="@string/item_power_detail"/>
+          tools:text="当前剩余电量34%"/>
       </LinearLayout>
 
       <ImageView
@@ -83,6 +84,7 @@
       android:background="?android:attr/dividerVertical"/>
 
     <RelativeLayout
+      android:id="@+id/data_mang"
       style="@style/Material.Item">
       <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/list_data_avator"
@@ -132,6 +134,7 @@
       android:layout_marginStart="72dp"
       android:background="?android:attr/dividerVertical"/>
     <RelativeLayout
+      android:id="@+id/block_mang"
       style="@style/Material.Item">
       <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/list_block_avator"

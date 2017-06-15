@@ -24,35 +24,54 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.widget.Button;
+import android.widget.TextView;
+import android.widget.Toast;
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+import butterknife.Unbinder;
 import com.hustunique.androidassistant.db.BlackList;
 import com.hustunique.androidassistant.db.BlockedCallSaver;
 import com.hustunique.androidassistant.db.BlockedSMSSaver;
 import com.hustunique.androidassistant.receiver.PhoneCallReceiver;
 import com.hustunique.androidassistant.receiver.PowerReceiver;
 import com.hustunique.androidassistant.receiver.PowerReceiver.BatteryCallback;
-import com.hustunique.androidassistant.service.MyPowerManager;
 import com.hustunique.androidassistant.util.LogUtil;
+import com.hustunique.androidassistant.util.Util;
 
 public class MainActivity extends BaseActivity {
 
     private static final String TAG = "MainActivity";
-    private PowerReceiver mPowerReceiver;
+
     private PhoneCallReceiver mCallReceiver;
-    private MyPowerManager mPowerManager;
     private final int MY_PERMISSIONS_REQUEST_PHONE_CALL = 1;
 
+    @BindView(R.id.main_tv_mem)
+    TextView mTvMem;
+
+    @BindView(R.id.power_detail)
+    TextView mTvPowDetail;
+
+    @BindView(R.id.main_btn_clean)
+    Button mBtnClean;
+
+
+    private Unbinder mUnbinder;
+    private PowerReceiver mPowerReceiver;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        mPowerManager = new MyPowerManager(this);
+        mUnbinder = ButterKnife.bind(this);
 
         mPowerReceiver = new PowerReceiver(new BatteryCallback() {
             @Override
             public void onUpdated(int pct) {
-                LogUtil.d(TAG, "battery pct: " + pct + "%");
+                mTvPowDetail.setText(getString(R.string.item_power_detail, pct));
             }
         });
+
 
         mCallReceiver = new PhoneCallReceiver();
 
@@ -110,16 +129,37 @@ public class MainActivity extends BaseActivity {
                 } else {
                     LogUtil.d("MainActivity", "call phone denied!!!");
                 }
-                return;
             }
         }
     }
 
+    @OnClick(R.id.main_btn_clean)
+    public void onCleanBtnClicked() {
+        Toast.makeText(this, "TODO", Toast.LENGTH_SHORT).show();
+    }
+
+    @OnClick(R.id.power_mang)
+    public void onPowerMangClicked() {
+        Intent intent = new Intent(this, PowerActivity.class);
+        startActivity(intent);
+    }
+
+    @OnClick(R.id.data_mang)
+    public void onDataMangClicked() {
+        Toast.makeText(this, "TODO", Toast.LENGTH_SHORT).show();
+    }
+
+    @OnClick(R.id.block_mang)
+    public void onBlockMangClicked() {
+        Toast.makeText(this, "TODO", Toast.LENGTH_SHORT).show();
+    }
 
 
     @Override
     protected void onResume() {
         super.onResume();
+
+        mTvMem.setText(String.valueOf(Util.getAvailableMemory(this)));
         IntentFilter intentFilter = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
         intentFilter.addAction(Intent.ACTION_POWER_CONNECTED);
         intentFilter.addAction(Intent.ACTION_POWER_DISCONNECTED);
@@ -127,8 +167,15 @@ public class MainActivity extends BaseActivity {
     }
 
     @Override
+    protected void onPause() {
+        super.onPause();
+        unregisterReceiver(mPowerReceiver);
+    }
+
+    @Override
     protected void onDestroy() {
         super.onDestroy();
-        unregisterReceiver(mPowerReceiver);
+
+        mUnbinder.unbind();
     }
 }

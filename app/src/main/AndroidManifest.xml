@@ -26,6 +26,7 @@
   <uses-permission android:name="android.permission.RECEIVE_SMS"/>
   <uses-permission android:name="android.permission.SEND_SMS"/>
   <uses-permission android:name="android.permission.RECEIVE_MMS"/>
+  <uses-permission android:name="android.permission.WRITE_SETTINGS"/>
   <uses-permission
     android:maxSdkVersion="20"
     android:name="android.permission.GET_TASKS"/>
@@ -75,6 +76,7 @@
       android:name=".PowerActivity"
       android:theme="@style/AppTheme">
     </activity>
+
   </application>
 
 </manifest>

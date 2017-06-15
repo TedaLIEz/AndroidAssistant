@@ -14,10 +14,9 @@
  * limitations under the License.
  */
 
-package com.hustunique.androidassistant.service;
+package com.hustunique.androidassistant.manager;
 
 import android.app.ActivityManager;
-import android.app.ActivityManager.MemoryInfo;
 import android.app.ActivityManager.RunningAppProcessInfo;
 import android.app.AppOpsManager;
 import android.app.usage.UsageStats;
@@ -29,6 +28,7 @@ import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.os.Build.VERSION_CODES;
 import android.provider.Settings;
+import android.provider.Settings.SettingNotFoundException;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 import android.widget.Toast;
@@ -51,6 +51,8 @@ public class MyPowerManager {
 
     private static final String TAG = "MyPowerManager";
     private Context mContext;
+    private static final int SAVE_POWER_BRIGHTNESS = 51;
+    private static final int POWER_SAVE_MODE_BRIGHTNESS = 30;
 
     public MyPowerManager(Context context) {
         mContext = context;
@@ -70,7 +72,8 @@ public class MyPowerManager {
         List<AppInfo> rst;
         if (Util.isLollipop()) {
             if (!checkUsageAccess()) {
-                Toast.makeText(mContext, mContext.getString(R.string.grant_usage_access), Toast.LENGTH_LONG).show();
+                Toast.makeText(mContext, mContext.getString(R.string.grant_usage_access),
+                    Toast.LENGTH_LONG).show();
                 Intent intent = new Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS);
                 mContext.startActivity(intent);
             }
@@ -171,23 +174,30 @@ public class MyPowerManager {
             });
             return rst;
         } else {
-            Toast.makeText(mContext, mContext.getString(R.string.get_usage_fail), Toast.LENGTH_LONG).show();
+            Toast.makeText(mContext, mContext.getString(R.string.get_usage_fail), Toast.LENGTH_LONG)
+                .show();
             LogUtil.e(TAG, "get recent used apps failed");
             return rst;
         }
     }
 
-    /**
-     * Get available memory approximately in mb
-     * @return available memory approximately in mb
-     */
-    public long getAvailableMemory() {
-        ActivityManager am = (ActivityManager) mContext.getSystemService(Context.ACTIVITY_SERVICE);
-        MemoryInfo mi = new MemoryInfo();
-        am.getMemoryInfo(mi);
-        return mi.availMem / 0x100000L;
+
+    public void savePower() {
+        try {
+            changeBrightness();
+        } catch (SettingNotFoundException e) {
+            LogUtil.wtf(TAG, e);
+        }
+
     }
 
+    private void changeBrightness() throws SettingNotFoundException {
+        Settings.System
+            .putInt(mContext.getContentResolver(), Settings.System.SCREEN_BRIGHTNESS_MODE,
+                Settings.System.SCREEN_BRIGHTNESS_MODE_MANUAL);  //this will set the manual mode (set the automatic mode off)
+        Settings.System.putInt(mContext.getContentResolver(), Settings.System.SCREEN_BRIGHTNESS,
+            SAVE_POWER_BRIGHTNESS);  //this will set the brightness to maximum (255)
+    }
 
     private boolean isSystemApp(String packageName) {
         final PackageManager pm = mContext.getPackageManager();
