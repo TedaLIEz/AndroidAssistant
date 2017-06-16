@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.hustunique.androidassistant;
+package com.hustunique.androidassistant.activity;
 
 import android.Manifest;
 import android.content.Intent;
@@ -26,6 +26,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 
+import com.hustunique.androidassistant.R;
 import com.hustunique.androidassistant.db.BlackList;
 import com.hustunique.androidassistant.db.BlockedCallSaver;
 import com.hustunique.androidassistant.db.BlockedSMSSaver;
