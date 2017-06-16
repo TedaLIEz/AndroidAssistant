@@ -32,9 +32,12 @@ public class AppInfo {
     private String timestamp;
     @Column
     private long mobileBytes;
+    @Column
     private int uid;
 
-    private float mPriority;
+    private float priority;
+
+    private long totalUidBytes;
 
     public AppInfo(){
 
@@ -49,7 +52,15 @@ public class AppInfo {
 
     public AppInfo(String packageName, float priority) {
         this.packageName = packageName;
-        mPriority = priority;
+        this.priority = priority;
+    }
+
+    public long getTotalUidBytes() {
+        return totalUidBytes;
+    }
+
+    public void setTotalUidBytes(long totalUidBytes) {
+        this.totalUidBytes = totalUidBytes;
     }
 
     public String getPackageName() {
@@ -77,7 +88,7 @@ public class AppInfo {
     }
 
     public float getPriority() {
-        return mPriority;
+        return priority;
     }
 
     public int getUid() {
@@ -99,7 +110,7 @@ public class AppInfo {
 
         AppInfo appInfo = (AppInfo) o;
 
-        if (Float.compare(appInfo.mPriority, mPriority) != 0) {
+        if (Float.compare(appInfo.priority, priority) != 0) {
             return false;
         }
         return packageName != null ? packageName.equals(appInfo.packageName)
@@ -110,7 +121,7 @@ public class AppInfo {
     @Override
     public int hashCode() {
         int result = packageName != null ? packageName.hashCode() : 0;
-        result = 31 * result + (mPriority != +0.0f ? Float.floatToIntBits(mPriority) : 0);
+        result = 31 * result + (priority != +0.0f ? Float.floatToIntBits(priority) : 0);
         return result;
     }
 
@@ -118,7 +129,7 @@ public class AppInfo {
     public String toString() {
         return "AppInfo{" +
             "packageName='" + packageName + '\'' +
-            ", mPriority=" + mPriority +
+            ", priority=" + priority +
             '}';
     }
 }
