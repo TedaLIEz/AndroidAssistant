@@ -34,12 +34,13 @@ public class MobileDataManager {
     private List<AppInfo> mAppInfos;
     //  record the number of mobile data
     private long mBytes;
+    private long mTempBytes;
 
     private MobileDataManager(Context context) {
         sPM = context.getPackageManager();
         mSharedPreferences = context.getSharedPreferences(context.getPackageName(), Context.MODE_PRIVATE);
         mBytes = retrieveMobileData();
-        mAppInfos = retrieveAppInfo();
+        retrieveAppInfo();
     }
 
     private void detectNewAppInfo() {
@@ -51,6 +52,7 @@ public class MobileDataManager {
                 if (permission.equals(sInternetPermission)) {
                     AppInfo appInfo = new AppInfo();
                     appInfo.setPackageName(packageInfo.packageName);
+                    appInfo.setAppName((String) sPM.getApplicationLabel(packageInfo.applicationInfo));
                     appInfo.setTimestamp(Util.constructTimestamp());
                     appInfo.setUid(packageInfo.applicationInfo.uid);
                     if (!mAppInfos.contains(appInfo)){
@@ -80,6 +82,7 @@ public class MobileDataManager {
                     LogUtil.d(TAG, packageInfo.packageName);
                     AppInfo appInfo = new AppInfo();
                     appInfo.setPackageName(packageInfo.packageName);
+                    appInfo.setAppName((String) sPM.getApplicationLabel(packageInfo.applicationInfo));
                     appInfo.setTimestamp(Util.constructTimestamp());
                     appInfo.setUid(packageInfo.applicationInfo.uid);
                     appInfos.add(appInfo);
@@ -92,12 +95,18 @@ public class MobileDataManager {
 
     public long getTotalMobileData() {
         long bytes = TrafficStats.getMobileTxBytes() + TrafficStats.getMobileRxBytes();
+        if(bytes == 0) return mBytes;
         if (mBytes < bytes) {
             mBytes = bytes;
         } else {
-            mBytes += bytes;
+            mBytes += bytes - mTempBytes;
+            mTempBytes = bytes;
         }
         return mBytes;
+    }
+
+    public List<AppInfo> getAppInfos() {
+        return mAppInfos;
     }
 
     public void saveMobileData() {
@@ -108,15 +117,14 @@ public class MobileDataManager {
         return mSharedPreferences.getLong("mobileData", 0);
     }
 
-    private List<AppInfo> retrieveAppInfo() {
+    private void retrieveAppInfo() {
         String timestamp = Util.constructTimestamp();
-        List<AppInfo> appInfos = SQLite.select().from(AppInfo.class).where(AppInfo_Table.timestamp.eq(timestamp)).queryList();
-        if (appInfos.size() == 0) {
-            appInfos = getAppInfoWithPermission();
+        mAppInfos = SQLite.select().from(AppInfo.class).where(AppInfo_Table.timestamp.eq(timestamp)).queryList();
+        if (mAppInfos.size() == 0) {
+            mAppInfos = getAppInfoWithPermission();
         }else{
             detectNewAppInfo();
         }
-        return appInfos;
     }
 
     public void updateAppInfo() {
@@ -128,7 +136,6 @@ public class MobileDataManager {
                 continue;
             }
             int uid = appInfo.getUid();
-            LogUtil.d(TAG,appInfo.getPackageName() + " uid : " + uid);
             long bytes = Util.getTotalBytesManual(uid);
             long currentBytes = bytes;
             if (appInfo.getTotalUidBytes() == 0){
@@ -138,7 +145,6 @@ public class MobileDataManager {
                 bytes = bytes - appInfo.getTotalUidBytes() + appInfo.getMobileBytes();
                 appInfo.setTotalUidBytes(currentBytes);
             }
-            LogUtil.d(TAG,appInfo.getPackageName() + ": " + bytes);
             appInfo.setMobileBytes(bytes);
         }
 

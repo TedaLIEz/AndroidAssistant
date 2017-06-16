@@ -265,13 +265,13 @@ public class MyPowerManager {
     private void killProcesses() {
         ActivityManager am = (ActivityManager) mContext.getSystemService(Context.ACTIVITY_SERVICE);
         for (AppInfo i : getRecentUsedApps()) {
-            am.killBackgroundProcesses(i.getPackageName());
+            am.killBackgroundProcesses(i.getAppName());
         }
     }
 
     private void dump(List<AppInfo> list) {
         for (AppInfo u : list) {
-            LogUtil.d(TAG, "usage: " + u.getPackageName()
+            LogUtil.d(TAG, "usage: " + u.getAppName()
                 + " priority " + u.getPriority());
         }
     }

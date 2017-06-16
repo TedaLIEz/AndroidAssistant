@@ -19,7 +19,7 @@
   <string name="item_power_mang">电量管理</string>
   <string name="item_power_detail">当前剩余电量%1$d%%</string>
   <string name="item_data">流量管理</string>
-  <string name="item_data_detail">本月已使用流量340M</string>
+  <string name="item_data_detail">本月已使用流量%1$s</string>
   <string name="item_block">骚扰拦截</string>
   <string name="item_block_detail">未开启</string>
   <string name="item_block_black_list">黑名单拦截</string>
@@ -42,4 +42,8 @@
   <string name="enter_power_save_mode">进入省电模式</string>
   <string name="clr_background_success">清理后台成功</string>
   <string name="restore_saving_mode">关闭省电模式</string>
+  <string name="title_activity_data">流量管理</string>
+  <string name="data_used">您本月已使用 %1$s </string>
+  <string name="data_setting">设置流量提醒</string>
+  <string name="data_setting_detail">设置流量提醒，达到流量上限限时会收到提示哦，从此放心大胆开流量</string>
 </resources>
