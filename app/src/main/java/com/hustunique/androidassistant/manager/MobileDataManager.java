@@ -42,6 +42,26 @@ public class MobileDataManager {
         mAppInfos = retrieveAppInfo();
     }
 
+    private void detectNewAppInfo() {
+        List<PackageInfo> packageInfoList = sPM.getInstalledPackages(PackageManager.GET_PERMISSIONS);
+        for (PackageInfo packageInfo : packageInfoList) {
+            String[] permissions = packageInfo.requestedPermissions;
+            if (permissions == null) continue;
+            for (String permission : permissions) {
+                if (permission.equals(sInternetPermission)) {
+                    AppInfo appInfo = new AppInfo();
+                    appInfo.setPackageName(packageInfo.packageName);
+                    appInfo.setTimestamp(Util.constructTimestamp());
+                    appInfo.setUid(packageInfo.applicationInfo.uid);
+                    if (!mAppInfos.contains(appInfo)){
+                        mAppInfos.add(appInfo);
+                    }
+                    break;
+                }
+            }
+        }
+    }
+
     public static MobileDataManager getInstance(Context context) {
         if (sInstance == null) {
             sInstance = new MobileDataManager(context);
@@ -61,6 +81,7 @@ public class MobileDataManager {
                     AppInfo appInfo = new AppInfo();
                     appInfo.setPackageName(packageInfo.packageName);
                     appInfo.setTimestamp(Util.constructTimestamp());
+                    appInfo.setUid(packageInfo.applicationInfo.uid);
                     appInfos.add(appInfo);
                     break;
                 }
@@ -92,18 +113,43 @@ public class MobileDataManager {
         List<AppInfo> appInfos = SQLite.select().from(AppInfo.class).where(AppInfo_Table.timestamp.eq(timestamp)).queryList();
         if (appInfos.size() == 0) {
             appInfos = getAppInfoWithPermission();
+        }else{
+            detectNewAppInfo();
         }
         return appInfos;
     }
 
     public void updateAppInfo() {
+        AppInfo tmp = null;
         for (AppInfo appInfo : mAppInfos) {
+            if (!isAppInstalled(appInfo.getPackageName())) {
+                removeAppInfo(appInfo);
+                tmp = appInfo;
+                continue;
+            }
             int uid = appInfo.getUid();
-            long bytes = TrafficStats.getUidTxBytes(uid) + TrafficStats.getUidRxBytes(uid);
-            bytes += appInfo.getMobileBytes();
+            LogUtil.d(TAG,appInfo.getPackageName() + " uid : " + uid);
+            long bytes = Util.getTotalBytesManual(uid);
+            long currentBytes = bytes;
+            if (appInfo.getTotalUidBytes() == 0){
+                appInfo.setTotalUidBytes(bytes);
+                continue;
+            }else{
+                bytes = bytes - appInfo.getTotalUidBytes() + appInfo.getMobileBytes();
+                appInfo.setTotalUidBytes(currentBytes);
+            }
             LogUtil.d(TAG,appInfo.getPackageName() + ": " + bytes);
             appInfo.setMobileBytes(bytes);
         }
+
+        if (tmp != null){
+            mAppInfos.remove(tmp);
+        }
+    }
+
+    private void removeAppInfo(AppInfo appInfo) {
+        final ModelAdapter<AppInfo> adapter = FlowManager.getModelAdapter(AppInfo.class);
+        adapter.delete(appInfo);
     }
 
     public void saveAppInfoWithinDB() {

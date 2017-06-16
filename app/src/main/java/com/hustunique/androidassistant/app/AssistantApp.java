@@ -29,4 +29,5 @@ public class AssistantApp extends Application {
         LogUtil.d(TAG,"Create database");
         FlowManager.init(this);
     }
+
 }
