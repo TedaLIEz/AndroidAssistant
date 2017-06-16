@@ -37,6 +37,7 @@ import com.hustunique.androidassistant.receiver.PowerReceiver;
 import com.hustunique.androidassistant.receiver.PowerReceiver.BatteryCallback;
 import com.hustunique.androidassistant.util.LogUtil;
 import com.hustunique.androidassistant.util.Util;
+import com.raizlabs.android.dbflow.sql.language.Operator;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -150,7 +151,8 @@ public class MainActivity extends BaseActivity {
 
     @OnClick(R.id.data_mang)
     public void onDataMangClicked() {
-        Toast.makeText(this, "TODO", Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(this,DataUsageActivity.class);
+        startActivity(intent);
     }
 
     @OnClick(R.id.block_mang)

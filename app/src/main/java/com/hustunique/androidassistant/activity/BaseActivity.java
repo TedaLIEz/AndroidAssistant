@@ -17,11 +17,29 @@
 package com.hustunique.androidassistant.activity;
 
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
+
+import com.hustunique.androidassistant.R;
 
 /**
  * Created by JianGuo on 6/15/17.
  */
 
 public class BaseActivity extends AppCompatActivity {
+    protected void setupToolbar(int resId){
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
+        toolbar.setTitle(resId);
+    }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            finish();
+        }
+        return super.onOptionsItemSelected(item);
+    }
 }
