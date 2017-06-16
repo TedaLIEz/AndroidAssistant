@@ -34,4 +34,8 @@
   <string name="power_remain_txt">剩余</string>
   <string name="main_clean_background">一键清理后台</string>
   <string name="grant_settings_access">请允许本应用修改系统设置!</string>
+  <string name="save_power_success">省电成功</string>
+  <string name="enter_power_save_mode">进入省电模式</string>
+  <string name="clr_background_success">清理后台成功</string>
+  <string name="restore_saving_mode">关闭省电模式</string>
 </resources>
