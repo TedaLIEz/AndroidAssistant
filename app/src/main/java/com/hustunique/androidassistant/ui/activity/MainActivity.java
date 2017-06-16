@@ -106,7 +106,7 @@ public class MainActivity extends BaseActivity {
         }
 
         // FIXME: test BlackList
-        BlackList blackList = new BlackList(getApplicationContext());
+        BlackList blackList = new BlackList();
         blackList.addNewBlackNumber("15171508722");
         blackList.addNewBlackNumber("17777777777");
         blackList.addNewBlackNumber("1515");
@@ -115,10 +115,10 @@ public class MainActivity extends BaseActivity {
         blackList.getAllBlackNumbers();
 
         //FIXME: test BlockedSMS
-        BlockedSMSSaver smsSaver = new BlockedSMSSaver(getApplicationContext());
+        BlockedSMSSaver smsSaver = new BlockedSMSSaver();
         smsSaver.getAllBlockedSMS();
 
-        BlockedCallSaver callSaver = new BlockedCallSaver(getApplicationContext());
+        BlockedCallSaver callSaver = new BlockedCallSaver();
         callSaver.getAllBlockedCall();
 
     }

@@ -22,8 +22,8 @@ public class SmsReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent)
     {
-        BlockedSMSSaver smsSaver = new BlockedSMSSaver(context);
-        BlackList blackList = new BlackList(context);
+        BlockedSMSSaver smsSaver = new BlockedSMSSaver();
+        BlackList blackList = new BlackList();
 
         String MSG_TYPE=intent.getAction();
         LogUtil.d(TAG, "SMS Received: " + MSG_TYPE);
@@ -40,8 +40,10 @@ public class SmsReceiver extends BroadcastReceiver {
             LogUtil.d(TAG, "msg src: " + smsMessage[0].getOriginatingAddress());
             LogUtil.d(TAG, "msg body: " + smsMessage[0].getMessageBody());
             if (blackList.ifNumberInBlackList(smsMessage[0].getOriginatingAddress().substring(3))) {
+
+                // FIXME: check auto block
                 smsSaver.addBlockedSMS(smsMessage[0].getOriginatingAddress().substring(3),
-                        smsMessage[0].getMessageBody());
+                        smsMessage[0].getMessageBody(), false);
             }
         }
 

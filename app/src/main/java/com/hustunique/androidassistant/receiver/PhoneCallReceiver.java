@@ -21,13 +21,16 @@ import java.lang.reflect.Method;
 
 public class PhoneCallReceiver extends BroadcastReceiver {
     private static final String TAG = "PhoneCallReceiver";
+    PhoneStateListener customPhoneListener;
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        TelephonyManager tm = (TelephonyManager)context.getSystemService(Context.TELEPHONY_SERVICE);
-        PhoneCallStateListener customPhoneListener = new PhoneCallStateListener(context);
-        tm.listen(customPhoneListener, PhoneStateListener.LISTEN_CALL_STATE);
-
+        TelephonyManager tm = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
+        LogUtil.d(TAG, "a call receive");
+        if (this.customPhoneListener == null) {
+            PhoneCallStateListener customPhoneListener = new PhoneCallStateListener(context);
+            tm.listen(customPhoneListener, PhoneStateListener.LISTEN_CALL_STATE);
+        }
     }
 
     private class PhoneCallStateListener extends PhoneStateListener {
@@ -38,8 +41,8 @@ public class PhoneCallReceiver extends BroadcastReceiver {
 
         PhoneCallStateListener(Context context){
             this.context = context;
-            mBlackList = new BlackList(context);
-            mBlockedCallSaver = new BlockedCallSaver(context);
+            mBlackList = new BlackList();
+            mBlockedCallSaver = new BlockedCallSaver();
         }
 
 
@@ -65,7 +68,8 @@ public class PhoneCallReceiver extends BroadcastReceiver {
                         LogUtil.d(TAG, "incoming number: " + incomingNumber);
 
                         if (mBlackList.ifNumberInBlackList(incomingNumber)) {
-                            mBlockedCallSaver.addBlockedCall(incomingNumber);
+                            //TODO: check auto block
+                            mBlockedCallSaver.addBlockedCall(incomingNumber, false);
                             //telephonyService.silenceRinger();//Security exception problem
                             telephonyService = (ITelephony) method.invoke(telephonyManager);
                             telephonyService.silenceRinger();

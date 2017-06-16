@@ -1,13 +1,10 @@
 package com.hustunique.androidassistant.db;
 
-import android.content.ContentValues;
-import android.content.Context;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
-
 import com.hustunique.androidassistant.util.LogUtil;
+import com.raizlabs.android.dbflow.config.FlowManager;
+import com.raizlabs.android.dbflow.sql.language.SQLite;
+import com.raizlabs.android.dbflow.structure.ModelAdapter;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -16,10 +13,10 @@ import java.util.List;
 
 public class BlackList {
     private static final String TAG = "BlackList";
-    private BlackListDbHelper mDbHelper;
+    private ModelAdapter<BlackListEntry> adapter;
 
-    public BlackList(Context context) {
-        mDbHelper = new BlackListDbHelper(context);
+    public BlackList() {
+        adapter = FlowManager.getModelAdapter(BlackListEntry.class);
     }
 
     public boolean addNewBlackNumber(String number) {
@@ -32,75 +29,35 @@ public class BlackList {
             return false;
         }
 
-        SQLiteDatabase db = mDbHelper.getWritableDatabase();
+        long id = adapter.insert(new BlackListEntry(number));
 
-        ContentValues values = new ContentValues();
-        values.put(DatabaseContract.BlackListEntry.COLUMN_NUMBER, number);
-        values.put(DatabaseContract.BlackListEntry.COLUMN_TIME, System.currentTimeMillis());
-        long newRowId = db.insert(DatabaseContract.BlackListEntry.TABLE_NAME, null, values);
-
-        db.close();
-
-        return newRowId != -1;
+        return id != -1;
     }
 
-    public List<String> getAllBlackNumbers() {
-        SQLiteDatabase db = mDbHelper.getReadableDatabase();
+    public List<BlackListEntry> getAllBlackNumbers() {
+        List<BlackListEntry> blacklist = SQLite.select()
+                .from(BlackListEntry.class)
+                .where()
+                .orderBy(BlackListEntry_Table.time, false)
+                .queryList();
 
-        String[] projection = {
-                DatabaseContract.BlackListEntry._ID,
-                DatabaseContract.BlackListEntry.COLUMN_NUMBER,
-                DatabaseContract.BlackListEntry.COLUMN_TIME
-        };
-        String sortOrder = DatabaseContract.BlackListEntry.COLUMN_TIME + " DESC";
-
-        Cursor c = db.query(
-                DatabaseContract.BlackListEntry.TABLE_NAME,
-                projection,
-                null,
-                null,
-                null,
-                null,
-                sortOrder);
-
-        List<String> ret = new ArrayList<String>();
-        if (c.moveToFirst()) {
-            while (!c.isAfterLast()) {
-                String number = c.getString(c.getColumnIndex(DatabaseContract.BlackListEntry.COLUMN_NUMBER));
-                ret.add(number);
-                LogUtil.d(TAG, number);
-                c.moveToNext();
-            }
+        // FIXME: debug
+        for (BlackListEntry b : blacklist) {
+            LogUtil.d(TAG, "number: " + b.number);
         }
 
-        db.close();
-
-        return ret;
+        return blacklist;
     }
 
     public boolean ifNumberInBlackList(String number) {
-        SQLiteDatabase db = mDbHelper.getReadableDatabase();
-
-        String[] projection = {
-                DatabaseContract.BlackListEntry.COLUMN_NUMBER
-        };
-
-        String selection = DatabaseContract.BlackListEntry.COLUMN_NUMBER + " = ?";
-        String[] selectionArgs = { number };
-
-        Cursor c = db.query(
-                DatabaseContract.BlackListEntry.TABLE_NAME,
-                projection,
-                selection,
-                selectionArgs,
-                null,
-                null,
-                null);
-
-        boolean ret = c.getCount() != 0;
-        db.close();
-
-        return ret;
+        List<BlackListEntry> blacklist = SQLite.select()
+                .from(BlackListEntry.class)
+                .where(BlackListEntry_Table.number.eq(number))
+                .queryList();
+        if (blacklist.size() != 0) {
+            return true;
+        }
+        return false;
     }
 
     public boolean deleteNumberFromBlackList(String number) {
@@ -108,14 +65,14 @@ public class BlackList {
             LogUtil.d(TAG, "regex not match");
             return false;
         }
-        SQLiteDatabase db = mDbHelper.getWritableDatabase();
 
-        String selection = DatabaseContract.BlackListEntry.COLUMN_NUMBER + " LIKE ?";
-        String[] selectionArgs = { number };
+        SQLite.delete(BlackListEntry.class)
+                .where(BlackListEntry_Table.number.eq(number))
+//                .async()
+                .execute();
 
-        db.delete(DatabaseContract.BlackListEntry.TABLE_NAME, selection, selectionArgs);
-        db.close();
 
         return true;
     }
+
 }
