@@ -33,7 +33,6 @@ import com.hustunique.androidassistant.db.BlackList;
 import com.hustunique.androidassistant.db.BlockedCallSaver;
 import com.hustunique.androidassistant.db.BlockedSMSSaver;
 import com.hustunique.androidassistant.manager.MyPowerManager;
-import com.hustunique.androidassistant.receiver.PhoneCallReceiver;
 import com.hustunique.androidassistant.receiver.PowerReceiver;
 import com.hustunique.androidassistant.receiver.PowerReceiver.BatteryCallback;
 import com.hustunique.androidassistant.util.LogUtil;
@@ -44,12 +43,9 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 
-
 public class MainActivity extends BaseActivity {
 
     private static final String TAG = "MainActivity";
-
-    private PhoneCallReceiver mCallReceiver;
     private final int MY_PERMISSIONS_REQUEST_PHONE_CALL = 1;
 
     @BindView(R.id.main_tv_mem)
@@ -60,6 +56,9 @@ public class MainActivity extends BaseActivity {
 
     @BindView(R.id.main_btn_clean)
     Button mBtnClean;
+
+//    @BindView(R.id.block_detail)
+//    TextView mTvBlockDetail;
 
 
     private Unbinder mUnbinder;
@@ -78,7 +77,6 @@ public class MainActivity extends BaseActivity {
         });
 
 
-        mCallReceiver = new PhoneCallReceiver();
 
         // FIXME: request permission
         LogUtil.d("MainActivity", "code: " + ContextCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE));
@@ -157,7 +155,9 @@ public class MainActivity extends BaseActivity {
 
     @OnClick(R.id.block_mang)
     public void onBlockMangClicked() {
-        Toast.makeText(this, "TODO", Toast.LENGTH_SHORT).show();
+//        Toast.makeText(this, "TODO", Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(this, BlockActivity.class);
+        startActivity(intent);
     }
 
 

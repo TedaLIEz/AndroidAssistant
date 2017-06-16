@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/colorBgd"
+    android:orientation="vertical"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        app:title="@string/item_block"
+        app:theme="@style/ThemeOverlay.AppCompat.Dark"/>
+    </android.support.design.widget.AppBarLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_marginTop="@dimen/main_list_paddingtop">
+
+        <RelativeLayout
+            style="@style/Material.Item">
+            <LinearLayout
+                style="@style/Material.Item.TwoLineLayout"
+                android:layout_toLeftOf="@+id/block_switch"
+                android:layout_toStartOf="@+id/block_switch">
+                <TextView
+                    android:id="@+id/tv_power_management"
+                    style="@style/TextAppearance.Material.Item.TwoLineLayout.Body1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/item_block_black_list"/>
+
+            </LinearLayout>
+
+            <android.support.v7.widget.SwitchCompat
+                android:id="@+id/block_switch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/main_list_padding"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:scaleType="centerInside"
+                />
+        </RelativeLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_marginLeft="0dp"
+            android:layout_marginStart="0dp"
+            android:layout_height="1dp"
+            android:background="?android:attr/dividerVertical"/>
+
+        <RelativeLayout
+            style="@style/Material.Item">
+            <LinearLayout
+                style="@style/Material.Item.TwoLineLayout"
+                android:layout_toLeftOf="@+id/item_data_btn"
+                android:layout_toStartOf="@+id/item_data_btn">
+                <TextView
+                    android:id="@+id/tv_data_management"
+                    style="@style/TextAppearance.Material.Item.TwoLineLayout.Body1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/item_set_black_list"/>
+            </LinearLayout>
+
+            <ImageView
+                android:id="@+id/item_data_btn"
+                android:layout_width="@dimen/main_list_image_width"
+                android:layout_height="@dimen/main_list_image_height"
+                android:layout_marginTop="@dimen/main_list_padding"
+                android:layout_marginStart="@dimen/main_list_padding"
+                android:layout_marginLeft="@dimen/main_list_padding"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:scaleType="centerInside"
+                android:src="@drawable/ic_navigate_next_grey_500_36dp"/>
+        </RelativeLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginLeft="0dp"
+            android:layout_marginStart="0dp"
+            android:background="?android:attr/dividerVertical"/>
+        <RelativeLayout
+            style="@style/Material.Item">
+            <LinearLayout
+                style="@style/Material.Item.TwoLineLayout"
+                android:layout_toLeftOf="@+id/item_block_btn"
+                android:layout_toStartOf="@+id/item_block_btn">
+                <TextView
+                    android:id="@+id/tv_block_management"
+                    style="@style/TextAppearance.Material.Item.TwoLineLayout.Body1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/item_blocked_detail"/>
+            </LinearLayout>
+
+            <ImageView
+                android:id="@+id/item_block_btn"
+                android:layout_width="@dimen/main_list_image_width"
+                android:layout_height="@dimen/main_list_image_height"
+                android:layout_marginTop="@dimen/main_list_padding"
+                android:layout_marginStart="@dimen/main_list_padding"
+                android:layout_marginLeft="@dimen/main_list_padding"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:scaleType="centerInside"
+                android:src="@drawable/ic_navigate_next_grey_500_36dp"/>
+        </RelativeLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_marginLeft="0dp"
+            android:layout_marginStart="0dp"
+            android:layout_height="1dp"
+            android:background="?android:attr/dividerVertical"/>
+
+        <RelativeLayout
+            style="@style/Material.Item">
+
+            <LinearLayout
+                style="@style/Material.Item.TwoLineLayout"
+                android:layout_toLeftOf="@+id/autoblock_switch"
+                android:layout_toStartOf="@+id/autoblock_switch">
+                <TextView
+                    android:id="@+id/tv_block_management2"
+                    style="@style/TextAppearance.Material.Item.TwoLineLayout.Body1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/item_auto_block"/>
+            </LinearLayout>
+            <android.support.v7.widget.SwitchCompat
+                android:id="@+id/autoblock_switch"
+                android:layout_centerVertical="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/main_list_padding"
+                android:layout_marginStart="@dimen/main_list_padding"
+                android:layout_marginLeft="@dimen/main_list_padding"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:scaleType="centerInside"
+                />
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+
+</LinearLayout>
