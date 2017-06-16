@@ -266,7 +266,7 @@ public class MyPowerManager {
     private void killProcesses() {
         ActivityManager am = (ActivityManager) mContext.getSystemService(Context.ACTIVITY_SERVICE);
         for (AppInfo i : getRecentUsedApps()) {
-            am.killBackgroundProcesses(i.getPackageName());
+            am.killBackgroundProcesses(i.getAppName());
         }
     }
 
