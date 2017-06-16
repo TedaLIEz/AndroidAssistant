@@ -22,12 +22,12 @@
   android:layout_width="match_parent"
   android:layout_height="match_parent"
   app:layout_behavior="@string/appbar_scrolling_view_behavior"
-  tools:context=".ui.activity.BlockNumActivity"
-  tools:showIn="@layout/activity_block_num">
+  tools:context=".ui.activity.BlackListActivity"
+  tools:showIn="@layout/activity_black_list">
 
   <android.support.v7.widget.RecyclerView
     android:paddingTop="@dimen/main_list_paddingtop"
-    tools:listitem="@layout/item_block_num"
+    tools:listitem="@layout/item_black_list"
     android:id="@+id/rv_block_nums"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"/>

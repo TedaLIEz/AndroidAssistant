@@ -44,4 +44,11 @@
   <string name="restore_saving_mode">关闭省电模式</string>
   <string name="title_activity_block_num">BlockNumActivity</string>
   <string name="title_add_number">设置黑名单号码</string>
+  <string name="title_activity_blocked_list">BlockedListActivity</string>
+
+  <!-- TODO: Remove or change this placeholder text -->
+  <string name="hello_blank_fragment">Hello blank fragment</string>
+  <string name="title_blocked_list">查看已拦截的电话短信</string>
+  <string name="forbid_auto">智能拦截</string>
+  <string name="forbid_list">黑名单拦截</string>
 </resources>

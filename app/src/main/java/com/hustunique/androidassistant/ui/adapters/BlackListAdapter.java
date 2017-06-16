@@ -20,30 +20,30 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import com.hustunique.androidassistant.R;
-import com.hustunique.androidassistant.ui.adapters.BlockNumAdapter.NumModel;
-import com.hustunique.androidassistant.ui.viewholders.BlockNumViewHolder;
+import com.hustunique.androidassistant.ui.adapters.BlackListAdapter.NumModel;
+import com.hustunique.androidassistant.ui.viewholders.BlackListViewHolder;
 import java.util.List;
 
 /**
  * Created by JianGuo on 6/16/17.
  */
 
-public class BlockNumAdapter extends BaseAdapter<NumModel, BlockNumViewHolder> {
+public class BlackListAdapter extends BaseAdapter<NumModel, BlackListViewHolder> {
 
 
-    public BlockNumAdapter(List<NumModel> data) {
+    public BlackListAdapter(List<NumModel> data) {
         super(data);
     }
 
     @Override
-    public BlockNumViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public BlackListViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-            .inflate(R.layout.item_block_num, parent, false);
-        return new BlockNumViewHolder(view);
+            .inflate(R.layout.item_black_list, parent, false);
+        return new BlackListViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(BlockNumViewHolder holder, int position) {
+    public void onBindViewHolder(BlackListViewHolder holder, int position) {
         NumModel model = mData.get(position);
         holder.getTvBlockNum().setText(model.getNum());
         holder.getTvBlockLoc().setText(model.getLoc());

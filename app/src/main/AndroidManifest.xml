@@ -94,12 +94,21 @@
     </activity>
     <activity
       android:label="@string/title_activity_block_num"
-      android:name=".ui.activity.BlockNumActivity"
+      android:name=".ui.activity.BlackListActivity"
       android:parentActivityName=".ui.activity.BaseActivity"
       android:theme="@style/AppTheme">
       <meta-data
         android:name="android.support.PARENT_ACTIVITY"
         android:value=".ui.activity.BaseActivity"/>
+    </activity>
+    <activity
+      android:label="@string/title_activity_blocked_list"
+      android:name=".ui.activity.BlockedListActivity"
+      android:parentActivityName=".ui.activity.BaseActivity"
+      android:theme="@style/AppTheme">
+      <meta-data
+        android:name="android.support.PARENT_ACTIVITY"
+        android:value="com.hustunique.androidassistant.ui.activity.BaseActivity"/>
     </activity>
   </application>
 

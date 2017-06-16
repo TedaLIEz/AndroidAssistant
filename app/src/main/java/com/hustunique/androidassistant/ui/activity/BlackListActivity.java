@@ -31,12 +31,12 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import com.hustunique.androidassistant.R;
-import com.hustunique.androidassistant.ui.adapters.BlockNumAdapter;
-import com.hustunique.androidassistant.ui.adapters.BlockNumAdapter.NumModel;
+import com.hustunique.androidassistant.ui.adapters.BlackListAdapter;
+import com.hustunique.androidassistant.ui.adapters.BlackListAdapter.NumModel;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BlockNumActivity extends AppCompatActivity {
+public class BlackListActivity extends AppCompatActivity {
 
     @BindView(R.id.rv_block_nums)
     RecyclerView mRecyclerView;
@@ -45,12 +45,12 @@ public class BlockNumActivity extends AppCompatActivity {
 
     Unbinder mUnbinder;
 
-    private BlockNumAdapter mAdapter;
+    private BlackListAdapter mAdapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_block_num);
-        ButterKnife.bind(this);
+        setContentView(R.layout.activity_black_list);
+        mUnbinder = ButterKnife.bind(this);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -58,14 +58,14 @@ public class BlockNumActivity extends AppCompatActivity {
         mFab.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(BlockNumActivity.this, "TODO", Toast.LENGTH_SHORT).show();
+                Toast.makeText(BlackListActivity.this, "TODO", Toast.LENGTH_SHORT).show();
             }
         });
     }
 
     private void setUpRv() {
-        List<NumModel> list = getBlockNum();
-        mAdapter = new BlockNumAdapter(list);
+        List<NumModel> list = mockList();
+        mAdapter = new BlackListAdapter(list);
         LinearLayoutManager llm = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(llm);
         mRecyclerView.addItemDecoration(new DividerItemDecoration(this,
@@ -73,7 +73,8 @@ public class BlockNumActivity extends AppCompatActivity {
         mRecyclerView.setAdapter(mAdapter);
     }
 
-    private List<NumModel> getBlockNum() {
+    // TODO: 6/16/17 Retrieve real blacked number from db
+    private List<NumModel> mockList() {
         List<NumModel> rst = new ArrayList<>();
         NumModel model = new NumModel("13018060139", "Wuhan");
         NumModel model1 = new NumModel("13018060139", "Wuhan");
@@ -93,5 +94,12 @@ public class BlockNumActivity extends AppCompatActivity {
             finish();
         }
         return super.onOptionsItemSelected(item);
+    }
+
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mUnbinder.unbind();
     }
 }

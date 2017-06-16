@@ -45,4 +45,7 @@
   <string name="clr_background_success">清理后台成功</string>
   <string name="restore_saving_mode">关闭省电模式</string>
   <string name="title_add_number">设置黑名单号码</string>
+  <string name="title_blocked_list">查看已拦截的电话短信</string>
+  <string name="forbid_auto">智能拦截</string>
+  <string name="forbid_list">黑名单拦截</string>
 </resources>

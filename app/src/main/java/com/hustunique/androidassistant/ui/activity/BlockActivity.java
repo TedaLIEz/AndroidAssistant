@@ -20,7 +20,7 @@ public class BlockActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_block);
-        ButterKnife.bind(this);
+        mUnbinder = ButterKnife.bind(this);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setHomeButtonEnabled(true);
@@ -30,13 +30,14 @@ public class BlockActivity extends BaseActivity {
 
     @OnClick(R.id.block_add_number)
     public void addBlockNumber() {
-        Intent intent = new Intent(this, BlockNumActivity.class);
+        Intent intent = new Intent(this, BlackListActivity.class);
         startActivity(intent);
     }
 
     @OnClick(R.id.check_blocked_msg)
     public void checkBlockMsg() {
-
+        Intent intent = new Intent(this, BlockedListActivity.class);
+        startActivity(intent);
     }
 
     @Override

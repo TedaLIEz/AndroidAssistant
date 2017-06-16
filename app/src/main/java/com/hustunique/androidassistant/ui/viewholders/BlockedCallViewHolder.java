@@ -27,23 +27,38 @@ import com.hustunique.androidassistant.R;
  * Created by JianGuo on 6/16/17.
  */
 
-public class BlockNumViewHolder extends RecyclerView.ViewHolder {
+public class BlockedCallViewHolder extends RecyclerView.ViewHolder {
+
     @BindView(R.id.tv_block_num)
     TextView mTvBlockNum;
     @BindView(R.id.tv_block_loc)
-    TextView mTvBlockLoc;
+    TextView mTvDetail;
 
-    public BlockNumViewHolder(View itemView) {
+    @BindView(R.id.tv_type)
+    TextView mTvBlockType;
+
+    @BindView(R.id.tv_block_time)
+    TextView mTvBlockTime;
+    public BlockedCallViewHolder(View itemView) {
         super(itemView);
         ButterKnife.bind(this, itemView);
     }
 
 
-    public TextView getTvBlockLoc() {
-        return mTvBlockLoc;
-    }
-
     public TextView getTvBlockNum() {
         return mTvBlockNum;
     }
+
+    public TextView getDetail() {
+        return mTvDetail;
+    }
+
+    public TextView getTvBlockType() {
+        return mTvBlockType;
+    }
+
+    public TextView getTvBlockTime() {
+        return mTvBlockTime;
+    }
+
 }
