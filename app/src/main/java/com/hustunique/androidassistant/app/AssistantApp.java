@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import com.hustunique.androidassistant.service.MobileDataService;
 import com.hustunique.androidassistant.util.LogUtil;
 import com.hustunique.androidassistant.util.Util;
+import com.raizlabs.android.dbflow.config.FlowManager;
 
 /**
  * Created by CoXier on 17-6-13.
@@ -25,5 +26,7 @@ public class AssistantApp extends Application {
             Intent intent = new Intent(this, MobileDataService.class);
             startService(intent);
         }
+        LogUtil.d(TAG,"Create database");
+        FlowManager.init(this);
     }
 }

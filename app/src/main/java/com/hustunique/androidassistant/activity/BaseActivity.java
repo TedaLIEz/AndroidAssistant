@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.hustunique.androidassistant;
+package com.hustunique.androidassistant.activity;
 
 import android.support.v7.app.AppCompatActivity;
 

@@ -27,6 +27,7 @@ import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 
 /**
  * Created by JianGuo on 6/12/17.
@@ -42,7 +43,7 @@ public class Util {
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT;
     }
 
-    public static boolean isMobileType(Context context){
+    public static boolean isMobileType(Context context) {
         ConnectivityManager cm =
                 (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
@@ -50,11 +51,16 @@ public class Util {
                 activeNetwork.getType() == ConnectivityManager.TYPE_MOBILE;
     }
 
-    public static int getMonth(){
+    /**
+     * Construct a timestamp consisting of year and month.
+     *
+     * @return a string like 20170
+     */
+    public static String constructTimestamp() {
         Date date = new Date();
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(date);
-        return calendar.get(Calendar.MONTH);
+        return String.format(Locale.CHINA, "%d%d", calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH));
     }
 
     /**

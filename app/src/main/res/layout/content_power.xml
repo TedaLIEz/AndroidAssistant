@@ -25,8 +25,7 @@
   android:layout_height="wrap_content"
   android:background="@color/colorBgd"
   android:orientation="vertical"
-  app:layout_behavior="@string/appbar_scrolling_view_behavior"
-  tools:context="com.hustunique.androidassistant.PowerActivity"
+  tools:context="com.hustunique.androidassistant.activity.PowerActivity"
   tools:showIn="@layout/activity_power">
 
   <Button
