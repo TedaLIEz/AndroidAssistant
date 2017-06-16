@@ -24,7 +24,7 @@
   android:layout_height="wrap_content"
   android:background="@color/colorBgd"
   android:orientation="vertical"
-  tools:context="com.hustunique.androidassistant.PowerActivity"
+  tools:context="com.hustunique.androidassistant.activity.PowerActivity"
   tools:showIn="@layout/activity_power">
 
   <Button

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.hustunique.androidassistant;
+package com.hustunique.androidassistant.activity;
 
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -22,13 +22,16 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.widget.TextView;
+
+import com.hustunique.androidassistant.R;
+import com.hustunique.androidassistant.manager.MyPowerManager;
+import com.hustunique.androidassistant.receiver.PowerReceiver;
+import com.hustunique.androidassistant.receiver.PowerReceiver.BatteryCallback;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
-import com.hustunique.androidassistant.manager.MyPowerManager;
-import com.hustunique.androidassistant.receiver.PowerReceiver;
-import com.hustunique.androidassistant.receiver.PowerReceiver.BatteryCallback;
 
 public class PowerActivity extends BaseActivity {
 
