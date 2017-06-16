@@ -41,6 +41,7 @@
   <style name="TextAppearance.Material.Item.TwoLineLayout.Body1" parent="TextAppearance.AppCompat.Body1">
     <item name="android:textSize">@dimen/primary_text_size</item>
   </style>
+
   <style name="TextAppearance.Material.Item.TwoLineLayout.Body2" parent="TextAppearance.AppCompat.Body2">
     <item name="android:textSize">@dimen/secondary_text_size</item>
     <item name="android:textColor">@color/textSecondaryColor</item>
@@ -86,4 +87,8 @@
     <item name="android:layout_width">wrap_content</item>
     <item name="android:layout_height">wrap_content</item>
   </style>
+
+  <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>
+
+  <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light"/>
 </resources>

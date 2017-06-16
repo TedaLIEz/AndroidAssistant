@@ -1,9 +1,12 @@
-package com.hustunique.androidassistant.activity;
+package com.hustunique.androidassistant.ui.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
-
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+import butterknife.Unbinder;
 import com.hustunique.androidassistant.R;
 
 /**
@@ -12,14 +15,27 @@ import com.hustunique.androidassistant.R;
 
 public class BlockActivity extends BaseActivity {
 
+    private Unbinder mUnbinder;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_block);
+        ButterKnife.bind(this);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+    }
+
+    @OnClick(R.id.block_add_number)
+    public void addBlockNumber() {
+        Intent intent = new Intent(this, BlockNumActivity.class);
+        startActivity(intent);
+    }
+
+    @OnClick(R.id.check_blocked_msg)
+    public void checkBlockMsg() {
 
     }
 
@@ -29,5 +45,11 @@ public class BlockActivity extends BaseActivity {
             finish();
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mUnbinder.unbind();
     }
 }

@@ -42,4 +42,6 @@
   <string name="enter_power_save_mode">进入省电模式</string>
   <string name="clr_background_success">清理后台成功</string>
   <string name="restore_saving_mode">关闭省电模式</string>
+  <string name="title_activity_block_num">BlockNumActivity</string>
+  <string name="title_add_number">设置黑名单号码</string>
 </resources>

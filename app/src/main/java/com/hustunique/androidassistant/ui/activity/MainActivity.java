@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.hustunique.androidassistant.activity;
+package com.hustunique.androidassistant.ui.activity;
 
 import android.Manifest;
 import android.content.Intent;

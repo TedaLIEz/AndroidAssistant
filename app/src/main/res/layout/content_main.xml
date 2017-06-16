@@ -34,7 +34,7 @@
 
     <RelativeLayout
       android:id="@+id/power_mang"
-      style="@style/Material.Item">
+      style="@style/Material.Item.Base.DoubleLine">
       <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/list_power_avator"
         android:layout_width="@dimen/main_list_image_width"
@@ -84,7 +84,7 @@
 
     <RelativeLayout
       android:id="@+id/data_mang"
-      style="@style/Material.Item">
+      style="@style/Material.Item.Base.DoubleLine">
       <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/list_data_avator"
         android:layout_width="@dimen/main_list_image_width"
@@ -134,7 +134,7 @@
       android:background="?android:attr/dividerVertical"/>
     <RelativeLayout
       android:id="@+id/block_mang"
-      style="@style/Material.Item">
+      style="@style/Material.Item.Base.DoubleLine">
       <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/list_block_avator"
         android:layout_width="@dimen/main_list_image_width"
