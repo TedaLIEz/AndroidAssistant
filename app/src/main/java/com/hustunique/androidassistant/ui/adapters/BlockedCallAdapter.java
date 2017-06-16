@@ -21,27 +21,27 @@ import android.view.View;
 import android.view.ViewGroup;
 import com.hustunique.androidassistant.R;
 import com.hustunique.androidassistant.ui.adapters.BlockedCallAdapter.BlockedCall;
-import com.hustunique.androidassistant.ui.viewholders.BlockedCallViewHolder;
+import com.hustunique.androidassistant.ui.viewholders.BlockedItemViewHolder;
 import java.util.List;
 
 /**
  * Created by JianGuo on 6/16/17.
  */
 
-public class BlockedCallAdapter extends BaseAdapter<BlockedCall, BlockedCallViewHolder> {
+public class BlockedCallAdapter extends BaseAdapter<BlockedCall, BlockedItemViewHolder> {
 
     public BlockedCallAdapter(List<BlockedCall> data) {
         super(data);
     }
 
     @Override
-    public BlockedCallViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public BlockedItemViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_blocked, parent, false);
-        return new BlockedCallViewHolder(view);
+        return new BlockedItemViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(BlockedCallViewHolder holder, int position) {
+    public void onBindViewHolder(BlockedItemViewHolder holder, int position) {
         BlockedCall call = mData.get(position);
         holder.getDetail().setText(call.getLoc());
         holder.getTvBlockNum().setText(call.getPhoneNum());

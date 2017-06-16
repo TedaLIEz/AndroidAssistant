@@ -35,6 +35,7 @@ import java.util.List;
 
 /**
  * Created by JianGuo on 6/16/17.
+ * Fragment used for showing blocked phone call in {@link com.hustunique.androidassistant.ui.activity.BlockedListActivity}
  */
 
 public class BlockedPhoneFragment extends Fragment {

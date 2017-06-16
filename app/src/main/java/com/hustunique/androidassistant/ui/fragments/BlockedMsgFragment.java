@@ -35,6 +35,7 @@ import java.util.List;
 
 /**
  * Created by JianGuo on 6/16/17.
+ * Fragment used for showing blocked message in {@link com.hustunique.androidassistant.ui.activity.BlockedListActivity}
  */
 
 public class BlockedMsgFragment extends Fragment {

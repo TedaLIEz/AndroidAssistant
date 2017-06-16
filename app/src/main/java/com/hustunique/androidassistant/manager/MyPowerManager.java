@@ -32,6 +32,7 @@ import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 import android.widget.Toast;
+import com.hustunique.androidassistant.BuildConfig;
 import com.hustunique.androidassistant.R;
 import com.hustunique.androidassistant.model.AppInfo;
 import com.hustunique.androidassistant.util.LogUtil;
@@ -180,10 +181,10 @@ public class MyPowerManager {
     }
 
     public void powerSaveMode() {
-        mBrightness =
-            android.provider.Settings.System.getInt(mContext.getContentResolver(),
-                android.provider.Settings.System.SCREEN_BRIGHTNESS, -1);
         if (grantAccess()) {
+            mBrightness =
+                android.provider.Settings.System.getInt(mContext.getContentResolver(),
+                    android.provider.Settings.System.SCREEN_BRIGHTNESS, -1);
             changeBrightnessInternal(POWER_SAVE_MODE_BRIGHTNESS);
             killProcesses();
             Toast.makeText(mContext, R.string.enter_power_save_mode, Toast.LENGTH_SHORT).show();
@@ -270,9 +271,11 @@ public class MyPowerManager {
     }
 
     private void dump(List<AppInfo> list) {
-        for (AppInfo u : list) {
-            LogUtil.d(TAG, "usage: " + u.getPackageName()
-                + " priority " + u.getPriority());
+        if (BuildConfig.DEBUG) {
+            for (AppInfo u : list) {
+                LogUtil.d(TAG, "usage: " + u.getPackageName()
+                    + " priority " + u.getPriority());
+            }
         }
     }
 

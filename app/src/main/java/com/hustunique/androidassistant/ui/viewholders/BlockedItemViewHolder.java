@@ -25,9 +25,11 @@ import com.hustunique.androidassistant.R;
 
 /**
  * Created by JianGuo on 6/16/17.
+ * ViewHolder for {@link com.hustunique.androidassistant.ui.fragments.BlockedPhoneFragment}
+ * and {@link com.hustunique.androidassistant.ui.fragments.BlockedMsgFragment}
  */
 
-public class BlockedCallViewHolder extends RecyclerView.ViewHolder {
+public class BlockedItemViewHolder extends RecyclerView.ViewHolder {
 
     @BindView(R.id.tv_block_num)
     TextView mTvBlockNum;
@@ -39,7 +41,7 @@ public class BlockedCallViewHolder extends RecyclerView.ViewHolder {
 
     @BindView(R.id.tv_block_time)
     TextView mTvBlockTime;
-    public BlockedCallViewHolder(View itemView) {
+    public BlockedItemViewHolder(View itemView) {
         super(itemView);
         ButterKnife.bind(this, itemView);
     }
