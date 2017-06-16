@@ -9,8 +9,7 @@ import static junit.framework.Assert.assertEquals;
  */
 public class UtilTest {
     @Test
-    public void getMonth() throws Exception {
-        assertEquals(5,Util.getMonth());
+    public void constructTimestamp() throws Exception {
+        assertEquals("20175",Util.constructTimestamp());
     }
-
 }
