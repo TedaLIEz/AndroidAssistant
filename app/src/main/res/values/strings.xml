@@ -28,8 +28,7 @@
   <string name="item_auto_block">智能拦截</string>
   <string name="main_mb">MB</string>
   <string name="main_running_mem">运行内存</string>
-  <string name="title_activity_main">安卓手机助手</string>
-  <string name="title_activity_power">电量管理</string>
+
   <string name="power_saving_des">省电模式说明：实时监控后台应用使用情况，关闭您长时间未使用的应用；调整您的屏幕亮度</string>
   <string name="power_saving_enable">一键省电</string>
   <string name="power_saving_mode">开启省电模式</string>
@@ -42,4 +41,20 @@
   <string name="enter_power_save_mode">进入省电模式</string>
   <string name="clr_background_success">清理后台成功</string>
   <string name="restore_saving_mode">关闭省电模式</string>
+
+
+
+  <string name="title_activity_main">安卓手机助手</string>
+  <string name="title_activity_power">电量管理</string>
+  <string name="label_activity_main">MainActivity</string>
+  <string name="label_activity_power">PowerActivity</string>
+  <string name="label_activity_black_list">BlackListActivity</string>
+
+  <string name="title_activity_black_list">设置黑名单号码</string>
+  <string name="label_activity_blocked_list">BlockedListActivity</string>
+
+  <string name="title_activity_blocked_list">查看已拦截的电话短信</string>
+  <string name="forbid_auto">智能拦截</string>
+  <string name="forbid_list">黑名单拦截</string>
+  <string name="title_block">骚扰拦截</string>
 </resources>

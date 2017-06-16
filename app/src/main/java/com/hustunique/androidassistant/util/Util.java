@@ -25,6 +25,11 @@ import android.os.Build;
 
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
@@ -35,12 +40,17 @@ import java.util.Locale;
  */
 
 public class Util {
+    private static final String TAG = "Util";
     public static boolean isLollipop() {
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP;
     }
 
     public static boolean isKitkat() {
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT;
+    }
+
+    public static boolean isM() {
+        return VERSION.SDK_INT >= VERSION_CODES.M;
     }
 
     public static boolean isMobileType(Context context) {
@@ -74,8 +84,37 @@ public class Util {
         return (mi.totalMem - mi.availMem) / 0x100000L;
     }
 
+    public static Long getTotalBytesManual(int localUid){
+        File dir = new File("/proc/uid_stat/");
+        String[] children = dir.list();
+        if(!Arrays.asList(children).contains(String.valueOf(localUid))){
+            return 0L;
+        }
+        File uidFileDir = new File("/proc/uid_stat/"+String.valueOf(localUid));
+        File uidActualFileReceived = new File(uidFileDir,"tcp_rcv");
+        File uidActualFileSent = new File(uidFileDir,"tcp_snd");
 
-    public static boolean isM() {
-        return VERSION.SDK_INT >= VERSION_CODES.M;
+
+        String textReceived = "0";
+        String textSent = "0";
+
+        try {
+            BufferedReader brReceived = new BufferedReader(new FileReader(uidActualFileReceived));
+            BufferedReader brSent = new BufferedReader(new FileReader(uidActualFileSent));
+            String receivedLine;
+            String sentLine;
+
+            if ((receivedLine = brReceived.readLine()) != null) {
+                textReceived = receivedLine;
+            }
+            if ((sentLine = brSent.readLine()) != null) {
+                textSent = sentLine;
+            }
+
+        }
+        catch (IOException e) {
+            LogUtil.e(TAG,"error : " + e);
+        }
+        return Long.valueOf(textReceived) + Long.valueOf(textSent);
     }
 }

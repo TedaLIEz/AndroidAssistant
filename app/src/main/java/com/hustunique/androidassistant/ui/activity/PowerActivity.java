@@ -14,15 +14,13 @@
  * limitations under the License.
  */
 
-package com.hustunique.androidassistant.activity;
+package com.hustunique.androidassistant.ui.activity;
 
 import android.animation.LayoutTransition;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
-import android.support.v7.widget.Toolbar;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -68,10 +66,7 @@ public class PowerActivity extends BaseActivity {
         setContentView(R.layout.activity_power);
         mUnbinder = ButterKnife.bind(this);
         mPowerManager = new MyPowerManager(this);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setHomeButtonEnabled(true);
+        setupToolbar(R.string.title_activity_power);
         LayoutTransition layoutTransition = mAppBarLayout.getLayoutTransition();
         layoutTransition.enableTransitionType(LayoutTransition.CHANGING);
         layoutTransition.setStartDelay(LayoutTransition.CHANGE_DISAPPEARING, 400);
@@ -83,15 +78,6 @@ public class PowerActivity extends BaseActivity {
             }
         });
 
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == android.R.id.home) {
-            mPressed = false;
-            finish();
-        }
-        return super.onOptionsItemSelected(item);
     }
 
     @Override
