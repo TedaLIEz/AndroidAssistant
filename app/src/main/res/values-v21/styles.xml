@@ -36,9 +36,7 @@
   <style name="Material" parent="AppTheme"/>
 
 
-  <style name="Material.Item" parent="Material">
-    <item name="android:background">?selectableItemBackground</item>
-    <item name="android:clickable">true</item>
+  <style name="Material.Item.Base" parent="Material">
     <item name="android:layout_width">match_parent</item>
     <item name="android:layout_height">wrap_content</item>
     <item name="android:minHeight">@dimen/main_list_minheight</item>
@@ -46,6 +44,29 @@
     <item name="android:paddingLeft">?listPreferredItemPaddingLeft</item>
     <item name="android:paddingEnd">?listPreferredItemPaddingRight</item>
     <item name="android:paddingRight">?listPreferredItemPaddingRight</item>
+  </style>
+
+  <style name="Material.Item.Base.SingleLine" parent="Material.Item.Base">
+
+  </style>
+
+  <style name="Material.Item.Base.DoubleLine" parent="Material.Item.Base">
+    <item name="android:background">?selectableItemBackground</item>
+    <item name="android:clickable">true</item>
+  </style>
+
+
+  <style name="Material.Item.SingleLineLayout" parent="Material">
+    <item name="android:layout_width">match_parent</item>
+    <item name="android:layout_height">wrap_content</item>
+    <item name="android:layout_marginLeft">@dimen/main_list_padding</item>
+    <item name="android:layout_marginRight">@dimen/main_list_padding</item>
+    <item name="android:layout_alignWithParentIfMissing">true</item>
+    <item name="android:layout_centerVertical">true</item>
+    <item name="android:layout_gravity">center_vertical</item>
+    <item name="android:paddingTop">@dimen/main_list_padding</item>
+    <item name="android:paddingBottom">@dimen/main_list_padding</item>
+    <item name="android:orientation">vertical</item>
   </style>
 
   <style name="Material.Item.TwoLineLayout" parent="Material">

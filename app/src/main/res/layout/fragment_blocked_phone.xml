@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ Copyright 2017 TedaLIEz
   ~
@@ -15,19 +14,18 @@
   ~ limitations under the License.
   -->
 
-<resources>
-  <dimen name="main_list_paddingtop">8dp</dimen>
-  <dimen name="main_list_padding">16dp</dimen>
-  <dimen name="main_list_minheight">72dp</dimen>
-  <dimen name="main_list_image_width">40dp</dimen>
-  <dimen name="main_list_image_height">40dp</dimen>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  tools:context="com.hustunique.androidassistant.ui.fragments.BlockedPhoneFragment">
 
+  <android.support.v7.widget.RecyclerView
+    android:id="@+id/rv_block_list"
+    android:paddingTop="@dimen/main_list_paddingtop"
+    tools:listitem="@layout/item_blocked"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
 
-  <dimen name="primary_text_size">16sp</dimen>
-  <dimen name="secondary_text_size">14sp</dimen>
-  <dimen name="light_text_size">112sp</dimen>
-
-  <dimen name="activity_horizontal_margin">16dp</dimen>
-  <dimen name="power_circle_padding">32dp</dimen>
-  <dimen name="fab_width">56dp</dimen>
-</resources>
+  </android.support.v7.widget.RecyclerView>
+</FrameLayout>

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.hustunique.androidassistant.activity;
+package com.hustunique.androidassistant.ui.activity;
 
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -31,8 +31,7 @@ public class BaseActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setHomeButtonEnabled(true);
-        toolbar.setTitle(resId);
+        getSupportActionBar().setTitle(resId);
     }
 
     @Override
