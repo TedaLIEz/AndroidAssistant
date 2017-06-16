@@ -23,6 +23,8 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
 
+import android.os.Build.VERSION;
+import android.os.Build.VERSION_CODES;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
@@ -70,5 +72,10 @@ public class Util {
         MemoryInfo mi = new MemoryInfo();
         am.getMemoryInfo(mi);
         return (mi.totalMem - mi.availMem) / 0x100000L;
+    }
+
+
+    public static boolean isM() {
+        return VERSION.SDK_INT >= VERSION_CODES.M;
     }
 }

@@ -16,11 +16,15 @@
 
 package com.hustunique.androidassistant.activity;
 
+import android.animation.LayoutTransition;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.support.design.widget.AppBarLayout;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.hustunique.androidassistant.R;
@@ -37,9 +41,24 @@ public class PowerActivity extends BaseActivity {
 
     private static final String TAG = "PowerActivity";
     private PowerReceiver mPowerReceiver;
+    private boolean mPressed = false;
+
 
     @BindView(R.id.power_tv)
     TextView mTvPow;
+    @BindView(R.id.btn_power_mode)
+    Button mBtnMode;
+
+    @BindView(R.id.btn_save_power)
+    Button mBtnSave;
+
+
+    @BindView(R.id.tv_mode_detail)
+    TextView mTvDetail;
+
+    @BindView(R.id.appbar)
+    AppBarLayout mAppBarLayout;
+
     private Unbinder mUnbinder;
     private MyPowerManager mPowerManager;
 
@@ -53,6 +72,9 @@ public class PowerActivity extends BaseActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
+        LayoutTransition layoutTransition = mAppBarLayout.getLayoutTransition();
+        layoutTransition.enableTransitionType(LayoutTransition.CHANGING);
+        layoutTransition.setStartDelay(LayoutTransition.CHANGE_DISAPPEARING, 400);
 
         mPowerReceiver = new PowerReceiver(new BatteryCallback() {
             @Override
@@ -66,6 +88,7 @@ public class PowerActivity extends BaseActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
+            mPressed = false;
             finish();
         }
         return super.onOptionsItemSelected(item);
@@ -83,12 +106,26 @@ public class PowerActivity extends BaseActivity {
 
     @OnClick(R.id.btn_power_mode)
     public void enablePowerSaveMode() {
-        mPowerManager.powerSaveMode();
+        if (mPowerManager.isPowerSaveMode()) {
+            mPowerManager.restoreSaveMode();
+            mBtnMode.setText(R.string.power_saving_mode);
+        } else {
+            mPowerManager.powerSaveMode();
+            mBtnMode.setText(R.string.restore_saving_mode);
+        }
     }
 
     @OnClick(R.id.btn_save_power)
     public void savePower() {
-        mPowerManager.savePower();
+        if (!mPressed) {
+            if (mPowerManager.savePower()) {
+                mBtnSave.setVisibility(View.GONE);
+                mPressed = true;
+            }
+        } else {
+            mBtnSave.setVisibility(View.VISIBLE);
+            mPressed = false;
+        }
     }
 
 

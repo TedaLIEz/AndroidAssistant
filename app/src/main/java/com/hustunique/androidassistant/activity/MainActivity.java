@@ -79,12 +79,12 @@ public class MainActivity extends BaseActivity {
 
 
         // FIXME: request permission
-        LogUtil.d("MainActivity", "code: " + ContextCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE));
+        LogUtil.d(TAG, "code: " + ContextCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE));
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE)
                 != PackageManager.PERMISSION_GRANTED &&
                 ContextCompat.checkSelfPermission(this, Manifest.permission.RECEIVE_SMS)
                 != PackageManager.PERMISSION_GRANTED) {
-            LogUtil.d("MainActivity", "request call phone&sms");
+            LogUtil.d(TAG, "request call phone&sms");
             ActivityCompat.requestPermissions(this,
                     new String[]{Manifest.permission.CALL_PHONE,
                             Manifest.permission.RECEIVE_SMS},
@@ -92,13 +92,13 @@ public class MainActivity extends BaseActivity {
         }
         else if (ContextCompat.checkSelfPermission(this, Manifest.permission.RECEIVE_SMS)
                 != PackageManager.PERMISSION_GRANTED) {
-            LogUtil.d("MainActivity", "request sms permission");
+            LogUtil.d(TAG, "request sms permission");
             ActivityCompat.requestPermissions(this,
                     new String[]{Manifest.permission.RECEIVE_SMS},
                     MY_PERMISSIONS_REQUEST_PHONE_CALL);
         }
         else {
-            LogUtil.d("MainActivity", "request call permission");
+            LogUtil.d(TAG, "request call permission");
             ActivityCompat.requestPermissions(this,
                     new String[]{Manifest.permission.CALL_PHONE},
                     MY_PERMISSIONS_REQUEST_PHONE_CALL);
@@ -128,9 +128,9 @@ public class MainActivity extends BaseActivity {
             case MY_PERMISSIONS_REQUEST_PHONE_CALL: {
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    LogUtil.d("MainActivity", "call phone granted!");
+                    LogUtil.d(TAG, "call phone granted!");
                 } else {
-                    LogUtil.d("MainActivity", "call phone denied!!!");
+                    LogUtil.d(TAG, "call phone denied!!!");
                 }
             }
         }

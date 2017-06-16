@@ -27,7 +27,6 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Build.VERSION_CODES;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
@@ -54,6 +53,8 @@ public class MyPowerManager {
     private Context mContext;
     private static final int SAVE_POWER_BRIGHTNESS = 51;
     private static final int POWER_SAVE_MODE_BRIGHTNESS = 1;
+    private int mBrightness = -1;
+    private boolean mSaveMode = false;
 
     public MyPowerManager(Context context) {
         mContext = context;
@@ -63,12 +64,6 @@ public class MyPowerManager {
     private List<AppInfo> getRecentUsedApps() {
         List<AppInfo> rst;
         if (Util.isLollipop()) {
-            if (!checkUsageAccess()) {
-                Toast.makeText(mContext, mContext.getString(R.string.grant_usage_access),
-                    Toast.LENGTH_LONG).show();
-                Intent intent = new Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS);
-                mContext.startActivity(intent);
-            }
             rst = getRecentUsedApps21Internal();
         } else {
             rst = getRecentUsedAppsInternal();
@@ -174,36 +169,76 @@ public class MyPowerManager {
     }
 
 
-    public void savePower() {
-        if (changeBrightness(SAVE_POWER_BRIGHTNESS)) {
+    public boolean savePower() {
+        if (grantAccess()) {
+            changeBrightnessInternal(SAVE_POWER_BRIGHTNESS);
             killProcesses();
-            Toast.makeText(mContext, "省电成功", Toast.LENGTH_SHORT).show();
+            Toast.makeText(mContext, R.string.save_power_success, Toast.LENGTH_SHORT).show();
+            return true;
         }
+        return false;
     }
 
     public void powerSaveMode() {
-        if (changeBrightness(POWER_SAVE_MODE_BRIGHTNESS)) {
+        mBrightness =
+            android.provider.Settings.System.getInt(mContext.getContentResolver(),
+                android.provider.Settings.System.SCREEN_BRIGHTNESS, -1);
+        if (grantAccess()) {
+            changeBrightnessInternal(POWER_SAVE_MODE_BRIGHTNESS);
             killProcesses();
-            Toast.makeText(mContext, "进入省电模式", Toast.LENGTH_SHORT).show();
+            Toast.makeText(mContext, R.string.enter_power_save_mode, Toast.LENGTH_SHORT).show();
+            mSaveMode = true;
         }
     }
 
+    public boolean isPowerSaveMode() {
+        return mSaveMode;
+    }
+
+
+    private boolean grantAccess() {
+        return grantDataAccess() && grantSettingsAccess();
+    }
+
+    private boolean grantSettingsAccess() {
+        if (Util.isM()) {
+            if (!checkSettingsAccess()) {
+                Toast.makeText(mContext, R.string.grant_settings_access, Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(android.provider.Settings.ACTION_MANAGE_WRITE_SETTINGS);
+                intent.setData(Uri.parse("package:" + mContext.getPackageName()));
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                mContext.startActivity(intent);
+                LogUtil.e(TAG, "grant settings access failed");
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private boolean grantDataAccess() {
+        if (Util.isLollipop()) {
+            if (!checkUsageAccess()) {
+                Toast.makeText(mContext, mContext.getString(R.string.grant_usage_access),
+                    Toast.LENGTH_LONG).show();
+                Intent intent = new Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                mContext.startActivity(intent);
+                return false;
+            }
+        }
+        return true;
+    }
 
     public void cleanBackground() {
-        killProcesses();
-        Toast.makeText(mContext, "清理后台完成", Toast.LENGTH_SHORT).show();
+        if (grantDataAccess()) {
+            killProcesses();
+            Toast.makeText(mContext, R.string.clr_background_success, Toast.LENGTH_SHORT).show();
+        }
     }
 
 
     @RequiresApi(api = VERSION_CODES.M)
     private boolean checkSettingsAccess() {
-        if (!Settings.System.canWrite(mContext)) {
-            Toast.makeText(mContext, R.string.grant_settings_access, Toast.LENGTH_SHORT).show();
-            Intent intent = new Intent(android.provider.Settings.ACTION_MANAGE_WRITE_SETTINGS);
-            intent.setData(Uri.parse("package:" + mContext.getPackageName()));
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            mContext.startActivity(intent);
-        }
         return Settings.System.canWrite(mContext);
     }
 
@@ -214,21 +249,6 @@ public class MyPowerManager {
                 Settings.System.SCREEN_BRIGHTNESS_MODE_MANUAL);  //this will set the manual mode (set the automatic mode off)
         Settings.System.putInt(mContext.getContentResolver(), Settings.System.SCREEN_BRIGHTNESS,
             brightness);
-    }
-
-    private boolean changeBrightness(int brightness) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (checkSettingsAccess()) {
-                changeBrightnessInternal(brightness);
-            } else {
-                LogUtil.e(TAG, "grant settings access failed");
-                return false;
-            }
-        } else {
-            changeBrightnessInternal(brightness);
-        }
-        return true;
-
     }
 
     private boolean isSystemApp(String packageName) {
@@ -257,4 +277,9 @@ public class MyPowerManager {
     }
 
 
+    public void restoreSaveMode() {
+        changeBrightnessInternal(mBrightness);
+        mBrightness = -1;
+        mSaveMode = false;
+    }
 }
