@@ -27,13 +27,17 @@ import com.raizlabs.android.dbflow.annotation.Table;
 @Table(database = AppDatabase.class)
 public class AppInfo {
     @PrimaryKey
-    private String packageName;
+    private int uid;
     @PrimaryKey
     private String timestamp;
     @Column
     private long mobileBytes;
     @Column
-    private int uid;
+    private String packageName;
+
+
+    @Column
+    private String appName;
 
     private float priority;
 
@@ -43,15 +47,15 @@ public class AppInfo {
 
     }
 
-    public AppInfo(String packageName, int uid, String timestamp, long mobileBytes) {
-        this.packageName = packageName;
+    public AppInfo(String appName, int uid, String timestamp, long mobileBytes) {
+        this.appName = appName;
         this.uid = uid;
         this.timestamp = timestamp;
         this.mobileBytes = mobileBytes;
     }
 
-    public AppInfo(String packageName, float priority) {
-        this.packageName = packageName;
+    public AppInfo(String appName, float priority) {
+        this.appName = appName;
         this.priority = priority;
     }
 
@@ -63,12 +67,12 @@ public class AppInfo {
         this.totalUidBytes = totalUidBytes;
     }
 
-    public String getPackageName() {
-        return packageName;
+    public String getAppName() {
+        return appName;
     }
 
-    public void setPackageName(String packageName) {
-        this.packageName = packageName;
+    public void setAppName(String appName) {
+        this.appName = appName;
     }
 
     public String getTimestamp() {
@@ -99,6 +103,14 @@ public class AppInfo {
         this.uid = uid;
     }
 
+    public String getPackageName() {
+        return packageName;
+    }
+
+    public void setPackageName(String packageName) {
+        this.packageName = packageName;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -113,14 +125,14 @@ public class AppInfo {
         if (Float.compare(appInfo.priority, priority) != 0) {
             return false;
         }
-        return packageName != null ? packageName.equals(appInfo.packageName)
-            : appInfo.packageName == null;
+        return appName != null ? appName.equals(appInfo.appName)
+            : appInfo.appName == null;
 
     }
 
     @Override
     public int hashCode() {
-        int result = packageName != null ? packageName.hashCode() : 0;
+        int result = appName != null ? appName.hashCode() : 0;
         result = 31 * result + (priority != +0.0f ? Float.floatToIntBits(priority) : 0);
         return result;
     }
@@ -128,7 +140,7 @@ public class AppInfo {
     @Override
     public String toString() {
         return "AppInfo{" +
-            "packageName='" + packageName + '\'' +
+            "appName='" + appName + '\'' +
             ", priority=" + priority +
             '}';
     }

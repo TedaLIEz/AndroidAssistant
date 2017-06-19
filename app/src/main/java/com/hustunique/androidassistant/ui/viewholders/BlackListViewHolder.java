@@ -25,6 +25,7 @@ import com.hustunique.androidassistant.R;
 
 /**
  * Created by JianGuo on 6/16/17.
+ * ViewHolder for black list number in {@link com.hustunique.androidassistant.ui.activity.BlackListActivity}
  */
 
 public class BlackListViewHolder extends RecyclerView.ViewHolder {

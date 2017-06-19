@@ -21,27 +21,27 @@ import android.view.View;
 import android.view.ViewGroup;
 import com.hustunique.androidassistant.R;
 import com.hustunique.androidassistant.ui.adapters.BlockedMsgAdapter.BlockedMsg;
-import com.hustunique.androidassistant.ui.viewholders.BlockedCallViewHolder;
+import com.hustunique.androidassistant.ui.viewholders.BlockedItemViewHolder;
 import java.util.List;
 
 /**
  * Created by JianGuo on 6/16/17.
  */
 
-public class BlockedMsgAdapter extends BaseAdapter<BlockedMsg, BlockedCallViewHolder> {
+public class BlockedMsgAdapter extends BaseAdapter<BlockedMsg, BlockedItemViewHolder> {
 
     public BlockedMsgAdapter(List<BlockedMsg> data) {
         super(data);
     }
 
     @Override
-    public BlockedCallViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public BlockedItemViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_blocked, parent, false);
-        return new BlockedCallViewHolder(view);
+        return new BlockedItemViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(BlockedCallViewHolder holder, int position) {
+    public void onBindViewHolder(BlockedItemViewHolder holder, int position) {
         BlockedMsg msg = mData.get(position);
         holder.getTvBlockTime().setText(msg.getTime());
         holder.getTvBlockType().setText(msg.getType() == 0 ?

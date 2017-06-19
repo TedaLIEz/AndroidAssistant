@@ -26,6 +26,7 @@ import java.util.List;
 
 /**
  * Created by JianGuo on 6/16/17.
+ * Adapter for Black list phone numbers
  */
 
 public class BlackListAdapter extends BaseAdapter<NumModel, BlackListViewHolder> {

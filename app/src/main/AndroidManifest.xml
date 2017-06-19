@@ -57,14 +57,6 @@
         <action android:name="android.provider.Telephony.SMS_RECEIVED"/>
       </intent-filter>
     </receiver>
-    <receiver
-      android:enabled="true"
-      android:exported="true"
-      android:name=".receiver.NetworkStateReceiver">
-      <intent-filter>
-        <action android:name="android.net.conn.CONNECTIVITY_CHANGE"/>
-      </intent-filter>
-    </receiver>
     <receiver android:name=".receiver.PhoneCallReceiver">
       <intent-filter android:priority="999">
         <action android:name="android.intent.action.PHONE_STATE"/>
@@ -81,6 +73,23 @@
       android:exported="true"
       android:name=".service.MobileDataService">
     </service>
+        <receiver android:name=".receiver.PhoneCallReceiver">
+            <intent-filter android:priority="999">
+                <action android:name="android.intent.action.PHONE_STATE"/>
+            </intent-filter>
+        </receiver>
+        <receiver android:name=".receiver.SmsReceiver">
+            <intent-filter android:priority="999">
+                <action android:name="android.provider.Telephony.SMS_RECEIVED"/>
+            </intent-filter>
+        </receiver>
+
+        <service
+            android:name=".service.MobileDataService"
+            android:enabled="true"
+            android:exported="true">
+        </service>
+
 
     <activity
       android:name=".ui.activity.PowerActivity"

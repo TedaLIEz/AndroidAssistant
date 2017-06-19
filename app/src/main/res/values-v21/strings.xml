@@ -19,9 +19,9 @@
   <string name="grant_usage_access">Please grant data usage access!</string>
   <string name="get_usage_fail">Get recently used apps failed</string>
   <string name="item_power_mang">电量管理</string>
-  <string name="item_power_detail">当前剩余电量%1$d%%</string>
+  <string name="item_power_detail">当前剩余电量 %1$d%%</string>
   <string name="item_data">流量管理</string>
-  <string name="item_data_detail">本月已使用流量340M</string>
+  <string name="item_data_detail">本月已使用流量 %1$s</string>
   <string name="item_block">骚扰拦截</string>
   <string name="item_block_detail">未开启</string>
   <string name="item_block_black_list">黑名单拦截</string>
@@ -58,4 +58,13 @@
   <string name="label_activity_blocked_list">BlockedListActivity</string>
 
   <string name="title_activity_blocked_list">查看已拦截的电话短信</string>
+  <string name="title_activity_data">流量管理</string>
+  <string name="data_setting">设置流量提醒</string>
+  <string name="data_setting_detail">设置流量提醒，达到流量上限限时会收到提示哦，从此放心大胆开流量</string>
+  <string name="charging">充电中</string>
+  <string name="add_black_num">添加黑名单号码</string>
+  <string name="hint_add_black_num">请输入号码</string>
+  <string name="add_num_error">非法的手机号</string>
+  <string name="no">Cancel</string>
+  <string name="ok">Ok</string>
 </resources>

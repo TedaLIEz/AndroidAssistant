@@ -17,27 +17,33 @@
 package com.hustunique.androidassistant.ui.activity;
 
 import android.Manifest;
+import android.content.ComponentName;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.ServiceConnection;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.hustunique.androidassistant.R;
 import com.hustunique.androidassistant.db.BlackList;
 import com.hustunique.androidassistant.db.BlockedCallSaver;
 import com.hustunique.androidassistant.db.BlockedSMSSaver;
 import com.hustunique.androidassistant.manager.MyPowerManager;
+import com.hustunique.androidassistant.model.BatInfo;
 import com.hustunique.androidassistant.receiver.PowerReceiver;
 import com.hustunique.androidassistant.receiver.PowerReceiver.BatteryCallback;
+import com.hustunique.androidassistant.service.MobileDataService;
 import com.hustunique.androidassistant.util.LogUtil;
 import com.hustunique.androidassistant.util.Util;
-import com.raizlabs.android.dbflow.sql.language.Operator;
+
+import java.lang.ref.WeakReference;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -58,12 +64,30 @@ public class MainActivity extends BaseActivity {
     @BindView(R.id.main_btn_clean)
     Button mBtnClean;
 
+    @BindView(R.id.data_detail)
+    TextView mTVMobile;
+
 //    @BindView(R.id.block_detail)
 //    TextView mTvBlockDetail;
 
 
     private Unbinder mUnbinder;
     private PowerReceiver mPowerReceiver;
+
+    private MobileDataService.MobileDataBinder mMobileBinder;
+    private ServiceConnection mServiceConnection = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder service) {
+            mMobileBinder = (MobileDataService.MobileDataBinder) service;
+            mMobileBinder.setMainTextView(new WeakReference<>(mTVMobile));
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+
+        }
+    };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -72,12 +96,20 @@ public class MainActivity extends BaseActivity {
 
         mPowerReceiver = new PowerReceiver(new BatteryCallback() {
             @Override
-            public void onUpdated(int pct) {
-                mTvPowDetail.setText(getString(R.string.item_power_detail, pct));
+            public void onUpdated(BatInfo info) {
+                mTvPowDetail.setText(info.isCharged() ?
+                    getString(R.string.charging) :
+                    getString(R.string.item_power_detail, info.getPct()));
             }
         });
 
-
+        // bind service
+        Intent intent = new Intent(this,MobileDataService.class);
+        bindService(intent,mServiceConnection,BIND_AUTO_CREATE);
+        // set mobile data
+        SharedPreferences sharedPreferences = getSharedPreferences(getPackageName(),MODE_PRIVATE);
+        long mobileDataBytes = sharedPreferences.getLong("mobileData", 0);
+        mTVMobile.setText( getString(R.string.item_data_detail,Util.longToStringFormat(mobileDataBytes)));
 
         // FIXME: request permission
         LogUtil.d(TAG, "code: " + ContextCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE));
@@ -169,8 +201,6 @@ public class MainActivity extends BaseActivity {
 
         mTvMem.setText(String.valueOf(Util.getRemainMemory(this)));
         IntentFilter intentFilter = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
-        intentFilter.addAction(Intent.ACTION_POWER_CONNECTED);
-        intentFilter.addAction(Intent.ACTION_POWER_DISCONNECTED);
         registerReceiver(mPowerReceiver, intentFilter);
     }
 
@@ -185,5 +215,6 @@ public class MainActivity extends BaseActivity {
         super.onDestroy();
 
         mUnbinder.unbind();
+        unbindService(mServiceConnection);
     }
 }
