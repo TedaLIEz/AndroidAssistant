@@ -60,4 +60,5 @@
   <string name="data_used">您本月已使用 %1$s </string>
   <string name="data_setting">设置流量提醒</string>
   <string name="data_setting_detail">设置流量提醒，达到流量上限限时会收到提示哦，从此放心大胆开流量</string>
+  <string name="charging">充电中</string>
 </resources>

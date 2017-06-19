@@ -25,8 +25,10 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import android.widget.ViewAnimator;
 import com.hustunique.androidassistant.R;
 import com.hustunique.androidassistant.manager.MyPowerManager;
+import com.hustunique.androidassistant.model.BatInfo;
 import com.hustunique.androidassistant.receiver.PowerReceiver;
 import com.hustunique.androidassistant.receiver.PowerReceiver.BatteryCallback;
 
@@ -57,6 +59,12 @@ public class PowerActivity extends BaseActivity {
     @BindView(R.id.appbar)
     AppBarLayout mAppBarLayout;
 
+    @BindView(R.id.view_animator)
+    ViewAnimator mViewAnimator;
+
+    @BindView(R.id.power_remain_txt)
+    TextView mTvRem;
+
     private Unbinder mUnbinder;
     private MyPowerManager mPowerManager;
 
@@ -73,8 +81,15 @@ public class PowerActivity extends BaseActivity {
 
         mPowerReceiver = new PowerReceiver(new BatteryCallback() {
             @Override
-            public void onUpdated(int pct) {
-                mTvPow.setText(String.valueOf(pct));
+            public void onUpdated(BatInfo info) {
+                if (info.isCharged()) {
+                    mViewAnimator.setDisplayedChild(1);
+                    mTvRem.setVisibility(View.GONE);
+                } else {
+                    mViewAnimator.setDisplayedChild(0);
+                    mTvPow.setText(String.valueOf(info.getPct()));
+                    mTvRem.setVisibility(View.VISIBLE);
+                }
             }
         });
 
@@ -84,8 +99,6 @@ public class PowerActivity extends BaseActivity {
     protected void onResume() {
         super.onResume();
         IntentFilter intentFilter = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
-        intentFilter.addAction(Intent.ACTION_POWER_CONNECTED);
-        intentFilter.addAction(Intent.ACTION_POWER_DISCONNECTED);
         registerReceiver(mPowerReceiver, intentFilter);
     }
 

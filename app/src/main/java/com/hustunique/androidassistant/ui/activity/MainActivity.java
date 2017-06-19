@@ -36,6 +36,7 @@ import com.hustunique.androidassistant.db.BlackList;
 import com.hustunique.androidassistant.db.BlockedCallSaver;
 import com.hustunique.androidassistant.db.BlockedSMSSaver;
 import com.hustunique.androidassistant.manager.MyPowerManager;
+import com.hustunique.androidassistant.model.BatInfo;
 import com.hustunique.androidassistant.receiver.PowerReceiver;
 import com.hustunique.androidassistant.receiver.PowerReceiver.BatteryCallback;
 import com.hustunique.androidassistant.service.MobileDataService;
@@ -95,8 +96,10 @@ public class MainActivity extends BaseActivity {
 
         mPowerReceiver = new PowerReceiver(new BatteryCallback() {
             @Override
-            public void onUpdated(int pct) {
-                mTvPowDetail.setText(getString(R.string.item_power_detail, pct));
+            public void onUpdated(BatInfo info) {
+                mTvPowDetail.setText(info.isCharged() ?
+                    getString(R.string.charging) :
+                    getString(R.string.item_power_detail, info.getPct()));
             }
         });
 
@@ -198,8 +201,6 @@ public class MainActivity extends BaseActivity {
 
         mTvMem.setText(String.valueOf(Util.getRemainMemory(this)));
         IntentFilter intentFilter = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
-        intentFilter.addAction(Intent.ACTION_POWER_CONNECTED);
-        intentFilter.addAction(Intent.ACTION_POWER_DISCONNECTED);
         registerReceiver(mPowerReceiver, intentFilter);
     }
 

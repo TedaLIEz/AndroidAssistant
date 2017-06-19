@@ -20,6 +20,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.os.BatteryManager;
+import com.hustunique.androidassistant.model.BatInfo;
 import com.hustunique.androidassistant.util.LogUtil;
 
 /**
@@ -31,13 +32,11 @@ public class PowerReceiver extends BroadcastReceiver {
 
     private static final String TAG = "PowerReceiver";
     private float batteryPct = Float.MIN_NORMAL;
+    private BatInfo mInfo = new BatInfo();
     public interface BatteryCallback {
-        void onUpdated(int pct);
+        void onUpdated(BatInfo power);
     }
 
-    public PowerReceiver() {
-        super();
-    }
 
     private BatteryCallback mCallback;
     public PowerReceiver(BatteryCallback callback) {
@@ -49,16 +48,14 @@ public class PowerReceiver extends BroadcastReceiver {
         if (intent.getAction().equals(Intent.ACTION_BATTERY_CHANGED)) {
             int level = intent.getIntExtra(BatteryManager.EXTRA_LEVEL, -1);
             int scale = intent.getIntExtra(BatteryManager.EXTRA_SCALE, -1);
+            int status = intent.getIntExtra(BatteryManager.EXTRA_STATUS, -1);
+            boolean isCharged = status == BatteryManager.BATTERY_STATUS_CHARGING;
             float batteryPct = level / (float) scale;
-            if (Float.compare(this.batteryPct, batteryPct) != 0) {
-                this.batteryPct = batteryPct;
-                LogUtil.d(TAG, "battery level" + String.valueOf(batteryPct * 100) + "%");
-                mCallback.onUpdated((int) (batteryPct * 100));
-            }
-        } else if (intent.getAction().equals(Intent.ACTION_POWER_CONNECTED)) {
-            LogUtil.d(TAG, "Power connected");
-        } else if (intent.getAction().equals(Intent.ACTION_POWER_DISCONNECTED)) {
-            LogUtil.d(TAG, "Power disconnected");
+            mInfo.setPct((int) (batteryPct * 100));
+            mInfo.setCharged(isCharged);
+            LogUtil.d(TAG, "battery status" + mInfo);
         }
+
+        mCallback.onUpdated(mInfo);
     }
 }

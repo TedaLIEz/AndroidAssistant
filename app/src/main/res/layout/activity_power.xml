@@ -53,25 +53,42 @@
           android:layout_centerInParent="true"
           android:padding="@dimen/power_circle_padding"
           android:background="@drawable/power_bgd">
-          <TextView
-            android:id="@+id/power_tv"
-            style="@style/TextAppearance.Title.Inverse"
+          <ViewAnimator
+            android:id="@+id/view_animator"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="43"
-            android:textSize="100sp"/>
-          <TextView
-            android:id="@+id/power_per"
-            style="@style/TextAppearance.SubHead.Inverse"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_toEndOf="@+id/power_tv"
-            android:layout_toRightOf="@+id/power_tv"
-            android:text="@string/power_per"
-            android:textColor="@color/textPrimaryColorInverse"/>
+            android:layout_height="wrap_content">
+            <RelativeLayout
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content">
+              <TextView
+                android:id="@+id/power_tv"
+                style="@style/TextAppearance.Title.Inverse"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="43"
+                android:textSize="100sp"/>
+              <TextView
+                android:id="@+id/power_per"
+                style="@style/TextAppearance.SubHead.Inverse"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@+id/power_tv"
+                android:layout_toRightOf="@+id/power_tv"
+                android:text="@string/power_per"
+                android:textColor="@color/textPrimaryColorInverse"/>
+            </RelativeLayout>
+
+            <ImageView
+              android:layout_gravity="center"
+              android:src="@drawable/battery_charging_full_white_144x144"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"/>
+          </ViewAnimator>
+
         </RelativeLayout>
 
         <TextView
+          android:id="@+id/power_remain_txt"
           style="@style/TextAppearance.SubHead.Inverse"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"

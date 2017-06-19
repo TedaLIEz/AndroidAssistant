@@ -61,5 +61,6 @@
   <string name="title_activity_data">流量管理</string>
   <string name="data_setting">设置流量提醒</string>
   <string name="data_setting_detail">设置流量提醒，达到流量上限限时会收到提示哦，从此放心大胆开流量</string>
->>>>>>> data-usage
+  <string name="charging">充电中</string>
+  >>>>>>> data-usage
 </resources>
