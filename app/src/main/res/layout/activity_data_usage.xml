@@ -32,7 +32,7 @@
             android:textColor="@color/textPrimaryColorInverse"
             android:textSize="25sp"
             tools:text="您本月已使用 430 MB"/>
-        <com.hustunique.androidassistant.ui.PieChart
+        <com.hustunique.androidassistant.ui.widget.PieChart
             android:layout_gravity="center_horizontal"
             android:id="@+id/pieChart"
             android:layout_width="300dp"

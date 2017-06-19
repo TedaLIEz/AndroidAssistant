@@ -13,8 +13,8 @@ import com.hustunique.androidassistant.R;
 import com.hustunique.androidassistant.manager.MobileDataManager;
 import com.hustunique.androidassistant.model.AppInfo;
 import com.hustunique.androidassistant.service.MobileDataService;
-import com.hustunique.androidassistant.ui.PieChart;
-import com.hustunique.androidassistant.ui.PieData;
+import com.hustunique.androidassistant.ui.widget.PieChart;
+import com.hustunique.androidassistant.ui.widget.PieData;
 import com.hustunique.androidassistant.util.LogUtil;
 import com.hustunique.androidassistant.util.Util;
 
@@ -70,6 +70,7 @@ public class DataUsageActivity extends BaseActivity {
         mTvDataUsed.setText(getString(R.string.data_used, Util.longToStringFormat(mobileDataBytes)));
         initData();
         PieChart pieChart = (PieChart) findViewById(R.id.pieChart);
+        pieChart.setAnimatorDuration(2000);
         pieChart.setPieData(mPieDatas);
     }
 

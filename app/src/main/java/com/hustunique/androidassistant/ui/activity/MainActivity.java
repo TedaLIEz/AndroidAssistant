@@ -111,31 +111,8 @@ public class MainActivity extends BaseActivity {
         long mobileDataBytes = sharedPreferences.getLong("mobileData", 0);
         mTVMobile.setText( getString(R.string.item_data_detail,Util.longToStringFormat(mobileDataBytes)));
 
-        // FIXME: request permission
-        LogUtil.d(TAG, "code: " + ContextCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE));
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE)
-                != PackageManager.PERMISSION_GRANTED &&
-                ContextCompat.checkSelfPermission(this, Manifest.permission.RECEIVE_SMS)
-                != PackageManager.PERMISSION_GRANTED) {
-            LogUtil.d(TAG, "request call phone&sms");
-            ActivityCompat.requestPermissions(this,
-                    new String[]{Manifest.permission.CALL_PHONE,
-                            Manifest.permission.RECEIVE_SMS},
-                    MY_PERMISSIONS_REQUEST_PHONE_CALL);
-        }
-        else if (ContextCompat.checkSelfPermission(this, Manifest.permission.RECEIVE_SMS)
-                != PackageManager.PERMISSION_GRANTED) {
-            LogUtil.d(TAG, "request sms permission");
-            ActivityCompat.requestPermissions(this,
-                    new String[]{Manifest.permission.RECEIVE_SMS},
-                    MY_PERMISSIONS_REQUEST_PHONE_CALL);
-        }
-        else {
-            LogUtil.d(TAG, "request call permission");
-            ActivityCompat.requestPermissions(this,
-                    new String[]{Manifest.permission.CALL_PHONE},
-                    MY_PERMISSIONS_REQUEST_PHONE_CALL);
-        }
+
+        requestPermission();
 
         // FIXME: test BlackList
         BlackList blackList = new BlackList();
@@ -152,6 +129,36 @@ public class MainActivity extends BaseActivity {
 
         BlockedCallSaver callSaver = new BlockedCallSaver();
         callSaver.getAllBlockedCall();
+
+    }
+
+    private void requestPermission() {
+        if (Util.isM()) {
+            LogUtil.d(TAG, "code: " + ContextCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE));
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE)
+                != PackageManager.PERMISSION_GRANTED &&
+                ContextCompat.checkSelfPermission(this, Manifest.permission.RECEIVE_SMS)
+                    != PackageManager.PERMISSION_GRANTED) {
+                LogUtil.d(TAG, "request call phone&sms");
+                ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.CALL_PHONE,
+                        Manifest.permission.RECEIVE_SMS},
+                    MY_PERMISSIONS_REQUEST_PHONE_CALL);
+            }
+            else if (ContextCompat.checkSelfPermission(this, Manifest.permission.RECEIVE_SMS)
+                != PackageManager.PERMISSION_GRANTED) {
+                LogUtil.d(TAG, "request sms permission");
+                ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.RECEIVE_SMS},
+                    MY_PERMISSIONS_REQUEST_PHONE_CALL);
+            }
+            else {
+                LogUtil.d(TAG, "request call permission");
+                ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.CALL_PHONE},
+                    MY_PERMISSIONS_REQUEST_PHONE_CALL);
+            }
+        }
 
     }
 
@@ -189,7 +196,6 @@ public class MainActivity extends BaseActivity {
 
     @OnClick(R.id.block_mang)
     public void onBlockMangClicked() {
-//        Toast.makeText(this, "TODO", Toast.LENGTH_SHORT).show();
         Intent intent = new Intent(this, BlockActivity.class);
         startActivity(intent);
     }

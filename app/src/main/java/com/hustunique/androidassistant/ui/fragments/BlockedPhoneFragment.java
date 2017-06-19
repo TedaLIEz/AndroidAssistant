@@ -25,22 +25,21 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
-import com.hustunique.androidassistant.R;
-import com.hustunique.androidassistant.model.BlockedCallModel;
-import com.hustunique.androidassistant.db.BlockedCallSaver;
-import com.hustunique.androidassistant.ui.adapters.BlockedCallAdapter;
-import com.hustunique.androidassistant.ui.adapters.BlockedCallAdapter.BlockedCall;
-
-import java.util.ArrayList;
-import java.util.List;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import com.hustunique.androidassistant.R;
+import com.hustunique.androidassistant.db.BlockedCallSaver;
+import com.hustunique.androidassistant.model.BlockedCallModel;
+import com.hustunique.androidassistant.ui.adapters.BlockedCallAdapter;
+import com.hustunique.androidassistant.ui.adapters.BlockedCallAdapter.BlockedCall;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 /**
- * Created by JianGuo on 6/16/17.
- * Fragment used for showing blocked phone call in {@link com.hustunique.androidassistant.ui.activity.BlockedListActivity}
+ * Created by JianGuo on 6/16/17. Fragment used for showing blocked phone call in {@link
+ * com.hustunique.androidassistant.ui.activity.BlockedListActivity}
  */
 
 public class BlockedPhoneFragment extends Fragment {
@@ -49,6 +48,7 @@ public class BlockedPhoneFragment extends Fragment {
     RecyclerView mRecyclerView;
     private BlockedCallSaver bc = new BlockedCallSaver();
     private BlockedCallAdapter mAdapter;
+
     public BlockedPhoneFragment() {
         // Required empty public constructor
     }
@@ -79,8 +79,8 @@ public class BlockedPhoneFragment extends Fragment {
         List<BlockedCall> rst = new ArrayList<>();
         List<BlockedCallModel> blocks = bc.getAllBlockedCall();
         for (BlockedCallModel b : blocks) {
-            String date = new java.text.SimpleDateFormat("yyyy/MM/dd").format(new java.util.Date(b.time));
-            rst.add(new BlockedCall(b.number, "test location", b.autoblocked?0:1, date));
+            String date = new SimpleDateFormat("yyyy/MM/dd").format(new Date(b.time));
+            rst.add(new BlockedCall(b.number, "test location", b.autoblocked ? 0 : 1, date));
         }
         return rst;
     }
