@@ -11,6 +11,7 @@ import android.telephony.TelephonyManager;
 import android.widget.Toast;
 
 import com.android.internal.telephony.ITelephony;
+import com.hustunique.androidassistant.db.AutoBlockListManager;
 import com.hustunique.androidassistant.db.BlackList;
 import com.hustunique.androidassistant.db.BlockedCallSaver;
 import com.hustunique.androidassistant.manager.PrefManager;
@@ -46,12 +47,14 @@ public class PhoneCallReceiver extends BroadcastReceiver {
     private class PhoneCallStateListener extends PhoneStateListener {
         private Context context;
         private BlackList mBlackList;
+        private AutoBlockListManager mAutoBlockList;
         private BlockedCallSaver mBlockedCallSaver;
         private static final String TAG = "CallListener";
 
         PhoneCallStateListener(Context context){
             this.context = context;
             mBlackList = new BlackList();
+            mAutoBlockList = new AutoBlockListManager();
             mBlockedCallSaver = new BlockedCallSaver();
         }
 
@@ -81,9 +84,10 @@ public class PhoneCallReceiver extends BroadcastReceiver {
                         //Checking incoming call number
                         LogUtil.d(TAG, "incoming number: " + incomingNumber);
 
-                        if (mBlackList.ifNumberInBlackList(incomingNumber)) {
-                            //TODO: check auto block
-                            mBlockedCallSaver.addBlockedCall(incomingNumber, false);
+                        boolean inBlacklist = mBlackList.ifNumberInBlackList(incomingNumber);
+                        boolean inAutoBlock = mAutoBlockList.ifNumberInAutoBlockList(incomingNumber);
+                        if (inBlacklist || inAutoBlock) {
+                            mBlockedCallSaver.addBlockedCall(incomingNumber, inAutoBlock);
                             //telephonyService.silenceRinger();//Security exception problem
                             telephonyService = (ITelephony) method.invoke(telephonyManager);
                             telephonyService.silenceRinger();

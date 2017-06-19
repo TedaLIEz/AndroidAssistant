@@ -27,6 +27,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.hustunique.androidassistant.R;
+import com.hustunique.androidassistant.db.LocationQuery;
 import com.hustunique.androidassistant.model.BlockedCallModel;
 import com.hustunique.androidassistant.db.BlockedCallSaver;
 import com.hustunique.androidassistant.ui.adapters.BlockedCallAdapter;
@@ -74,13 +75,14 @@ public class BlockedPhoneFragment extends Fragment {
         mRecyclerView.setAdapter(mAdapter);
     }
 
-    // TODO: 6/16/17 Retrieve real blocked call from db
     private List<BlockedCall> mockList() {
         List<BlockedCall> rst = new ArrayList<>();
         List<BlockedCallModel> blocks = bc.getAllBlockedCall();
+        LocationQuery lq = new LocationQuery(getActivity());
         for (BlockedCallModel b : blocks) {
-            String date = new java.text.SimpleDateFormat("yyyy/MM/dd").format(new java.util.Date(b.time));
-            rst.add(new BlockedCall(b.number, "test location", b.autoblocked?0:1, date));
+            String date = new java.text.SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(new java.util.Date(b.time));
+            String area = lq.getLocationInfo(b.number);
+            rst.add(new BlockedCall(b.number, area, b.autoblocked?0:1, date));
         }
         return rst;
     }

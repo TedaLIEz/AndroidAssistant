@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.telephony.SmsMessage;
 
+import com.hustunique.androidassistant.db.AutoBlockListManager;
 import com.hustunique.androidassistant.db.BlackList;
 import com.hustunique.androidassistant.db.BlockedSMSSaver;
 import com.hustunique.androidassistant.manager.PrefManager;
@@ -28,6 +29,7 @@ public class SmsReceiver extends BroadcastReceiver {
         }
         BlockedSMSSaver smsSaver = new BlockedSMSSaver();
         BlackList blackList = new BlackList();
+        AutoBlockListManager autoBlockList = new AutoBlockListManager();
 
         String MSG_TYPE=intent.getAction();
         LogUtil.d(TAG, "SMS Received: " + MSG_TYPE);
@@ -43,11 +45,12 @@ public class SmsReceiver extends BroadcastReceiver {
 
             LogUtil.d(TAG, "msg src: " + smsMessage[0].getOriginatingAddress());
             LogUtil.d(TAG, "msg body: " + smsMessage[0].getMessageBody());
-            if (blackList.ifNumberInBlackList(smsMessage[0].getOriginatingAddress().substring(3))) {
-
-                // FIXME: check auto block
+            String incomingnumber = smsMessage[0].getOriginatingAddress().substring(3);
+            boolean inBlackList = blackList.ifNumberInBlackList(incomingnumber);
+            boolean inAutoBlock = autoBlockList.ifNumberInAutoBlockList(incomingnumber);
+            if (inBlackList || inAutoBlock) {
                 smsSaver.addBlockedSMS(smsMessage[0].getOriginatingAddress().substring(3),
-                        smsMessage[0].getMessageBody(), false);
+                        smsMessage[0].getMessageBody(), inAutoBlock);
             }
         }
 

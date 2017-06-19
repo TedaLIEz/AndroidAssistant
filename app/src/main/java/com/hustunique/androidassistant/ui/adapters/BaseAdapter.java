@@ -45,6 +45,10 @@ abstract class BaseAdapter<T, VH extends ViewHolder> extends RecyclerView.Adapte
         notifyItemRemoved(pos);
     }
 
+    public void setData(List<T> data) {
+        mData = data;
+        notifyDataSetChanged();
+    }
 
 
     @Override

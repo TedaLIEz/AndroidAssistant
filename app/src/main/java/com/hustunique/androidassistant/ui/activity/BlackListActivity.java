@@ -25,6 +25,7 @@ import android.view.MenuItem;
 
 import com.hustunique.androidassistant.R;
 import com.hustunique.androidassistant.db.BlackList;
+import com.hustunique.androidassistant.db.LocationQuery;
 import com.hustunique.androidassistant.model.BlackListModel;
 import com.hustunique.androidassistant.ui.adapters.BlackListAdapter;
 import com.hustunique.androidassistant.ui.adapters.BlackListAdapter.NumModel;
@@ -75,9 +76,10 @@ public class BlackListActivity extends BaseActivity {
     private List<NumModel> mockList() {
         List<NumModel> rst = new ArrayList<>();
         List<BlackListModel> blacks = blDb.getAllBlackNumbers();
+        LocationQuery lq = new LocationQuery(this);
         for (BlackListModel b : blacks) {
-            // TODO: get number location
-            NumModel m = new NumModel(b.number, "test");
+            String area = lq.getLocationInfo(b.number);
+            NumModel m = new NumModel(b.number, area);
             rst.add(m);
         }
 
@@ -107,7 +109,8 @@ public class BlackListActivity extends BaseActivity {
         dialog.setOnPositiveButton(getString(R.string.ok), new OnPositiveButtonListener() {
             @Override
             public void onClick(Dialog dialog, String num) {
-                // TODO: 6/19/17 Add phone num to db
+                blDb.addNewBlackNumber(num);
+                mAdapter.setData(mockList());
                 LogUtil.d(TAG, "add phone num " + num);
                 dialog.dismiss();
             }

@@ -32,10 +32,12 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.hustunique.androidassistant.R;
+import com.hustunique.androidassistant.db.AutoBlockListManager;
 import com.hustunique.androidassistant.db.BlackList;
 import com.hustunique.androidassistant.db.BlockedCallSaver;
 import com.hustunique.androidassistant.db.BlockedSMSSaver;
 import com.hustunique.androidassistant.manager.MyPowerManager;
+import com.hustunique.androidassistant.model.AutoBlockListModel;
 import com.hustunique.androidassistant.model.BatInfo;
 import com.hustunique.androidassistant.receiver.PowerReceiver;
 import com.hustunique.androidassistant.receiver.PowerReceiver.BatteryCallback;
@@ -44,6 +46,8 @@ import com.hustunique.androidassistant.util.LogUtil;
 import com.hustunique.androidassistant.util.Util;
 
 import java.lang.ref.WeakReference;
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -109,7 +113,7 @@ public class MainActivity extends BaseActivity {
         // set mobile data
         SharedPreferences sharedPreferences = getSharedPreferences(getPackageName(),MODE_PRIVATE);
         long mobileDataBytes = sharedPreferences.getLong("mobileData", 0);
-        mTVMobile.setText( getString(R.string.item_data_detail,Util.longToStringFormat(mobileDataBytes)));
+        mTVMobile.setText(getString(R.string.item_data_detail,Util.longToStringFormat(mobileDataBytes)));
 
         // FIXME: request permission
         LogUtil.d(TAG, "code: " + ContextCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE));
@@ -152,6 +156,18 @@ public class MainActivity extends BaseActivity {
 
         BlockedCallSaver callSaver = new BlockedCallSaver();
         callSaver.getAllBlockedCall();
+
+        AutoBlockListManager autoBlock = new AutoBlockListManager();
+        List<AutoBlockListModel> t = new ArrayList<AutoBlockListModel>();
+        t.add(new AutoBlockListModel("13912345678"));
+        t.add(new AutoBlockListModel("13987654321"));
+        autoBlock.updateList(t);
+        autoBlock.getAllAutoBlocks();
+        t.add(new AutoBlockListModel("123"));
+        autoBlock.updateList(t);
+        autoBlock.getAllAutoBlocks();
+
+
 
     }
 
