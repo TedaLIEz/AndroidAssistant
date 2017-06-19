@@ -62,5 +62,9 @@
   <string name="data_setting">设置流量提醒</string>
   <string name="data_setting_detail">设置流量提醒，达到流量上限限时会收到提示哦，从此放心大胆开流量</string>
   <string name="charging">充电中</string>
-  >>>>>>> data-usage
+  <string name="add_black_num">添加黑名单号码</string>
+  <string name="hint_add_black_num">请输入号码</string>
+  <string name="add_num_error">非法的手机号</string>
+  <string name="no">Cancel</string>
+  <string name="ok">Ok</string>
 </resources>

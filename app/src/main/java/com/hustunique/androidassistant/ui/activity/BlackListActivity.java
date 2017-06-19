@@ -16,30 +16,31 @@
 
 package com.hustunique.androidassistant.ui.activity;
 
+import android.app.Dialog;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.Toast;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import butterknife.Unbinder;
 import com.hustunique.androidassistant.R;
 import com.hustunique.androidassistant.ui.adapters.BlackListAdapter;
 import com.hustunique.androidassistant.ui.adapters.BlackListAdapter.NumModel;
+import com.hustunique.androidassistant.ui.widget.AddBlackNumDialog;
+import com.hustunique.androidassistant.ui.widget.AddBlackNumDialog.OnNegativeButtonListener;
+import com.hustunique.androidassistant.ui.widget.AddBlackNumDialog.OnPositiveButtonListener;
+import com.hustunique.androidassistant.util.LogUtil;
 import java.util.ArrayList;
 import java.util.List;
 
 public class BlackListActivity extends BaseActivity {
 
+    private static final String TAG = "BlackListActivity";
     @BindView(R.id.rv_block_nums)
     RecyclerView mRecyclerView;
-    @BindView(R.id.fab)
-    FloatingActionButton mFab;
 
     Unbinder mUnbinder;
 
@@ -51,12 +52,6 @@ public class BlackListActivity extends BaseActivity {
         mUnbinder = ButterKnife.bind(this);
         setupToolbar(R.string.title_add_number);
         setUpRv();
-        mFab.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(BlackListActivity.this, "TODO", Toast.LENGTH_SHORT).show();
-            }
-        });
     }
 
     private void setUpRv() {
@@ -92,6 +87,26 @@ public class BlackListActivity extends BaseActivity {
         return super.onOptionsItemSelected(item);
     }
 
+
+    @OnClick(R.id.fab)
+    public void onFabClick() {
+        AddBlackNumDialog dialog = new AddBlackNumDialog(this);
+        dialog.show();
+        dialog.setOnNegativeButton(getString(R.string.no), new OnNegativeButtonListener() {
+            @Override
+            public void onClick(Dialog dialog) {
+                dialog.dismiss();
+            }
+        });
+        dialog.setOnPositiveButton(getString(R.string.ok), new OnPositiveButtonListener() {
+            @Override
+            public void onClick(Dialog dialog, String num) {
+                // TODO: 6/19/17 Add phone num to db
+                LogUtil.d(TAG, "add phone num " + num);
+                dialog.dismiss();
+            }
+        });
+    }
 
     @Override
     protected void onDestroy() {
