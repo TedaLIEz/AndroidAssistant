@@ -31,7 +31,6 @@ import com.hustunique.androidassistant.util.LogUtil;
 public class PowerReceiver extends BroadcastReceiver {
 
     private static final String TAG = "PowerReceiver";
-    private float batteryPct = Float.MIN_NORMAL;
     private BatInfo mInfo = new BatInfo();
     public interface BatteryCallback {
         void onUpdated(BatInfo power);
@@ -50,8 +49,8 @@ public class PowerReceiver extends BroadcastReceiver {
             int scale = intent.getIntExtra(BatteryManager.EXTRA_SCALE, -1);
             int status = intent.getIntExtra(BatteryManager.EXTRA_STATUS, -1);
             boolean isCharged = status == BatteryManager.BATTERY_STATUS_CHARGING;
-            float batteryPct = level / (float) scale;
-            mInfo.setPct((int) (batteryPct * 100));
+            int batteryPct = (int) ((level / (float) scale) * 100);
+            mInfo.setPct(batteryPct);
             mInfo.setCharged(isCharged);
             LogUtil.d(TAG, "battery status" + mInfo);
         }

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.net.ConnectivityManager;
 import android.net.TrafficStats;
 
 import com.hustunique.androidassistant.db.AppDatabase;
@@ -17,6 +18,9 @@ import com.raizlabs.android.dbflow.structure.ModelAdapter;
 import com.raizlabs.android.dbflow.structure.database.DatabaseWrapper;
 import com.raizlabs.android.dbflow.structure.database.transaction.ITransaction;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -177,5 +181,19 @@ public class MobileDataManager {
         } catch (PackageManager.NameNotFoundException e) {
             return false;
         }
+    }
+
+    //FIXME
+    public void setMobileDataEnabled(Context context, boolean enabled) throws ClassNotFoundException, NoSuchFieldException, IllegalAccessException, NoSuchMethodException, InvocationTargetException {
+        final ConnectivityManager conman = (ConnectivityManager)  context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        final Class conmanClass = Class.forName(conman.getClass().getName());
+        final Field connectivityManagerField = conmanClass.getDeclaredField("mService");
+        connectivityManagerField.setAccessible(true);
+        final Object connectivityManager = connectivityManagerField.get(conman);
+        final Class connectivityManagerClass =  Class.forName(connectivityManager.getClass().getName());
+        final Method setMobileDataEnabledMethod = connectivityManagerClass.getDeclaredMethod("setMobileDataEnabled", Boolean.TYPE);
+        setMobileDataEnabledMethod.setAccessible(true);
+
+        setMobileDataEnabledMethod.invoke(connectivityManager, enabled);
     }
 }

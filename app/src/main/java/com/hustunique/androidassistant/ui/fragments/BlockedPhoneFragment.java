@@ -27,9 +27,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.hustunique.androidassistant.R;
+import com.hustunique.androidassistant.db.BlockedCallSaver;
 import com.hustunique.androidassistant.db.LocationQuery;
 import com.hustunique.androidassistant.model.BlockedCallModel;
-import com.hustunique.androidassistant.db.BlockedCallSaver;
 import com.hustunique.androidassistant.ui.adapters.BlockedCallAdapter;
 import com.hustunique.androidassistant.ui.adapters.BlockedCallAdapter.BlockedCall;
 
@@ -40,8 +40,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
- * Created by JianGuo on 6/16/17.
- * Fragment used for showing blocked phone call in {@link com.hustunique.androidassistant.ui.activity.BlockedListActivity}
+ * Created by JianGuo on 6/16/17. Fragment used for showing blocked phone call in {@link
+ * com.hustunique.androidassistant.ui.activity.BlockedListActivity}
  */
 
 public class BlockedPhoneFragment extends Fragment {
@@ -50,6 +50,7 @@ public class BlockedPhoneFragment extends Fragment {
     RecyclerView mRecyclerView;
     private BlockedCallSaver bc = new BlockedCallSaver();
     private BlockedCallAdapter mAdapter;
+
     public BlockedPhoneFragment() {
         // Required empty public constructor
     }
@@ -83,6 +84,7 @@ public class BlockedPhoneFragment extends Fragment {
             String date = new java.text.SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(new java.util.Date(b.time));
             String area = lq.getLocationInfo(b.number);
             rst.add(new BlockedCall(b.number, area, b.autoblocked?0:1, date));
+
         }
         return rst;
     }

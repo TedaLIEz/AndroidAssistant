@@ -13,12 +13,13 @@ import com.hustunique.androidassistant.R;
 import com.hustunique.androidassistant.manager.MobileDataManager;
 import com.hustunique.androidassistant.model.AppInfo;
 import com.hustunique.androidassistant.service.MobileDataService;
-import com.hustunique.androidassistant.ui.PieChart;
-import com.hustunique.androidassistant.ui.PieData;
+import com.hustunique.androidassistant.ui.widget.PieChart;
+import com.hustunique.androidassistant.ui.widget.PieData;
 import com.hustunique.androidassistant.util.LogUtil;
 import com.hustunique.androidassistant.util.Util;
 
 import java.lang.ref.WeakReference;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -26,6 +27,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import butterknife.Unbinder;
 
 public class DataUsageActivity extends BaseActivity {
@@ -70,6 +72,7 @@ public class DataUsageActivity extends BaseActivity {
         mTvDataUsed.setText(getString(R.string.data_used, Util.longToStringFormat(mobileDataBytes)));
         initData();
         PieChart pieChart = (PieChart) findViewById(R.id.pieChart);
+        pieChart.setAnimatorDuration(2000);
         pieChart.setPieData(mPieDatas);
     }
 
@@ -98,6 +101,23 @@ public class DataUsageActivity extends BaseActivity {
             pieData.setValue(appInfo.getMobileBytes());
             pieData.setColor(mColors[i]);
             mPieDatas.add(pieData);
+        }
+    }
+
+    @OnClick(R.id.btn_data_setting)
+    public void setMobileData(){
+        try {
+            MobileDataManager.getInstance(this).setMobileDataEnabled(this,false);
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (NoSuchFieldException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (NoSuchMethodException e) {
+            e.printStackTrace();
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
         }
     }
 

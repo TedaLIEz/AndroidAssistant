@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.hustunique.androidassistant.ui;
+package com.hustunique.androidassistant.ui.widget;
 
 import android.content.Context;
 import android.support.design.widget.CoordinatorLayout;
