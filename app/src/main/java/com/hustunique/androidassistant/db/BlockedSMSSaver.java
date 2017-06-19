@@ -1,5 +1,7 @@
 package com.hustunique.androidassistant.db;
 
+import com.hustunique.androidassistant.model.BlockedSMSModel;
+import com.hustunique.androidassistant.model.BlockedSMSModel_Table;
 import com.hustunique.androidassistant.util.LogUtil;
 import com.raizlabs.android.dbflow.config.FlowManager;
 import com.raizlabs.android.dbflow.sql.language.SQLite;
@@ -13,36 +15,36 @@ import java.util.List;
 
 public class BlockedSMSSaver {
     private static final String TAG = "BlockedSMSSaver";
-    private ModelAdapter<BlockedSMSEntry> adapter;
+    private ModelAdapter<BlockedSMSModel> adapter;
 
     public BlockedSMSSaver() {
-        adapter = FlowManager.getModelAdapter(BlockedSMSEntry.class);
+        adapter = FlowManager.getModelAdapter(BlockedSMSModel.class);
     }
 
     public boolean addBlockedSMS(String sourceNumber, String text, boolean autoblocked) {
-        long newRowId = adapter.insert(new BlockedSMSEntry(sourceNumber, text, autoblocked));
+        long newRowId = adapter.insert(new BlockedSMSModel(sourceNumber, text, autoblocked));
 
         return newRowId != -1;
     }
 
     public boolean deleteBlockedSMS(long time) {
-        SQLite.delete(BlockedSMSEntry.class)
-                .where(BlockedSMSEntry_Table.time.is(time))
+        SQLite.delete(BlockedSMSModel.class)
+                .where(BlockedSMSModel_Table.time.is(time))
 //                .async()
                 .execute();
 
         return true;
     }
 
-    public List<BlockedSMSEntry> getAllBlockedSMS(){
-        List<BlockedSMSEntry> blocked = SQLite.select()
-                .from(BlockedSMSEntry.class)
+    public List<BlockedSMSModel> getAllBlockedSMS(){
+        List<BlockedSMSModel> blocked = SQLite.select()
+                .from(BlockedSMSModel.class)
                 .where()
-                .orderBy(BlockedSMSEntry_Table.time, false)
+                .orderBy(BlockedSMSModel_Table.time, false)
                 .queryList();
 
         //FIXME: debug
-        for (BlockedSMSEntry b : blocked) {
+        for (BlockedSMSModel b : blocked) {
             LogUtil.d(TAG, "blocked sms number: " + b.number);
             LogUtil.d(TAG, "blocked sms text: " + b.text);
         }

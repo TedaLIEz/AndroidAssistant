@@ -8,6 +8,7 @@ import android.telephony.SmsMessage;
 
 import com.hustunique.androidassistant.db.BlackList;
 import com.hustunique.androidassistant.db.BlockedSMSSaver;
+import com.hustunique.androidassistant.manager.PrefManager;
 import com.hustunique.androidassistant.util.LogUtil;
 
 /**
@@ -22,6 +23,9 @@ public class SmsReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent)
     {
+        if (!PrefManager.getInstance().getDefaultPreferences(context).getBoolean("BlockEnable", false)){
+            return;
+        }
         BlockedSMSSaver smsSaver = new BlockedSMSSaver();
         BlackList blackList = new BlackList();
 

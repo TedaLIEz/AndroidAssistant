@@ -9,10 +9,13 @@ import android.preference.PreferenceManager;
 import android.telephony.PhoneStateListener;
 import android.telephony.TelephonyManager;
 import android.widget.Toast;
+
 import com.android.internal.telephony.ITelephony;
 import com.hustunique.androidassistant.db.BlackList;
 import com.hustunique.androidassistant.db.BlockedCallSaver;
+import com.hustunique.androidassistant.manager.PrefManager;
 import com.hustunique.androidassistant.util.LogUtil;
+
 import java.lang.reflect.Method;
 
 /**
@@ -21,14 +24,21 @@ import java.lang.reflect.Method;
 
 public class PhoneCallReceiver extends BroadcastReceiver {
     private static final String TAG = "PhoneCallReceiver";
-    PhoneStateListener customPhoneListener;
+    static PhoneStateListener customPhoneListener;
+
+
+    public PhoneCallReceiver() {
+        super();
+        LogUtil.d(TAG, "construct PhoneCallReceiver");
+    }
 
     @Override
     public void onReceive(Context context, Intent intent) {
         TelephonyManager tm = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
         LogUtil.d(TAG, "a call receive");
-        if (this.customPhoneListener == null) {
-            PhoneCallStateListener customPhoneListener = new PhoneCallStateListener(context);
+        if (customPhoneListener == null) {
+            LogUtil.d(TAG, "add new listener");
+            customPhoneListener = new PhoneCallStateListener(context);
             tm.listen(customPhoneListener, PhoneStateListener.LISTEN_CALL_STATE);
         }
     }
@@ -49,12 +59,16 @@ public class PhoneCallReceiver extends BroadcastReceiver {
         @Override
         public void onCallStateChanged(int state, String incomingNumber) {
             SharedPreferences prefs= PreferenceManager.getDefaultSharedPreferences(context);
+            if (!PrefManager.getInstance().getDefaultPreferences(context).getBoolean("BlockEnable", false)) {
+                return;
+            }
 
             switch (state) {
 
                 case TelephonyManager.CALL_STATE_RINGING:
 
                     LogUtil.d(TAG, "a call incoming");
+                    LogUtil.d(TAG, "hashcode :" + this.toString());
                     AudioManager audioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
                     //Turn ON the mute
                     audioManager.adjustStreamVolume(AudioManager.STREAM_RING, AudioManager.ADJUST_MUTE, AudioManager.FLAG_REMOVE_SOUND_AND_VIBRATE);

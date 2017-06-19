@@ -1,5 +1,7 @@
 package com.hustunique.androidassistant.db;
 
+import com.hustunique.androidassistant.model.BlackListModel;
+import com.hustunique.androidassistant.model.BlackListModel_Table;
 import com.hustunique.androidassistant.util.LogUtil;
 import com.raizlabs.android.dbflow.config.FlowManager;
 import com.raizlabs.android.dbflow.sql.language.SQLite;
@@ -13,10 +15,10 @@ import java.util.List;
 
 public class BlackList {
     private static final String TAG = "BlackList";
-    private ModelAdapter<BlackListEntry> adapter;
+    private ModelAdapter<BlackListModel> adapter;
 
     public BlackList() {
-        adapter = FlowManager.getModelAdapter(BlackListEntry.class);
+        adapter = FlowManager.getModelAdapter(BlackListModel.class);
     }
 
     public boolean addNewBlackNumber(String number) {
@@ -29,20 +31,20 @@ public class BlackList {
             return false;
         }
 
-        long id = adapter.insert(new BlackListEntry(number));
+        long id = adapter.insert(new BlackListModel(number));
 
         return id != -1;
     }
 
-    public List<BlackListEntry> getAllBlackNumbers() {
-        List<BlackListEntry> blacklist = SQLite.select()
-                .from(BlackListEntry.class)
+    public List<BlackListModel> getAllBlackNumbers() {
+        List<BlackListModel> blacklist = SQLite.select()
+                .from(BlackListModel.class)
                 .where()
-                .orderBy(BlackListEntry_Table.time, false)
+                .orderBy(BlackListModel_Table.time, false)
                 .queryList();
 
         // FIXME: debug
-        for (BlackListEntry b : blacklist) {
+        for (BlackListModel b : blacklist) {
             LogUtil.d(TAG, "number: " + b.number);
         }
 
@@ -50,9 +52,9 @@ public class BlackList {
     }
 
     public boolean ifNumberInBlackList(String number) {
-        List<BlackListEntry> blacklist = SQLite.select()
-                .from(BlackListEntry.class)
-                .where(BlackListEntry_Table.number.eq(number))
+        List<BlackListModel> blacklist = SQLite.select()
+                .from(BlackListModel.class)
+                .where(BlackListModel_Table.number.eq(number))
                 .queryList();
         if (blacklist.size() != 0) {
             return true;
@@ -66,8 +68,8 @@ public class BlackList {
             return false;
         }
 
-        SQLite.delete(BlackListEntry.class)
-                .where(BlackListEntry_Table.number.eq(number))
+        SQLite.delete(BlackListModel.class)
+                .where(BlackListModel_Table.number.eq(number))
 //                .async()
                 .execute();
 

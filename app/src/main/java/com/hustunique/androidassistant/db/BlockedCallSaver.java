@@ -1,5 +1,7 @@
 package com.hustunique.androidassistant.db;
 
+import com.hustunique.androidassistant.model.BlockedCallModel;
+import com.hustunique.androidassistant.model.BlockedCallModel_Table;
 import com.hustunique.androidassistant.util.LogUtil;
 import com.raizlabs.android.dbflow.config.FlowManager;
 import com.raizlabs.android.dbflow.sql.language.SQLite;
@@ -13,37 +15,37 @@ import java.util.List;
 
 public class BlockedCallSaver {
     private static final String TAG = "BlockedCallSaver";
-    private ModelAdapter<BlockedCallEntry> adapter;
+    private ModelAdapter<BlockedCallModel> adapter;
 
     public BlockedCallSaver() {
-        adapter = FlowManager.getModelAdapter(BlockedCallEntry.class);
+        adapter = FlowManager.getModelAdapter(BlockedCallModel.class);
     }
 
     public boolean addBlockedCall(String number, boolean autoblocked) {
-        long newRowId = adapter.insert(new BlockedCallEntry(number, autoblocked));
+        long newRowId = adapter.insert(new BlockedCallModel(number, autoblocked));
         LogUtil.d(TAG, "add blocked call");
 
         return newRowId != -1;
     }
 
     public boolean deleteBlockedCall(long time) {
-        SQLite.delete(BlockedCallEntry.class)
-                .where(BlockedCallEntry_Table.time.is(time))
+        SQLite.delete(BlockedCallModel.class)
+                .where(BlockedCallModel_Table.time.is(time))
 //                .async()
                 .execute();
 
         return true;
     }
 
-    public List<BlockedCallEntry> getAllBlockedCall(){
-        List<BlockedCallEntry> blocked = SQLite.select()
-                .from(BlockedCallEntry.class)
+    public List<BlockedCallModel> getAllBlockedCall(){
+        List<BlockedCallModel> blocked = SQLite.select()
+                .from(BlockedCallModel.class)
                 .where()
-                .orderBy(BlockedCallEntry_Table.time, false)
+                .orderBy(BlockedCallModel_Table.time, false)
                 .queryList();
 
         // FIXME: debug
-        for (BlockedCallEntry b : blocked) {
+        for (BlockedCallModel b : blocked) {
             LogUtil.d(TAG, "blocked call number: " + b.number);
             LogUtil.d(TAG, "blocked time: " + b.time);
         }

@@ -25,14 +25,19 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Toast;
+
+import com.hustunique.androidassistant.R;
+import com.hustunique.androidassistant.db.BlackList;
+import com.hustunique.androidassistant.model.BlackListModel;
+import com.hustunique.androidassistant.ui.adapters.BlackListAdapter;
+import com.hustunique.androidassistant.ui.adapters.BlackListAdapter.NumModel;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
-import com.hustunique.androidassistant.R;
-import com.hustunique.androidassistant.ui.adapters.BlackListAdapter;
-import com.hustunique.androidassistant.ui.adapters.BlackListAdapter.NumModel;
-import java.util.ArrayList;
-import java.util.List;
 
 public class BlackListActivity extends BaseActivity {
 
@@ -42,6 +47,8 @@ public class BlackListActivity extends BaseActivity {
     FloatingActionButton mFab;
 
     Unbinder mUnbinder;
+
+    private BlackList blDb = new BlackList();
 
     private BlackListAdapter mAdapter;
     @Override
@@ -69,17 +76,15 @@ public class BlackListActivity extends BaseActivity {
         mRecyclerView.setAdapter(mAdapter);
     }
 
-    // TODO: 6/16/17 Retrieve real blacked number from db
     private List<NumModel> mockList() {
         List<NumModel> rst = new ArrayList<>();
-        NumModel model = new NumModel("13018060139", "Wuhan");
-        NumModel model1 = new NumModel("13018060139", "Wuhan");
-        NumModel model2 = new NumModel("13018060139", "Wuhan");
-        for (int i = 0; i < 5; i++) {
-            rst.add(model);
-            rst.add(model1);
-            rst.add(model2);
+        List<BlackListModel> blacks = blDb.getAllBlackNumbers();
+        for (BlackListModel b : blacks) {
+            // TODO: get number location
+            NumModel m = new NumModel(b.number, "test");
+            rst.add(m);
         }
+
         return rst;
     }
 

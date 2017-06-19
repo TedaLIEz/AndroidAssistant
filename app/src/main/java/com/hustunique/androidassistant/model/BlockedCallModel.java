@@ -1,5 +1,6 @@
-package com.hustunique.androidassistant.db;
+package com.hustunique.androidassistant.model;
 
+import com.hustunique.androidassistant.db.AppDatabase;
 import com.raizlabs.android.dbflow.annotation.Column;
 import com.raizlabs.android.dbflow.annotation.PrimaryKey;
 import com.raizlabs.android.dbflow.annotation.Table;
@@ -9,13 +10,9 @@ import com.raizlabs.android.dbflow.annotation.Table;
  */
 
 @Table(database = AppDatabase.class)
-public class BlockedSMSEntry {
-
+public class BlockedCallModel {
     @Column
     public String number;
-
-    @Column
-    public String text;
 
     @Column
     public boolean autoblocked;
@@ -23,13 +20,12 @@ public class BlockedSMSEntry {
     @PrimaryKey
     public long time;
 
-    public BlockedSMSEntry(){
+    public BlockedCallModel(){
 
     }
 
-    public BlockedSMSEntry(String number, String text, boolean autoblocked) {
+    public BlockedCallModel(String number, boolean autoblocked) {
         this.number = number;
-        this.text = text;
         this.autoblocked = autoblocked;
         this.time = System.currentTimeMillis();
     }

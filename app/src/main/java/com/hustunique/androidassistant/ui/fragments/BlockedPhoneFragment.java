@@ -25,13 +25,18 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import butterknife.BindView;
-import butterknife.ButterKnife;
+
 import com.hustunique.androidassistant.R;
+import com.hustunique.androidassistant.model.BlockedCallModel;
+import com.hustunique.androidassistant.db.BlockedCallSaver;
 import com.hustunique.androidassistant.ui.adapters.BlockedCallAdapter;
 import com.hustunique.androidassistant.ui.adapters.BlockedCallAdapter.BlockedCall;
+
 import java.util.ArrayList;
 import java.util.List;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 /**
  * Created by JianGuo on 6/16/17.
@@ -41,6 +46,7 @@ public class BlockedPhoneFragment extends Fragment {
 
     @BindView(R.id.rv_block_list)
     RecyclerView mRecyclerView;
+    private BlockedCallSaver bc = new BlockedCallSaver();
     private BlockedCallAdapter mAdapter;
     public BlockedPhoneFragment() {
         // Required empty public constructor
@@ -70,9 +76,10 @@ public class BlockedPhoneFragment extends Fragment {
     // TODO: 6/16/17 Retrieve real blocked call from db
     private List<BlockedCall> mockList() {
         List<BlockedCall> rst = new ArrayList<>();
-        BlockedCall call = new BlockedCall("13018060139", "Wuhan", 0, "2017/06/12");
-        for (int i = 0; i < 10; i++) {
-            rst.add(call);
+        List<BlockedCallModel> blocks = bc.getAllBlockedCall();
+        for (BlockedCallModel b : blocks) {
+            String date = new java.text.SimpleDateFormat("yyyy/MM/dd").format(new java.util.Date(b.time));
+            rst.add(new BlockedCall(b.number, "test location", b.autoblocked?0:1, date));
         }
         return rst;
     }
