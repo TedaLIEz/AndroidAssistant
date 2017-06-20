@@ -25,18 +25,20 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import butterknife.BindView;
-import butterknife.ButterKnife;
+
 import com.hustunique.androidassistant.R;
 import com.hustunique.androidassistant.db.BlockedSMSSaver;
 import com.hustunique.androidassistant.model.BlockedSMSModel;
 import com.hustunique.androidassistant.ui.adapters.BlockedMsgAdapter;
 import com.hustunique.androidassistant.ui.adapters.BlockedMsgAdapter.BlockedMsg;
-import com.hustunique.androidassistant.util.LogUtil;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 /**
  * Created by JianGuo on 6/16/17.
@@ -52,7 +54,6 @@ public class BlockedMsgFragment extends Fragment {
     public BlockedMsgFragment() {
         // Required empty public constructor
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -80,7 +81,6 @@ public class BlockedMsgFragment extends Fragment {
         for (BlockedSMSModel b : blocks) {
             String date = new SimpleDateFormat("yyyy/MM/dd").format(new Date(b.time));
             rst.add(new BlockedMsg(b.number, b.text, b.autoblocked?0:1, date));
-            LogUtil.d("Date", "date test: " + date);
         }
         return rst;
     }

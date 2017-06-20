@@ -1,11 +1,10 @@
 package com.hustunique.androidassistant.ui.activity;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.v7.widget.SwitchCompat;
 import android.view.MenuItem;
+import android.widget.Button;
 
 import com.hustunique.androidassistant.R;
 import com.hustunique.androidassistant.manager.PrefManager;
@@ -26,17 +25,25 @@ public class BlockActivity extends BaseActivity {
     private Unbinder mUnbinder;
     @BindView(R.id.block_switch)
     SwitchCompat mBlockSwitch;
+    @BindView(R.id.autoblock_switch)
+    SwitchCompat mAutoBlockSwitch;
+    @BindView(R.id.update_button)
+    Button mUpdateButton;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_block);
         setupToolbar(R.string.title_block);
         mUnbinder = ButterKnife.bind(this);
-        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
         boolean enabled = PrefManager.getInstance()
                 .getDefaultPreferences(this)
                 .getBoolean("BlockEnable", false);
         mBlockSwitch.setChecked(enabled);
+        enabled = PrefManager.getInstance()
+                .getDefaultPreferences(this)
+                .getBoolean("AutoBlockEnable", false);
+        mAutoBlockSwitch.setChecked(enabled);
+        mUpdateButton.setEnabled(enabled);
     }
 
 
@@ -48,6 +55,16 @@ public class BlockActivity extends BaseActivity {
                 .edit()
                 .putBoolean("BlockEnable", checked)
                 .apply();
+    }
+
+    @OnCheckedChanged(R.id.autoblock_switch)
+    void onAutoBlockSwitchChecked(boolean checked) {
+        PrefManager.getInstance()
+                .getDefaultPreferences(this)
+                .edit()
+                .putBoolean("AutoBlockEnable", checked)
+                .apply();
+        mUpdateButton.setEnabled(checked);
     }
 
     @OnClick(R.id.block_add_number)

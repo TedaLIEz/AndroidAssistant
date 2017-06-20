@@ -160,7 +160,7 @@
           style="@style/TextAppearance.Material.Item.TwoLineLayout.Body2"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
-          android:text="@string/item_block_detail"/>
+          android:text="@string/item_block_detail_disable"/>
       </LinearLayout>
 
       <ImageView

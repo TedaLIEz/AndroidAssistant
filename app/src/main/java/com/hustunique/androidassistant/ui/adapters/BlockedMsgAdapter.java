@@ -19,9 +19,11 @@ package com.hustunique.androidassistant.ui.adapters;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
 import com.hustunique.androidassistant.R;
 import com.hustunique.androidassistant.ui.adapters.BlockedMsgAdapter.BlockedMsg;
 import com.hustunique.androidassistant.ui.viewholders.BlockedItemViewHolder;
+
 import java.util.List;
 
 /**
@@ -29,6 +31,7 @@ import java.util.List;
  */
 
 public class BlockedMsgAdapter extends BaseAdapter<BlockedMsg, BlockedItemViewHolder> {
+    private static final String TAG = "BlockedMsgAdapter";
 
     public BlockedMsgAdapter(List<BlockedMsg> data) {
         super(data);

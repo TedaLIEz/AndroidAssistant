@@ -37,6 +37,7 @@ import com.hustunique.androidassistant.db.BlackList;
 import com.hustunique.androidassistant.db.BlockedCallSaver;
 import com.hustunique.androidassistant.db.BlockedSMSSaver;
 import com.hustunique.androidassistant.manager.MyPowerManager;
+import com.hustunique.androidassistant.manager.PrefManager;
 import com.hustunique.androidassistant.model.AutoBlockListModel;
 import com.hustunique.androidassistant.model.BatInfo;
 import com.hustunique.androidassistant.receiver.PowerReceiver;
@@ -71,8 +72,8 @@ public class MainActivity extends BaseActivity {
     @BindView(R.id.data_detail)
     TextView mTVMobile;
 
-//    @BindView(R.id.block_detail)
-//    TextView mTvBlockDetail;
+    @BindView(R.id.block_detail)
+    TextView mTvBlockDetail;
 
 
     private Unbinder mUnbinder;
@@ -116,6 +117,7 @@ public class MainActivity extends BaseActivity {
         mTVMobile.setText(getString(R.string.item_data_detail,Util.longToStringFormat(mobileDataBytes)));
 
 
+
         requestPermission();
 
         // FIXME: test BlackList
@@ -129,6 +131,7 @@ public class MainActivity extends BaseActivity {
 
         //FIXME: test BlockedSMS
         BlockedSMSSaver smsSaver = new BlockedSMSSaver();
+        smsSaver.addBlockedSMS("15171508722", "test", false);
         smsSaver.getAllBlockedSMS();
 
         BlockedCallSaver callSaver = new BlockedCallSaver();
@@ -224,6 +227,12 @@ public class MainActivity extends BaseActivity {
         mTvMem.setText(String.valueOf(Util.getRemainMemory(this)));
         IntentFilter intentFilter = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
         registerReceiver(mPowerReceiver, intentFilter);
+
+        boolean block_enable = PrefManager.getInstance()
+                .getDefaultPreferences(this)
+                .getBoolean("BlockEnable", false);
+        mTvBlockDetail.setText(block_enable?getString(R.string.item_block_detail_enable):
+                getString(R.string.item_block_detail_disable));
     }
 
     @Override

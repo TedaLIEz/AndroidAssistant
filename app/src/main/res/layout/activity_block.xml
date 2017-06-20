@@ -158,6 +158,46 @@
 
     </RelativeLayout>
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginStart="0dp"
+        android:layout_marginLeft="0dp"
+        android:background="?android:attr/dividerVertical"/>
+
+    <RelativeLayout
+        style="@style/Material.Item.Base.SingleLine"
+        android:id="@+id/autoblock_layout">
+
+      <LinearLayout
+          style="@style/Material.Item.SingleLineLayout"
+          android:layout_toLeftOf="@+id/update_button"
+          android:layout_toStartOf="@+id/update_button">
+
+        <TextView
+            android:id="@+id/tv_block_update"
+            style="@style/TextAppearance.Material.Item.TwoLineLayout.Body1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/autoblock_update" />
+      </LinearLayout>
+
+      <Button
+          android:id="@+id/update_button"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_alignParentEnd="true"
+          android:layout_alignParentRight="true"
+          android:layout_centerVertical="true"
+          android:layout_marginLeft="@dimen/main_list_padding"
+          android:layout_marginStart="@dimen/main_list_padding"
+          android:layout_marginTop="@dimen/main_list_padding"
+          android:scaleType="centerInside"
+          android:text="@string/update_btn"
+          />
+
+    </RelativeLayout>
+
   </LinearLayout>
 
 

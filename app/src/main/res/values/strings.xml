@@ -21,7 +21,8 @@
   <string name="item_data">流量管理</string>
   <string name="item_data_detail">本月已使用流量%1$s</string>
   <string name="item_block">骚扰拦截</string>
-  <string name="item_block_detail">未开启</string>
+  <string name="item_block_detail_disable">未开启</string>
+  <string name="item_block_detail_enable">已开启</string>
   <string name="item_block_black_list">黑名单拦截</string>
   <string name="item_set_black_list">设置黑名单号码</string>
   <string name="item_blocked_detail">查看已拦截的电话短信</string>
@@ -56,6 +57,8 @@
   <string name="forbid_auto">智能拦截</string>
   <string name="forbid_list">黑名单拦截</string>
   <string name="title_block">骚扰拦截</string>
+  <string name="autoblock_update">智能拦截数据库更新</string>
+  <string name="update_btn">更新</string>
   <string name="title_activity_data">流量管理</string>
   <string name="data_used">您本月已使用 %1$s </string>
   <string name="data_setting">设置流量提醒</string>

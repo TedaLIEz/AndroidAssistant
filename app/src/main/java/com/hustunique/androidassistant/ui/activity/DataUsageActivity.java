@@ -72,7 +72,7 @@ public class DataUsageActivity extends BaseActivity {
         mTvDataUsed.setText(getString(R.string.data_used, Util.longToStringFormat(mobileDataBytes)));
         initData();
         PieChart pieChart = (PieChart) findViewById(R.id.pieChart);
-        pieChart.setAnimatorDuration(2000);
+//        pieChart.setAnimatorDuration(2000);
         pieChart.setPieData(mPieDatas);
     }
 
