@@ -18,7 +18,6 @@ package com.hustunique.androidassistant.ui.adapters;
 
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnLongClickListener;
 import android.view.ViewGroup;
 import com.hustunique.androidassistant.R;
 import com.hustunique.androidassistant.ui.adapters.BlackListAdapter.NumModel;
@@ -37,17 +36,6 @@ public class BlackListAdapter extends BaseAdapter<NumModel, BlackListViewHolder>
         super(data);
     }
 
-    public interface OnItemLongClickListener {
-
-        void onItemLongClick(NumModel num);
-    }
-
-    private OnItemLongClickListener mOnItemLongClickListener;
-
-    public void setOnItemLongClickListener(
-        OnItemLongClickListener onItemLongClickListener) {
-        mOnItemLongClickListener = onItemLongClickListener;
-    }
 
     @Override
     public BlackListViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -56,21 +44,11 @@ public class BlackListAdapter extends BaseAdapter<NumModel, BlackListViewHolder>
         return new BlackListViewHolder(view);
     }
 
+
     @Override
-    public void onBindViewHolder(final BlackListViewHolder holder, int position) {
-        final NumModel model = mData.get(position);
-        holder.itemView.setOnLongClickListener(new OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                if (mOnItemLongClickListener != null) {
-                    mOnItemLongClickListener.onItemLongClick(model);
-                    return true;
-                }
-                return false;
-            }
-        });
-        holder.getTvBlockNum().setText(model.getNum());
-        holder.getTvBlockLoc().setText(model.getLoc());
+    protected void bindView(NumModel item, BlackListViewHolder holder) {
+        holder.getTvBlockNum().setText(item.getNum());
+        holder.getTvBlockLoc().setText(item.getLoc());
     }
 
 

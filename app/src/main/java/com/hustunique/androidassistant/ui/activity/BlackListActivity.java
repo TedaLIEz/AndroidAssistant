@@ -33,9 +33,9 @@ import com.hustunique.androidassistant.R;
 import com.hustunique.androidassistant.db.BlackList;
 import com.hustunique.androidassistant.db.LocationQuery;
 import com.hustunique.androidassistant.model.BlackListModel;
+import com.hustunique.androidassistant.ui.adapters.BaseAdapter.OnItemClickListener;
 import com.hustunique.androidassistant.ui.adapters.BlackListAdapter;
 import com.hustunique.androidassistant.ui.adapters.BlackListAdapter.NumModel;
-import com.hustunique.androidassistant.ui.adapters.BlackListAdapter.OnItemLongClickListener;
 import com.hustunique.androidassistant.ui.widget.AddBlackNumDialog;
 import com.hustunique.androidassistant.ui.widget.AddBlackNumDialog.OnNegativeButtonListener;
 import com.hustunique.androidassistant.ui.widget.AddBlackNumDialog.OnPositiveButtonListener;
@@ -67,9 +67,9 @@ public class BlackListActivity extends BaseActivity {
     private void setUpRv() {
         List<NumModel> list = mockList();
         mAdapter = new BlackListAdapter(list);
-        mAdapter.setOnItemLongClickListener(new OnItemLongClickListener() {
+        mAdapter.setOnItemClickListener(new OnItemClickListener<NumModel>() {
             @Override
-            public void onItemLongClick(NumModel num) {
+            public void onItemLongClick(NumModel t) {
                 new Builder(BlackListActivity.this)
                     .setTitle(getString(R.string.delete_black_num_title))
                     .setMessage(getString(R.string.delete_black_num_content))
@@ -87,7 +87,12 @@ public class BlackListActivity extends BaseActivity {
                         }
                     })
                     .show();
-                LogUtil.d(TAG, "long click num: " + num);
+                LogUtil.d(TAG, "long click num: " + t);
+            }
+
+            @Override
+            public void onItemClick(NumModel t) {
+
             }
         });
         LinearLayoutManager llm = new LinearLayoutManager(this);

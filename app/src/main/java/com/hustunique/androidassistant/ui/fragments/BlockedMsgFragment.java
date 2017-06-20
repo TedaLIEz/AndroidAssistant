@@ -33,10 +33,9 @@ import butterknife.ButterKnife;
 import com.hustunique.androidassistant.R;
 import com.hustunique.androidassistant.db.BlockedSMSSaver;
 import com.hustunique.androidassistant.model.BlockedSMSModel;
+import com.hustunique.androidassistant.ui.adapters.BaseAdapter.OnItemClickListener;
 import com.hustunique.androidassistant.ui.adapters.BlockedMsgAdapter;
 import com.hustunique.androidassistant.ui.adapters.BlockedMsgAdapter.BlockedMsg;
-import com.hustunique.androidassistant.ui.adapters.BlockedMsgAdapter.OnItemClickListener;
-import com.hustunique.androidassistant.ui.adapters.BlockedMsgAdapter.OnItemLongClickListener;
 import com.hustunique.androidassistant.util.LogUtil;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -76,9 +75,9 @@ public class BlockedMsgFragment extends Fragment {
         assert mRecyclerView != null;
         mRecyclerView.setLayoutManager(llm);
         mAdapter = new BlockedMsgAdapter(mockList());
-        mAdapter.setOnItemLongClickListener(new OnItemLongClickListener() {
+        mAdapter.setOnItemClickListener(new OnItemClickListener<BlockedMsg>() {
             @Override
-            public void onItemLongClick(BlockedMsg msg) {
+            public void onItemLongClick(BlockedMsg t) {
                 new Builder(getActivity())
                     .setTitle(getString(R.string.delete_blocked_msg_title))
                     .setMessage(getString(R.string.delete_blocked_msg_content))
@@ -95,14 +94,13 @@ public class BlockedMsgFragment extends Fragment {
                         }
                     })
                     .show();
-                LogUtil.d(TAG, "long click msg: " + msg);
+                LogUtil.d(TAG, "long click msg: " + t);
             }
-        });
-        mAdapter.setOnItemClickListener(new OnItemClickListener() {
+
             @Override
-            public void onItemClick(BlockedMsg msg) {
+            public void onItemClick(BlockedMsg t) {
                 // TODO: 6/20/17 Show message
-                LogUtil.d(TAG, "click on msg " + msg);
+                LogUtil.d(TAG, "click on msg " + t);
             }
         });
         mRecyclerView.setAdapter(mAdapter);
