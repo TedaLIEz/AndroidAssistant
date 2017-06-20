@@ -17,6 +17,7 @@
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
   android:orientation="vertical"
+  android:background="?selectableItemBackground"
   xmlns:tools="http://schemas.android.com/tools"
   style="@style/Material.Item.TwoLineLayout">
 

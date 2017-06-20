@@ -17,9 +17,12 @@
 package com.hustunique.androidassistant.ui.fragments;
 
 
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnClickListener;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog.Builder;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -33,7 +36,11 @@ import com.hustunique.androidassistant.db.LocationQuery;
 import com.hustunique.androidassistant.model.BlockedCallModel;
 import com.hustunique.androidassistant.ui.adapters.BlockedCallAdapter;
 import com.hustunique.androidassistant.ui.adapters.BlockedCallAdapter.BlockedCall;
+import com.hustunique.androidassistant.ui.adapters.BlockedCallAdapter.OnItemLongClickListener;
+import com.hustunique.androidassistant.util.LogUtil;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -43,6 +50,7 @@ import java.util.List;
 
 public class BlockedPhoneFragment extends Fragment {
 
+    private static final String TAG = "BlockedPhoneFragment";
     @BindView(R.id.rv_block_list)
     RecyclerView mRecyclerView;
     private BlockedCallSaver bc = new BlockedCallSaver();
@@ -70,6 +78,28 @@ public class BlockedPhoneFragment extends Fragment {
         mRecyclerView.setLayoutManager(llm);
 
         mAdapter = new BlockedCallAdapter(mockList());
+        mAdapter.setOnItemLongClickListener(new OnItemLongClickListener() {
+            @Override
+            public void onItemLongClick(BlockedCall call) {
+                new Builder(getActivity())
+                    .setTitle(getString(R.string.delete_blocked_number_title))
+                    .setMessage(getString(R.string.delete_blocked_number_content))
+                    .setPositiveButton(getString(R.string.ok), new OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            // TODO: 6/20/17 Delete call
+                        }
+                    })
+                    .setNegativeButton(getString(R.string.no), new OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    })
+                    .show();
+                LogUtil.d(TAG, "long click call: " + call);
+            }
+        });
         mRecyclerView.setAdapter(mAdapter);
     }
 
@@ -78,7 +108,7 @@ public class BlockedPhoneFragment extends Fragment {
         List<BlockedCallModel> blocks = bc.getAllBlockedCall();
         LocationQuery lq = new LocationQuery(getActivity());
         for (BlockedCallModel b : blocks) {
-            String date = new java.text.SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(new java.util.Date(b.time));
+            String date = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(new Date(b.time));
             String area = lq.getLocationInfo(b.number);
             rst.add(new BlockedCall(b.number, area, b.autoblocked?0:1, date));
 

@@ -17,9 +17,12 @@
 package com.hustunique.androidassistant.ui.fragments;
 
 
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnClickListener;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog.Builder;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -32,6 +35,8 @@ import com.hustunique.androidassistant.db.BlockedSMSSaver;
 import com.hustunique.androidassistant.model.BlockedSMSModel;
 import com.hustunique.androidassistant.ui.adapters.BlockedMsgAdapter;
 import com.hustunique.androidassistant.ui.adapters.BlockedMsgAdapter.BlockedMsg;
+import com.hustunique.androidassistant.ui.adapters.BlockedMsgAdapter.OnItemClickListener;
+import com.hustunique.androidassistant.ui.adapters.BlockedMsgAdapter.OnItemLongClickListener;
 import com.hustunique.androidassistant.util.LogUtil;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -45,6 +50,7 @@ import java.util.List;
 
 public class BlockedMsgFragment extends Fragment {
 
+    private static final String TAG = "BlockedMsgFragment";
     @BindView(R.id.rv_block_list)
     RecyclerView mRecyclerView;
     private BlockedMsgAdapter mAdapter;
@@ -69,8 +75,36 @@ public class BlockedMsgFragment extends Fragment {
         LinearLayoutManager llm = new LinearLayoutManager(getActivity());
         assert mRecyclerView != null;
         mRecyclerView.setLayoutManager(llm);
-
         mAdapter = new BlockedMsgAdapter(mockList());
+        mAdapter.setOnItemLongClickListener(new OnItemLongClickListener() {
+            @Override
+            public void onItemLongClick(BlockedMsg msg) {
+                new Builder(getActivity())
+                    .setTitle(getString(R.string.delete_blocked_msg_title))
+                    .setMessage(getString(R.string.delete_blocked_msg_content))
+                    .setPositiveButton(getString(R.string.ok), new OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            // TODO: 6/20/17 Delete msg
+                        }
+                    })
+                    .setNegativeButton(getString(R.string.no), new OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    })
+                    .show();
+                LogUtil.d(TAG, "long click msg: " + msg);
+            }
+        });
+        mAdapter.setOnItemClickListener(new OnItemClickListener() {
+            @Override
+            public void onItemClick(BlockedMsg msg) {
+                // TODO: 6/20/17 Show message
+                LogUtil.d(TAG, "click on msg " + msg);
+            }
+        });
         mRecyclerView.setAdapter(mAdapter);
     }
 

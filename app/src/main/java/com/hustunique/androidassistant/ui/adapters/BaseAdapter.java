@@ -24,7 +24,8 @@ import java.util.List;
  * Created by JianGuo on 6/16/17.
  */
 
-abstract class BaseAdapter<T, VH extends ViewHolder> extends RecyclerView.Adapter<VH> {
+public abstract class BaseAdapter<T, VH extends ViewHolder> extends RecyclerView.Adapter<VH> {
+
 
 
     protected List<T> mData;
