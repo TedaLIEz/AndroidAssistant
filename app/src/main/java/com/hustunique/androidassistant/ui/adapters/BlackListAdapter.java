@@ -1,4 +1,4 @@
-/*
+ /*
  * Copyright 2017 TedaLIEz
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,6 +18,7 @@ package com.hustunique.androidassistant.ui.adapters;
 
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnLongClickListener;
 import android.view.ViewGroup;
 import com.hustunique.androidassistant.R;
 import com.hustunique.androidassistant.ui.adapters.BlackListAdapter.NumModel;
@@ -36,6 +37,18 @@ public class BlackListAdapter extends BaseAdapter<NumModel, BlackListViewHolder>
         super(data);
     }
 
+    public interface OnItemLongClickListener {
+
+        void onItemLongClick(NumModel num);
+    }
+
+    private OnItemLongClickListener mOnItemLongClickListener;
+
+    public void setOnItemLongClickListener(
+        OnItemLongClickListener onItemLongClickListener) {
+        mOnItemLongClickListener = onItemLongClickListener;
+    }
+
     @Override
     public BlackListViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
@@ -44,8 +57,18 @@ public class BlackListAdapter extends BaseAdapter<NumModel, BlackListViewHolder>
     }
 
     @Override
-    public void onBindViewHolder(BlackListViewHolder holder, int position) {
-        NumModel model = mData.get(position);
+    public void onBindViewHolder(final BlackListViewHolder holder, int position) {
+        final NumModel model = mData.get(position);
+        holder.itemView.setOnLongClickListener(new OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                if (mOnItemLongClickListener != null) {
+                    mOnItemLongClickListener.onItemLongClick(model);
+                    return true;
+                }
+                return false;
+            }
+        });
         holder.getTvBlockNum().setText(model.getNum());
         holder.getTvBlockLoc().setText(model.getLoc());
     }
@@ -53,6 +76,7 @@ public class BlackListAdapter extends BaseAdapter<NumModel, BlackListViewHolder>
 
     // TODO: 6/16/17 Construct block num model
     public static class NumModel {
+
         String mNum;
         String mLoc;
 
@@ -67,6 +91,14 @@ public class BlackListAdapter extends BaseAdapter<NumModel, BlackListViewHolder>
 
         public String getNum() {
             return mNum;
+        }
+
+        @Override
+        public String toString() {
+            return "NumModel{" +
+                "mNum='" + mNum + '\'' +
+                ", mLoc='" + mLoc + '\'' +
+                '}';
         }
     }
 }

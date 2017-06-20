@@ -18,6 +18,8 @@ package com.hustunique.androidassistant.ui.adapters;
 
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.View.OnLongClickListener;
 import android.view.ViewGroup;
 
 import com.hustunique.androidassistant.R;
@@ -37,6 +39,29 @@ public class BlockedMsgAdapter extends BaseAdapter<BlockedMsg, BlockedItemViewHo
         super(data);
     }
 
+    public interface OnItemLongClickListener {
+        void onItemLongClick(BlockedMsg msg);
+    }
+
+
+    public interface OnItemClickListener {
+        void onItemClick(BlockedMsg msg);
+    }
+
+    private OnItemLongClickListener mOnItemLongClickListener;
+
+    public void setOnItemLongClickListener(
+        OnItemLongClickListener onItemLongClickListener) {
+        mOnItemLongClickListener = onItemLongClickListener;
+    }
+
+    private OnItemClickListener mOnItemClickListener;
+
+    public void setOnItemClickListener(
+        OnItemClickListener onItemClickListener) {
+        mOnItemClickListener = onItemClickListener;
+    }
+
     @Override
     public BlockedItemViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_blocked, parent, false);
@@ -45,13 +70,34 @@ public class BlockedMsgAdapter extends BaseAdapter<BlockedMsg, BlockedItemViewHo
 
     @Override
     public void onBindViewHolder(BlockedItemViewHolder holder, int position) {
-        BlockedMsg msg = mData.get(position);
+
+        final BlockedMsg msg = mData.get(position);
+        holder.itemView.setOnLongClickListener(new OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                if (mOnItemLongClickListener != null) {
+                    mOnItemLongClickListener.onItemLongClick(msg);
+                    return true;
+                }
+                return false;
+            }
+        });
+
+        holder.itemView.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mOnItemClickListener != null) {
+                    mOnItemClickListener.onItemClick(msg);
+                }
+            }
+        });
         holder.getTvBlockTime().setText(msg.getTime());
         holder.getTvBlockType().setText(msg.getType() == 0 ?
             R.string.forbid_auto : R.string.forbid_list);
         holder.getTvBlockNum().setText(msg.getPhoneNum());
         holder.getDetail().setText(msg.getContent());
     }
+
 
     public static class BlockedMsg {
         String mPhoneNum;
@@ -80,6 +126,16 @@ public class BlockedMsgAdapter extends BaseAdapter<BlockedMsg, BlockedItemViewHo
 
         public String getTime() {
             return mTime;
+        }
+
+        @Override
+        public String toString() {
+            return "BlockedMsg{" +
+                "mPhoneNum='" + mPhoneNum + '\'' +
+                ", mContent='" + mContent + '\'' +
+                ", mType=" + mType +
+                ", mTime='" + mTime + '\'' +
+                '}';
         }
     }
 }

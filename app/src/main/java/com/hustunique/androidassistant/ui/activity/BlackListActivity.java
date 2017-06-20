@@ -17,30 +17,31 @@
 package com.hustunique.androidassistant.ui.activity;
 
 import android.app.Dialog;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnClickListener;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog.Builder;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.MenuItem;
-
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+import butterknife.Unbinder;
 import com.hustunique.androidassistant.R;
 import com.hustunique.androidassistant.db.BlackList;
 import com.hustunique.androidassistant.db.LocationQuery;
 import com.hustunique.androidassistant.model.BlackListModel;
 import com.hustunique.androidassistant.ui.adapters.BlackListAdapter;
 import com.hustunique.androidassistant.ui.adapters.BlackListAdapter.NumModel;
+import com.hustunique.androidassistant.ui.adapters.BlackListAdapter.OnItemLongClickListener;
 import com.hustunique.androidassistant.ui.widget.AddBlackNumDialog;
 import com.hustunique.androidassistant.ui.widget.AddBlackNumDialog.OnNegativeButtonListener;
 import com.hustunique.androidassistant.ui.widget.AddBlackNumDialog.OnPositiveButtonListener;
 import com.hustunique.androidassistant.util.LogUtil;
-
 import java.util.ArrayList;
 import java.util.List;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
-import butterknife.Unbinder;
 
 
 public class BlackListActivity extends BaseActivity {
@@ -66,6 +67,29 @@ public class BlackListActivity extends BaseActivity {
     private void setUpRv() {
         List<NumModel> list = mockList();
         mAdapter = new BlackListAdapter(list);
+        mAdapter.setOnItemLongClickListener(new OnItemLongClickListener() {
+            @Override
+            public void onItemLongClick(NumModel num) {
+                new Builder(BlackListActivity.this)
+                    .setTitle(getString(R.string.delete_black_num_title))
+                    .setMessage(getString(R.string.delete_black_num_content))
+                    .setPositiveButton(getString(R.string.ok), new OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            // TODO: 6/20/17 Delete num model
+
+                        }
+                    })
+                    .setNegativeButton(getString(R.string.no), new OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    })
+                    .show();
+                LogUtil.d(TAG, "long click num: " + num);
+            }
+        });
         LinearLayoutManager llm = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(llm);
         mRecyclerView.addItemDecoration(new DividerItemDecoration(this,

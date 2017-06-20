@@ -71,4 +71,10 @@
   <string name="no">Cancel</string>
   <string name="ok">Ok</string>
   <string name="unknown_area">未知归属地</string>
+  <string name="delete_black_num_title">删除黑名单号码</string>
+  <string name="delete_black_num_content">确认删除吗？</string>
+  <string name="delete_blocked_msg_title">删除黑名单短信</string>
+  <string name="delete_blocked_msg_content">确认删除该短信吗？</string>
+  <string name="delete_blocked_number_title">删除拦截电话</string>
+  <string name="delete_blocked_number_content">确认删除此拦截电话吗？</string>
 </resources>

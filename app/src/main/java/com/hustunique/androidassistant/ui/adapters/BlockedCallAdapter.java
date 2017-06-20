@@ -18,6 +18,7 @@ package com.hustunique.androidassistant.ui.adapters;
 
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnLongClickListener;
 import android.view.ViewGroup;
 import com.hustunique.androidassistant.R;
 import com.hustunique.androidassistant.ui.adapters.BlockedCallAdapter.BlockedCall;
@@ -34,15 +35,35 @@ public class BlockedCallAdapter extends BaseAdapter<BlockedCall, BlockedItemView
         super(data);
     }
 
+    public interface OnItemLongClickListener {
+        void onItemLongClick(BlockedCall call);
+    }
+
+    private OnItemLongClickListener mOnItemLongClickListener;
     @Override
     public BlockedItemViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_blocked, parent, false);
         return new BlockedItemViewHolder(view);
     }
 
+    public void setOnItemLongClickListener(
+        OnItemLongClickListener onItemLongClickListener) {
+        mOnItemLongClickListener = onItemLongClickListener;
+    }
+
     @Override
     public void onBindViewHolder(BlockedItemViewHolder holder, int position) {
-        BlockedCall call = mData.get(position);
+        final BlockedCall call = mData.get(position);
+        holder.itemView.setOnLongClickListener(new OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                if (mOnItemLongClickListener != null) {
+                    mOnItemLongClickListener.onItemLongClick(call);
+                    return true;
+                }
+                return false;
+            }
+        });
         holder.getDetail().setText(call.getLoc());
         holder.getTvBlockNum().setText(call.getPhoneNum());
         holder.getTvBlockTime().setText(call.getTime());
