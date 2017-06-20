@@ -43,11 +43,6 @@ public class BlackList {
                 .orderBy(BlackListModel_Table.time, false)
                 .queryList();
 
-        // FIXME: debug
-        for (BlackListModel b : blacklist) {
-            LogUtil.d(TAG, "number: " + b.number);
-        }
-
         return blacklist;
     }
 

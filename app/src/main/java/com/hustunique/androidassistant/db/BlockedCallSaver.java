@@ -44,12 +44,6 @@ public class BlockedCallSaver {
                 .orderBy(BlockedCallModel_Table.time, false)
                 .queryList();
 
-        // FIXME: debug
-        for (BlockedCallModel b : blocked) {
-            LogUtil.d(TAG, "blocked call number: " + b.number);
-            LogUtil.d(TAG, "blocked time: " + b.time);
-        }
-
         return blocked;
     }
 

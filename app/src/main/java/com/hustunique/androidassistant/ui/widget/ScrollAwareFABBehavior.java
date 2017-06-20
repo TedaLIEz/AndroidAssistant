@@ -58,7 +58,6 @@ public class ScrollAwareFABBehavior extends FloatingActionButton.Behavior {
     public void onNestedScroll(CoordinatorLayout coordinatorLayout,
         FloatingActionButton child, View target, int dxConsumed,
         int dyConsumed, int dxUnconsumed, int dyUnconsumed) {
-        // TODO Auto-generated method stub
         super.onNestedScroll(coordinatorLayout, child, target, dxConsumed, dyConsumed,
             dxUnconsumed, dyUnconsumed);
         //Log.e(TAG, "onNestedScroll called");

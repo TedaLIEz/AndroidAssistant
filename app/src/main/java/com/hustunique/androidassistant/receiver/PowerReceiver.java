@@ -27,7 +27,6 @@ import com.hustunique.androidassistant.util.LogUtil;
  * Created by JianGuo on 6/12/17.
  * BroadcastReceiver used for monitoring battery status and power usage
  */
-// TODO: 6/12/17 Use this receiver in service should be better or not
 public class PowerReceiver extends BroadcastReceiver {
 
     private static final String TAG = "PowerReceiver";

@@ -32,13 +32,8 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.hustunique.androidassistant.R;
-import com.hustunique.androidassistant.db.AutoBlockListManager;
-import com.hustunique.androidassistant.db.BlackList;
-import com.hustunique.androidassistant.db.BlockedCallSaver;
-import com.hustunique.androidassistant.db.BlockedSMSSaver;
 import com.hustunique.androidassistant.manager.MyPowerManager;
 import com.hustunique.androidassistant.manager.PrefManager;
-import com.hustunique.androidassistant.model.AutoBlockListModel;
 import com.hustunique.androidassistant.model.BatInfo;
 import com.hustunique.androidassistant.receiver.PowerReceiver;
 import com.hustunique.androidassistant.receiver.PowerReceiver.BatteryCallback;
@@ -47,8 +42,6 @@ import com.hustunique.androidassistant.util.LogUtil;
 import com.hustunique.androidassistant.util.Util;
 
 import java.lang.ref.WeakReference;
-import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -119,34 +112,6 @@ public class MainActivity extends BaseActivity {
 
 
         requestPermission();
-
-        // FIXME: test BlackList
-        BlackList blackList = new BlackList();
-        blackList.addNewBlackNumber("15171508722");
-        blackList.addNewBlackNumber("17777777777");
-        blackList.addNewBlackNumber("1515");
-        blackList.getAllBlackNumbers();
-        blackList.deleteNumberFromBlackList("17777777777");
-        blackList.getAllBlackNumbers();
-
-        //FIXME: test BlockedSMS
-        BlockedSMSSaver smsSaver = new BlockedSMSSaver();
-        smsSaver.addBlockedSMS("15171508722", "test", false);
-        smsSaver.getAllBlockedSMS();
-
-        BlockedCallSaver callSaver = new BlockedCallSaver();
-        callSaver.getAllBlockedCall();
-
-        AutoBlockListManager autoBlock = new AutoBlockListManager();
-        List<AutoBlockListModel> t = new ArrayList<AutoBlockListModel>();
-        t.add(new AutoBlockListModel("13912345678"));
-        t.add(new AutoBlockListModel("13987654321"));
-        autoBlock.updateList(t);
-        autoBlock.getAllAutoBlocks();
-        t.add(new AutoBlockListModel("123"));
-        autoBlock.updateList(t);
-        autoBlock.getAllAutoBlocks();
-
 
 
     }

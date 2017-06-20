@@ -76,14 +76,15 @@ public class BlockedMsgFragment extends Fragment {
         mAdapter = new BlockedMsgAdapter(mockList());
         mAdapter.setOnItemClickListener(new BaseAdapter.OnItemClickListener<BlockedSMSModel>() {
             @Override
-            public void onItemLongClick(BlockedSMSModel t) {
+            public void onItemLongClick(final BlockedSMSModel t) {
                 new Builder(getActivity())
                     .setTitle(getString(R.string.delete_blocked_msg_title))
                     .setMessage(getString(R.string.delete_blocked_msg_content))
                     .setPositiveButton(getString(R.string.ok), new OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            // TODO: 6/20/17 Delete msg
+                            bsms.deleteBlockedSMS(t.time);
+                            mAdapter.setData(mockList());
                         }
                     })
                     .setNegativeButton(getString(R.string.no), new OnClickListener() {
@@ -98,8 +99,17 @@ public class BlockedMsgFragment extends Fragment {
 
             @Override
             public void onItemClick(BlockedSMSModel t) {
-                // TODO: 6/20/17 Show message
                 LogUtil.d(TAG, "click on msg " + t);
+                new Builder(getActivity())
+                        .setTitle(getString(R.string.sms_detail))
+                        .setMessage(t.getContent())
+                        .setPositiveButton(getString(R.string.ok), new OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                dialogInterface.dismiss();
+                            }
+                        })
+                        .show();
             }
         });
         mRecyclerView.setAdapter(mAdapter);

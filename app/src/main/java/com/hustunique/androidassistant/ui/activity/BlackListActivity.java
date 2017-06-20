@@ -69,15 +69,15 @@ public class BlackListActivity extends BaseActivity {
         mAdapter = new BlackListAdapter(list, this);
         mAdapter.setOnItemClickListener(new OnItemClickListener<BlackListModel>() {
             @Override
-            public void onItemLongClick(BlackListModel t) {
+            public void onItemLongClick(final BlackListModel t) {
                 new Builder(BlackListActivity.this)
                         .setTitle(getString(R.string.delete_black_num_title))
                         .setMessage(getString(R.string.delete_black_num_content))
                         .setPositiveButton(getString(R.string.ok), new OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                // TODO: 6/20/17 Delete num model
-
+                                blDb.deleteNumberFromBlackList(t.number);
+                                mAdapter.setData(mockList());
                             }
                         })
                         .setNegativeButton(getString(R.string.no), new OnClickListener() {

@@ -2,7 +2,6 @@ package com.hustunique.androidassistant.db;
 
 import com.hustunique.androidassistant.model.BlockedSMSModel;
 import com.hustunique.androidassistant.model.BlockedSMSModel_Table;
-import com.hustunique.androidassistant.util.LogUtil;
 import com.raizlabs.android.dbflow.config.FlowManager;
 import com.raizlabs.android.dbflow.sql.language.SQLite;
 import com.raizlabs.android.dbflow.structure.ModelAdapter;
@@ -42,12 +41,6 @@ public class BlockedSMSSaver {
                 .where()
                 .orderBy(BlockedSMSModel_Table.time, false)
                 .queryList();
-
-        //FIXME: debug
-        for (BlockedSMSModel b : blocked) {
-            LogUtil.d(TAG, "blocked sms number: " + b.number);
-            LogUtil.d(TAG, "blocked sms text: " + b.text);
-        }
 
         return blocked;
     }
