@@ -32,15 +32,14 @@ import android.view.ViewGroup;
 import com.hustunique.androidassistant.R;
 import com.hustunique.androidassistant.db.BlockedSMSSaver;
 import com.hustunique.androidassistant.model.BlockedSMSModel;
+import com.hustunique.androidassistant.ui.adapters.BaseAdapter.OnItemClickListener;
 import com.hustunique.androidassistant.ui.adapters.BlockedMsgAdapter;
 import com.hustunique.androidassistant.ui.adapters.BlockedMsgAdapter.OnItemClickListener;
 import com.hustunique.androidassistant.ui.adapters.BlockedMsgAdapter.OnItemLongClickListener;
+import com.hustunique.androidassistant.ui.adapters.BlockedMsgAdapter.BlockedMsg;
 import com.hustunique.androidassistant.util.LogUtil;
 
 import java.util.List;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
 
 /**
  * Created by JianGuo on 6/16/17.
@@ -58,6 +57,7 @@ public class BlockedMsgFragment extends Fragment {
         // Required empty public constructor
     }
 
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
         Bundle savedInstanceState) {
@@ -74,9 +74,9 @@ public class BlockedMsgFragment extends Fragment {
         assert mRecyclerView != null;
         mRecyclerView.setLayoutManager(llm);
         mAdapter = new BlockedMsgAdapter(mockList());
-        mAdapter.setOnItemLongClickListener(new OnItemLongClickListener() {
+        mAdapter.setOnItemClickListener(new OnItemClickListener<BlockedMsg>() {
             @Override
-            public void onItemLongClick(BlockedSMSModel msg) {
+            public void onItemLongClick(BlockedMsg t) {
                 new Builder(getActivity())
                     .setTitle(getString(R.string.delete_blocked_msg_title))
                     .setMessage(getString(R.string.delete_blocked_msg_content))
@@ -93,14 +93,13 @@ public class BlockedMsgFragment extends Fragment {
                         }
                     })
                     .show();
-                LogUtil.d(TAG, "long click msg: " + msg);
+                LogUtil.d(TAG, "long click msg: " + t);
             }
-        });
-        mAdapter.setOnItemClickListener(new OnItemClickListener() {
+
             @Override
-            public void onItemClick(BlockedSMSModel msg) {
+            public void onItemClick(BlockedMsg t) {
                 // TODO: 6/20/17 Show message
-                LogUtil.d(TAG, "click on msg " + msg);
+                LogUtil.d(TAG, "click on msg " + t);
             }
         });
         mRecyclerView.setAdapter(mAdapter);

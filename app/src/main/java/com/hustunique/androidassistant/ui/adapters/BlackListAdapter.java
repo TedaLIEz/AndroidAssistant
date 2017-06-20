@@ -43,17 +43,6 @@ public class BlackListAdapter extends BaseAdapter<BlackListModel, BlackListViewH
         lq = new LocationQuery(context);
     }
 
-    public interface OnItemLongClickListener {
-
-        void onItemLongClick(BlackListModel num);
-    }
-
-    private OnItemLongClickListener mOnItemLongClickListener;
-
-    public void setOnItemLongClickListener(
-        OnItemLongClickListener onItemLongClickListener) {
-        mOnItemLongClickListener = onItemLongClickListener;
-    }
 
     @Override
     public BlackListViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -62,21 +51,11 @@ public class BlackListAdapter extends BaseAdapter<BlackListModel, BlackListViewH
         return new BlackListViewHolder(view);
     }
 
+
     @Override
-    public void onBindViewHolder(final BlackListViewHolder holder, int position) {
-        final BlackListModel model = mData.get(position);
-        holder.itemView.setOnLongClickListener(new OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                if (mOnItemLongClickListener != null) {
-                    mOnItemLongClickListener.onItemLongClick(model);
-                    return true;
-                }
-                return false;
-            }
-        });
-        holder.getTvBlockNum().setText(model.getNum());
-        holder.getTvBlockLoc().setText(lq.getLocationInfo(model.getNum()));
+    protected void bindView(NumModel item, BlackListViewHolder holder) {
+        holder.getTvBlockNum().setText(item.getNum());
+        holder.getTvBlockLoc().setText(item.getLoc());
     }
 
 

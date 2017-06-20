@@ -19,7 +19,6 @@ package com.hustunique.androidassistant.ui.adapters;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnLongClickListener;
 import android.view.ViewGroup;
 
 import com.hustunique.androidassistant.R;
@@ -41,39 +40,19 @@ public class BlockedCallAdapter extends BaseAdapter<BlockedCallModel, BlockedIte
         lq = new LocationQuery(context);
     }
 
-    public interface OnItemLongClickListener {
-        void onItemLongClick(BlockedCallModel call);
-    }
-
-    private OnItemLongClickListener mOnItemLongClickListener;
     @Override
     public BlockedItemViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_blocked, parent, false);
         return new BlockedItemViewHolder(view);
     }
 
-    public void setOnItemLongClickListener(
-        OnItemLongClickListener onItemLongClickListener) {
-        mOnItemLongClickListener = onItemLongClickListener;
-    }
 
     @Override
-    public void onBindViewHolder(BlockedItemViewHolder holder, int position) {
-        final BlockedCallModel call = mData.get(position);
-        holder.itemView.setOnLongClickListener(new OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                if (mOnItemLongClickListener != null) {
-                    mOnItemLongClickListener.onItemLongClick(call);
-                    return true;
-                }
-                return false;
-            }
-        });
-        holder.getDetail().setText(lq.getLocationInfo(call.getPhoneNum()));
-        holder.getTvBlockNum().setText(call.getPhoneNum());
-        holder.getTvBlockTime().setText(call.getTime());
-        holder.getTvBlockType().setText(call.getType() == 0 ?
+    protected void bindView(BlockedCall item, BlockedItemViewHolder holder) {
+        holder.getDetail().setText(item.getLoc());
+        holder.getTvBlockNum().setText(item.getPhoneNum());
+        holder.getTvBlockTime().setText(item.getTime());
+        holder.getTvBlockType().setText(item.getType() == 0 ?
             R.string.forbid_auto : R.string.forbid_list);
     }
 

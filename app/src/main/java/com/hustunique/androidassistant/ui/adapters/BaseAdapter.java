@@ -18,6 +18,9 @@ package com.hustunique.androidassistant.ui.adapters;
 
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.RecyclerView.ViewHolder;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.View.OnLongClickListener;
 import java.util.List;
 
 /**
@@ -30,11 +33,46 @@ public abstract class BaseAdapter<T, VH extends ViewHolder> extends RecyclerView
 
     protected List<T> mData;
 
+    public interface OnItemClickListener<E> {
+        void onItemLongClick(E t);
+        void onItemClick(E t);
+    }
+
+    private OnItemClickListener<T> mOnItemClickListener;
+
+    public void setOnItemClickListener(
+        OnItemClickListener<T> onItemClickListener) {
+        mOnItemClickListener = onItemClickListener;
+    }
 
     BaseAdapter(List<T> data) {
         mData = data;
     }
 
+    @Override
+    public void onBindViewHolder(VH holder, int position) {
+        final T t = mData.get(position);
+        holder.itemView.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mOnItemClickListener != null) {
+                    mOnItemClickListener.onItemClick(t);
+                }
+            }
+        });
+        holder.itemView.setOnLongClickListener(new OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                if (mOnItemClickListener != null) {
+                    mOnItemClickListener.onItemLongClick(t);
+                }
+                return false;
+            }
+        });
+        bindView(t, holder);
+    }
+
+    protected abstract void bindView(T item, VH holder);
 
     public void addItem(T t) {
         mData.add(t);

@@ -29,7 +29,9 @@ import android.view.MenuItem;
 import com.hustunique.androidassistant.R;
 import com.hustunique.androidassistant.db.BlackList;
 import com.hustunique.androidassistant.model.BlackListModel;
+import com.hustunique.androidassistant.ui.adapters.BaseAdapter.OnItemClickListener;
 import com.hustunique.androidassistant.ui.adapters.BlackListAdapter;
+import com.hustunique.androidassistant.ui.adapters.BlackListAdapter.NumModel;
 import com.hustunique.androidassistant.ui.adapters.BlackListAdapter.OnItemLongClickListener;
 import com.hustunique.androidassistant.ui.widget.AddBlackNumDialog;
 import com.hustunique.androidassistant.ui.widget.AddBlackNumDialog.OnNegativeButtonListener;
@@ -87,7 +89,12 @@ public class BlackListActivity extends BaseActivity {
                         }
                     })
                     .show();
-                LogUtil.d(TAG, "long click num: " + num);
+                LogUtil.d(TAG, "long click num: " + t);
+            }
+
+            @Override
+            public void onItemClick(NumModel t) {
+
             }
         });
         LinearLayoutManager llm = new LinearLayoutManager(this);
