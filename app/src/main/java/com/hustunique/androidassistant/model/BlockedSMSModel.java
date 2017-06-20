@@ -5,6 +5,9 @@ import com.raizlabs.android.dbflow.annotation.Column;
 import com.raizlabs.android.dbflow.annotation.PrimaryKey;
 import com.raizlabs.android.dbflow.annotation.Table;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 /**
  * Created by sunpe on 2017/6/16.
  */
@@ -33,6 +36,22 @@ public class BlockedSMSModel {
         this.text = text;
         this.autoblocked = autoblocked;
         this.time = System.currentTimeMillis();
+    }
+
+    public String getTime() {
+        return new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(new Date(this.time));
+    }
+
+    public String getPhoneNum() {
+        return number;
+    }
+
+    public String getContent() {
+        return text;
+    }
+
+    public int getType() {
+        return autoblocked?0:1;
     }
 
 }

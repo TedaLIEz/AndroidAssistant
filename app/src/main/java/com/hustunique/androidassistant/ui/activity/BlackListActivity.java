@@ -25,23 +25,23 @@ import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.MenuItem;
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
-import butterknife.Unbinder;
+
 import com.hustunique.androidassistant.R;
 import com.hustunique.androidassistant.db.BlackList;
-import com.hustunique.androidassistant.db.LocationQuery;
 import com.hustunique.androidassistant.model.BlackListModel;
 import com.hustunique.androidassistant.ui.adapters.BlackListAdapter;
-import com.hustunique.androidassistant.ui.adapters.BlackListAdapter.NumModel;
 import com.hustunique.androidassistant.ui.adapters.BlackListAdapter.OnItemLongClickListener;
 import com.hustunique.androidassistant.ui.widget.AddBlackNumDialog;
 import com.hustunique.androidassistant.ui.widget.AddBlackNumDialog.OnNegativeButtonListener;
 import com.hustunique.androidassistant.ui.widget.AddBlackNumDialog.OnPositiveButtonListener;
 import com.hustunique.androidassistant.util.LogUtil;
-import java.util.ArrayList;
+
 import java.util.List;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+import butterknife.Unbinder;
 
 
 public class BlackListActivity extends BaseActivity {
@@ -65,11 +65,11 @@ public class BlackListActivity extends BaseActivity {
     }
 
     private void setUpRv() {
-        List<NumModel> list = mockList();
-        mAdapter = new BlackListAdapter(list);
+        List<BlackListModel> list = mockList();
+        mAdapter = new BlackListAdapter(list, this);
         mAdapter.setOnItemLongClickListener(new OnItemLongClickListener() {
             @Override
-            public void onItemLongClick(NumModel num) {
+            public void onItemLongClick(BlackListModel num) {
                 new Builder(BlackListActivity.this)
                     .setTitle(getString(R.string.delete_black_num_title))
                     .setMessage(getString(R.string.delete_black_num_content))
@@ -97,17 +97,8 @@ public class BlackListActivity extends BaseActivity {
         mRecyclerView.setAdapter(mAdapter);
     }
 
-    private List<NumModel> mockList() {
-        List<NumModel> rst = new ArrayList<>();
-        List<BlackListModel> blacks = blDb.getAllBlackNumbers();
-        LocationQuery lq = new LocationQuery(this);
-        for (BlackListModel b : blacks) {
-            String area = lq.getLocationInfo(b.number);
-            NumModel m = new NumModel(b.number, area);
-            rst.add(m);
-        }
-
-        return rst;
+    private List<BlackListModel> mockList() {
+        return blDb.getAllBlackNumbers();
     }
 
 

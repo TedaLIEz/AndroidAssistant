@@ -25,4 +25,8 @@ public class BlackListModel {
         this.number = number;
         this.time = System.currentTimeMillis();
     }
+
+    public String getNum() {
+        return number;
+    }
 }

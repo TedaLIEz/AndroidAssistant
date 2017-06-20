@@ -16,27 +16,33 @@
 
 package com.hustunique.androidassistant.ui.adapters;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnLongClickListener;
 import android.view.ViewGroup;
+
 import com.hustunique.androidassistant.R;
-import com.hustunique.androidassistant.ui.adapters.BlockedCallAdapter.BlockedCall;
+import com.hustunique.androidassistant.db.LocationQuery;
+import com.hustunique.androidassistant.model.BlockedCallModel;
 import com.hustunique.androidassistant.ui.viewholders.BlockedItemViewHolder;
+
 import java.util.List;
 
 /**
  * Created by JianGuo on 6/16/17.
  */
 
-public class BlockedCallAdapter extends BaseAdapter<BlockedCall, BlockedItemViewHolder> {
+public class BlockedCallAdapter extends BaseAdapter<BlockedCallModel, BlockedItemViewHolder> {
+    private LocationQuery lq;
 
-    public BlockedCallAdapter(List<BlockedCall> data) {
+    public BlockedCallAdapter(List<BlockedCallModel> data, Context context) {
         super(data);
+        lq = new LocationQuery(context);
     }
 
     public interface OnItemLongClickListener {
-        void onItemLongClick(BlockedCall call);
+        void onItemLongClick(BlockedCallModel call);
     }
 
     private OnItemLongClickListener mOnItemLongClickListener;
@@ -53,7 +59,7 @@ public class BlockedCallAdapter extends BaseAdapter<BlockedCall, BlockedItemView
 
     @Override
     public void onBindViewHolder(BlockedItemViewHolder holder, int position) {
-        final BlockedCall call = mData.get(position);
+        final BlockedCallModel call = mData.get(position);
         holder.itemView.setOnLongClickListener(new OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
@@ -64,7 +70,7 @@ public class BlockedCallAdapter extends BaseAdapter<BlockedCall, BlockedItemView
                 return false;
             }
         });
-        holder.getDetail().setText(call.getLoc());
+        holder.getDetail().setText(lq.getLocationInfo(call.getPhoneNum()));
         holder.getTvBlockNum().setText(call.getPhoneNum());
         holder.getTvBlockTime().setText(call.getTime());
         holder.getTvBlockType().setText(call.getType() == 0 ?

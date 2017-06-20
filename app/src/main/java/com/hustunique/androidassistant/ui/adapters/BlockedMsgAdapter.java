@@ -23,7 +23,7 @@ import android.view.View.OnLongClickListener;
 import android.view.ViewGroup;
 
 import com.hustunique.androidassistant.R;
-import com.hustunique.androidassistant.ui.adapters.BlockedMsgAdapter.BlockedMsg;
+import com.hustunique.androidassistant.model.BlockedSMSModel;
 import com.hustunique.androidassistant.ui.viewholders.BlockedItemViewHolder;
 
 import java.util.List;
@@ -32,20 +32,20 @@ import java.util.List;
  * Created by JianGuo on 6/16/17.
  */
 
-public class BlockedMsgAdapter extends BaseAdapter<BlockedMsg, BlockedItemViewHolder> {
+public class BlockedMsgAdapter extends BaseAdapter<BlockedSMSModel, BlockedItemViewHolder> {
     private static final String TAG = "BlockedMsgAdapter";
 
-    public BlockedMsgAdapter(List<BlockedMsg> data) {
+    public BlockedMsgAdapter(List<BlockedSMSModel> data) {
         super(data);
     }
 
     public interface OnItemLongClickListener {
-        void onItemLongClick(BlockedMsg msg);
+        void onItemLongClick(BlockedSMSModel msg);
     }
 
 
     public interface OnItemClickListener {
-        void onItemClick(BlockedMsg msg);
+        void onItemClick(BlockedSMSModel msg);
     }
 
     private OnItemLongClickListener mOnItemLongClickListener;
@@ -71,7 +71,7 @@ public class BlockedMsgAdapter extends BaseAdapter<BlockedMsg, BlockedItemViewHo
     @Override
     public void onBindViewHolder(BlockedItemViewHolder holder, int position) {
 
-        final BlockedMsg msg = mData.get(position);
+        final BlockedSMSModel msg = mData.get(position);
         holder.itemView.setOnLongClickListener(new OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
@@ -98,44 +98,4 @@ public class BlockedMsgAdapter extends BaseAdapter<BlockedMsg, BlockedItemViewHo
         holder.getDetail().setText(msg.getContent());
     }
 
-
-    public static class BlockedMsg {
-        String mPhoneNum;
-        String mContent;
-        int mType;
-        String mTime;
-
-        public BlockedMsg(String phoneNum, String content, int type, String time) {
-            mPhoneNum = phoneNum;
-            mContent = content;
-            mType = type;
-            mTime = time;
-        }
-
-        public String getPhoneNum() {
-            return mPhoneNum;
-        }
-
-        public String getContent() {
-            return mContent;
-        }
-
-        public int getType() {
-            return mType;
-        }
-
-        public String getTime() {
-            return mTime;
-        }
-
-        @Override
-        public String toString() {
-            return "BlockedMsg{" +
-                "mPhoneNum='" + mPhoneNum + '\'' +
-                ", mContent='" + mContent + '\'' +
-                ", mType=" + mType +
-                ", mTime='" + mTime + '\'' +
-                '}';
-        }
-    }
 }

@@ -33,13 +33,10 @@ import com.hustunique.androidassistant.R;
 import com.hustunique.androidassistant.db.BlockedSMSSaver;
 import com.hustunique.androidassistant.model.BlockedSMSModel;
 import com.hustunique.androidassistant.ui.adapters.BlockedMsgAdapter;
-import com.hustunique.androidassistant.ui.adapters.BlockedMsgAdapter.BlockedMsg;
 import com.hustunique.androidassistant.ui.adapters.BlockedMsgAdapter.OnItemClickListener;
 import com.hustunique.androidassistant.ui.adapters.BlockedMsgAdapter.OnItemLongClickListener;
 import com.hustunique.androidassistant.util.LogUtil;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
+
 import java.util.List;
 
 import butterknife.BindView;
@@ -79,7 +76,7 @@ public class BlockedMsgFragment extends Fragment {
         mAdapter = new BlockedMsgAdapter(mockList());
         mAdapter.setOnItemLongClickListener(new OnItemLongClickListener() {
             @Override
-            public void onItemLongClick(BlockedMsg msg) {
+            public void onItemLongClick(BlockedSMSModel msg) {
                 new Builder(getActivity())
                     .setTitle(getString(R.string.delete_blocked_msg_title))
                     .setMessage(getString(R.string.delete_blocked_msg_content))
@@ -101,7 +98,7 @@ public class BlockedMsgFragment extends Fragment {
         });
         mAdapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
-            public void onItemClick(BlockedMsg msg) {
+            public void onItemClick(BlockedSMSModel msg) {
                 // TODO: 6/20/17 Show message
                 LogUtil.d(TAG, "click on msg " + msg);
             }
@@ -109,13 +106,7 @@ public class BlockedMsgFragment extends Fragment {
         mRecyclerView.setAdapter(mAdapter);
     }
 
-    private List<BlockedMsg> mockList() {
-        List<BlockedMsg> rst = new ArrayList<>();
-        List<BlockedSMSModel> blocks = bsms.getAllBlockedSMS();
-        for (BlockedSMSModel b : blocks) {
-            String date = new SimpleDateFormat("yyyy/MM/dd").format(new Date(b.time));
-            rst.add(new BlockedMsg(b.number, b.text, b.autoblocked?0:1, date));
-        }
-        return rst;
+    private List<BlockedSMSModel> mockList() {
+        return bsms.getAllBlockedSMS();
     }
 }

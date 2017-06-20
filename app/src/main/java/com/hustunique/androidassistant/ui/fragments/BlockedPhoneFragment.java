@@ -28,20 +28,18 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import butterknife.BindView;
-import butterknife.ButterKnife;
+
 import com.hustunique.androidassistant.R;
 import com.hustunique.androidassistant.db.BlockedCallSaver;
-import com.hustunique.androidassistant.db.LocationQuery;
 import com.hustunique.androidassistant.model.BlockedCallModel;
 import com.hustunique.androidassistant.ui.adapters.BlockedCallAdapter;
-import com.hustunique.androidassistant.ui.adapters.BlockedCallAdapter.BlockedCall;
 import com.hustunique.androidassistant.ui.adapters.BlockedCallAdapter.OnItemLongClickListener;
 import com.hustunique.androidassistant.util.LogUtil;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
+
 import java.util.List;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 /**
  * Created by JianGuo on 6/16/17. Fragment used for showing blocked phone call in {@link
@@ -77,10 +75,10 @@ public class BlockedPhoneFragment extends Fragment {
         assert mRecyclerView != null;
         mRecyclerView.setLayoutManager(llm);
 
-        mAdapter = new BlockedCallAdapter(mockList());
+        mAdapter = new BlockedCallAdapter(mockList(), getContext());
         mAdapter.setOnItemLongClickListener(new OnItemLongClickListener() {
             @Override
-            public void onItemLongClick(BlockedCall call) {
+            public void onItemLongClick(BlockedCallModel call) {
                 new Builder(getActivity())
                     .setTitle(getString(R.string.delete_blocked_number_title))
                     .setMessage(getString(R.string.delete_blocked_number_content))
@@ -103,16 +101,7 @@ public class BlockedPhoneFragment extends Fragment {
         mRecyclerView.setAdapter(mAdapter);
     }
 
-    private List<BlockedCall> mockList() {
-        List<BlockedCall> rst = new ArrayList<>();
-        List<BlockedCallModel> blocks = bc.getAllBlockedCall();
-        LocationQuery lq = new LocationQuery(getActivity());
-        for (BlockedCallModel b : blocks) {
-            String date = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(new Date(b.time));
-            String area = lq.getLocationInfo(b.number);
-            rst.add(new BlockedCall(b.number, area, b.autoblocked?0:1, date));
-
-        }
-        return rst;
+    private List<BlockedCallModel> mockList() {
+        return bc.getAllBlockedCall();
     }
 }

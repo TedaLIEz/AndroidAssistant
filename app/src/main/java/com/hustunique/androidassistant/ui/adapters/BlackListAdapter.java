@@ -16,30 +16,36 @@
 
 package com.hustunique.androidassistant.ui.adapters;
 
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.View.OnLongClickListener;
-import android.view.ViewGroup;
-import com.hustunique.androidassistant.R;
-import com.hustunique.androidassistant.ui.adapters.BlackListAdapter.NumModel;
-import com.hustunique.androidassistant.ui.viewholders.BlackListViewHolder;
-import java.util.List;
+ import android.content.Context;
+ import android.view.LayoutInflater;
+ import android.view.View;
+ import android.view.View.OnLongClickListener;
+ import android.view.ViewGroup;
+
+ import com.hustunique.androidassistant.R;
+ import com.hustunique.androidassistant.db.LocationQuery;
+ import com.hustunique.androidassistant.model.BlackListModel;
+ import com.hustunique.androidassistant.ui.viewholders.BlackListViewHolder;
+
+ import java.util.List;
 
 /**
  * Created by JianGuo on 6/16/17.
  * Adapter for Black list phone numbers
  */
 
-public class BlackListAdapter extends BaseAdapter<NumModel, BlackListViewHolder> {
+public class BlackListAdapter extends BaseAdapter<BlackListModel, BlackListViewHolder> {
 
+    LocationQuery lq;
 
-    public BlackListAdapter(List<NumModel> data) {
+    public BlackListAdapter(List<BlackListModel> data, Context context) {
         super(data);
+        lq = new LocationQuery(context);
     }
 
     public interface OnItemLongClickListener {
 
-        void onItemLongClick(NumModel num);
+        void onItemLongClick(BlackListModel num);
     }
 
     private OnItemLongClickListener mOnItemLongClickListener;
@@ -58,7 +64,7 @@ public class BlackListAdapter extends BaseAdapter<NumModel, BlackListViewHolder>
 
     @Override
     public void onBindViewHolder(final BlackListViewHolder holder, int position) {
-        final NumModel model = mData.get(position);
+        final BlackListModel model = mData.get(position);
         holder.itemView.setOnLongClickListener(new OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
@@ -70,7 +76,7 @@ public class BlackListAdapter extends BaseAdapter<NumModel, BlackListViewHolder>
             }
         });
         holder.getTvBlockNum().setText(model.getNum());
-        holder.getTvBlockLoc().setText(model.getLoc());
+        holder.getTvBlockLoc().setText(lq.getLocationInfo(model.getNum()));
     }
 
 
