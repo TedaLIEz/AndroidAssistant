@@ -31,8 +31,6 @@ import com.hustunique.androidassistant.db.BlackList;
 import com.hustunique.androidassistant.model.BlackListModel;
 import com.hustunique.androidassistant.ui.adapters.BaseAdapter.OnItemClickListener;
 import com.hustunique.androidassistant.ui.adapters.BlackListAdapter;
-import com.hustunique.androidassistant.ui.adapters.BlackListAdapter.NumModel;
-import com.hustunique.androidassistant.ui.adapters.BlackListAdapter.OnItemLongClickListener;
 import com.hustunique.androidassistant.ui.widget.AddBlackNumDialog;
 import com.hustunique.androidassistant.ui.widget.AddBlackNumDialog.OnNegativeButtonListener;
 import com.hustunique.androidassistant.ui.widget.AddBlackNumDialog.OnPositiveButtonListener;
@@ -69,31 +67,31 @@ public class BlackListActivity extends BaseActivity {
     private void setUpRv() {
         List<BlackListModel> list = mockList();
         mAdapter = new BlackListAdapter(list, this);
-        mAdapter.setOnItemLongClickListener(new OnItemLongClickListener() {
+        mAdapter.setOnItemClickListener(new OnItemClickListener<BlackListModel>() {
             @Override
-            public void onItemLongClick(BlackListModel num) {
+            public void onItemLongClick(BlackListModel t) {
                 new Builder(BlackListActivity.this)
-                    .setTitle(getString(R.string.delete_black_num_title))
-                    .setMessage(getString(R.string.delete_black_num_content))
-                    .setPositiveButton(getString(R.string.ok), new OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            // TODO: 6/20/17 Delete num model
+                        .setTitle(getString(R.string.delete_black_num_title))
+                        .setMessage(getString(R.string.delete_black_num_content))
+                        .setPositiveButton(getString(R.string.ok), new OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                // TODO: 6/20/17 Delete num model
 
-                        }
-                    })
-                    .setNegativeButton(getString(R.string.no), new OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.dismiss();
-                        }
-                    })
-                    .show();
+                            }
+                        })
+                        .setNegativeButton(getString(R.string.no), new OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        })
+                        .show();
                 LogUtil.d(TAG, "long click num: " + t);
             }
 
             @Override
-            public void onItemClick(NumModel t) {
+            public void onItemClick(BlackListModel t) {
 
             }
         });

@@ -17,17 +17,16 @@
 package com.hustunique.androidassistant.ui.adapters;
 
  import android.content.Context;
- import android.view.LayoutInflater;
- import android.view.View;
- import android.view.View.OnLongClickListener;
- import android.view.ViewGroup;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
- import com.hustunique.androidassistant.R;
- import com.hustunique.androidassistant.db.LocationQuery;
- import com.hustunique.androidassistant.model.BlackListModel;
- import com.hustunique.androidassistant.ui.viewholders.BlackListViewHolder;
+import com.hustunique.androidassistant.R;
+import com.hustunique.androidassistant.db.LocationQuery;
+import com.hustunique.androidassistant.model.BlackListModel;
+import com.hustunique.androidassistant.ui.viewholders.BlackListViewHolder;
 
- import java.util.List;
+import java.util.List;
 
 /**
  * Created by JianGuo on 6/16/17.
@@ -53,37 +52,9 @@ public class BlackListAdapter extends BaseAdapter<BlackListModel, BlackListViewH
 
 
     @Override
-    protected void bindView(NumModel item, BlackListViewHolder holder) {
+    protected void bindView(BlackListModel item, BlackListViewHolder holder) {
         holder.getTvBlockNum().setText(item.getNum());
-        holder.getTvBlockLoc().setText(item.getLoc());
+        holder.getTvBlockLoc().setText(lq.getLocationInfo(item.getNum()));
     }
 
-
-    // TODO: 6/16/17 Construct block num model
-    public static class NumModel {
-
-        String mNum;
-        String mLoc;
-
-        public NumModel(String num, String loc) {
-            mNum = num;
-            mLoc = loc;
-        }
-
-        public String getLoc() {
-            return mLoc;
-        }
-
-        public String getNum() {
-            return mNum;
-        }
-
-        @Override
-        public String toString() {
-            return "NumModel{" +
-                "mNum='" + mNum + '\'' +
-                ", mLoc='" + mLoc + '\'' +
-                '}';
-        }
-    }
 }

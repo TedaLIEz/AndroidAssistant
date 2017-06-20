@@ -44,7 +44,7 @@ public class BlockedMsgAdapter extends BaseAdapter<BlockedSMSModel, BlockedItemV
     }
 
     @Override
-    protected void bindView(BlockedMsg item, BlockedItemViewHolder holder) {
+    protected void bindView(BlockedSMSModel item, BlockedItemViewHolder holder) {
         holder.getTvBlockTime().setText(item.getTime());
         holder.getTvBlockType().setText(item.getType() == 0 ?
             R.string.forbid_auto : R.string.forbid_list);

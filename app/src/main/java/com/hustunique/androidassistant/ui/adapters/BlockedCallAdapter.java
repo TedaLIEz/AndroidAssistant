@@ -48,42 +48,12 @@ public class BlockedCallAdapter extends BaseAdapter<BlockedCallModel, BlockedIte
 
 
     @Override
-    protected void bindView(BlockedCall item, BlockedItemViewHolder holder) {
-        holder.getDetail().setText(item.getLoc());
+    protected void bindView(BlockedCallModel item, BlockedItemViewHolder holder) {
+        holder.getDetail().setText(lq.getLocationInfo(item.getPhoneNum()));
         holder.getTvBlockNum().setText(item.getPhoneNum());
         holder.getTvBlockTime().setText(item.getTime());
         holder.getTvBlockType().setText(item.getType() == 0 ?
             R.string.forbid_auto : R.string.forbid_list);
     }
 
-    // TODO: 6/16/17 Construct model from db layer
-    public static class BlockedCall {
-        String mPhoneNum;
-        String mLoc;
-        int mType;
-        String time;
-
-        public BlockedCall(String phoneNum, String loc, int type, String time) {
-            mPhoneNum = phoneNum;
-            mLoc = loc;
-            mType = type;
-            this.time = time;
-        }
-
-        public String getPhoneNum() {
-            return mPhoneNum;
-        }
-
-        public String getLoc() {
-            return mLoc;
-        }
-
-        public int getType() {
-            return mType;
-        }
-
-        public String getTime() {
-            return time;
-        }
-    }
 }

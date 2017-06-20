@@ -32,14 +32,14 @@ import android.view.ViewGroup;
 import com.hustunique.androidassistant.R;
 import com.hustunique.androidassistant.db.BlockedSMSSaver;
 import com.hustunique.androidassistant.model.BlockedSMSModel;
-import com.hustunique.androidassistant.ui.adapters.BaseAdapter.OnItemClickListener;
+import com.hustunique.androidassistant.ui.adapters.BaseAdapter;
 import com.hustunique.androidassistant.ui.adapters.BlockedMsgAdapter;
-import com.hustunique.androidassistant.ui.adapters.BlockedMsgAdapter.OnItemClickListener;
-import com.hustunique.androidassistant.ui.adapters.BlockedMsgAdapter.OnItemLongClickListener;
-import com.hustunique.androidassistant.ui.adapters.BlockedMsgAdapter.BlockedMsg;
 import com.hustunique.androidassistant.util.LogUtil;
 
 import java.util.List;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 /**
  * Created by JianGuo on 6/16/17.
@@ -74,9 +74,9 @@ public class BlockedMsgFragment extends Fragment {
         assert mRecyclerView != null;
         mRecyclerView.setLayoutManager(llm);
         mAdapter = new BlockedMsgAdapter(mockList());
-        mAdapter.setOnItemClickListener(new OnItemClickListener<BlockedMsg>() {
+        mAdapter.setOnItemClickListener(new BaseAdapter.OnItemClickListener<BlockedSMSModel>() {
             @Override
-            public void onItemLongClick(BlockedMsg t) {
+            public void onItemLongClick(BlockedSMSModel t) {
                 new Builder(getActivity())
                     .setTitle(getString(R.string.delete_blocked_msg_title))
                     .setMessage(getString(R.string.delete_blocked_msg_content))
@@ -97,7 +97,7 @@ public class BlockedMsgFragment extends Fragment {
             }
 
             @Override
-            public void onItemClick(BlockedMsg t) {
+            public void onItemClick(BlockedSMSModel t) {
                 // TODO: 6/20/17 Show message
                 LogUtil.d(TAG, "click on msg " + t);
             }

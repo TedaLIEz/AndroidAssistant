@@ -32,13 +32,14 @@ import android.view.ViewGroup;
 import com.hustunique.androidassistant.R;
 import com.hustunique.androidassistant.db.BlockedCallSaver;
 import com.hustunique.androidassistant.model.BlockedCallModel;
-import com.hustunique.androidassistant.ui.adapters.BaseAdapter.OnItemClickListener;
+import com.hustunique.androidassistant.ui.adapters.BaseAdapter;
 import com.hustunique.androidassistant.ui.adapters.BlockedCallAdapter;
-import com.hustunique.androidassistant.ui.adapters.BlockedCallAdapter.OnItemLongClickListener;
-import com.hustunique.androidassistant.ui.adapters.BlockedCallAdapter.BlockedCall;
 import com.hustunique.androidassistant.util.LogUtil;
 
 import java.util.List;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 /**
  * Created by JianGuo on 6/16/17. Fragment used for showing blocked phone call in {@link
@@ -74,10 +75,10 @@ public class BlockedPhoneFragment extends Fragment {
         assert mRecyclerView != null;
         mRecyclerView.setLayoutManager(llm);
 
-        mAdapter = new BlockedCallAdapter(mockList());
-        mAdapter.setOnItemClickListener(new OnItemClickListener<BlockedCall>() {
+        mAdapter = new BlockedCallAdapter(mockList(), getContext());
+        mAdapter.setOnItemClickListener(new BaseAdapter.OnItemClickListener<BlockedCallModel>() {
             @Override
-            public void onItemLongClick(BlockedCall t) {
+            public void onItemLongClick(BlockedCallModel t) {
                 new Builder(getActivity())
                     .setTitle(getString(R.string.delete_blocked_number_title))
                     .setMessage(getString(R.string.delete_blocked_number_content))
@@ -98,7 +99,7 @@ public class BlockedPhoneFragment extends Fragment {
             }
 
             @Override
-            public void onItemClick(BlockedCall t) {
+            public void onItemClick(BlockedCallModel t) {
 
             }
 
