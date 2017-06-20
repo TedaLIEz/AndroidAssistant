@@ -31,6 +31,7 @@ import butterknife.OnClick;
 import butterknife.Unbinder;
 
 public class DataUsageActivity extends BaseActivity {
+
     private static final String TAG = "DataUsageActivity";
     @BindView(R.id.tv_data_used)
     TextView mTvDataUsed;
@@ -40,7 +41,7 @@ public class DataUsageActivity extends BaseActivity {
     private ArrayList<PieData> mPieDatas = new ArrayList<>();
     // 颜色表
     private int[] mColors = {0xFFE32636, 0xFFFF8C69, 0xFF808080,
-            0xFFE6B800, 0xFF7CFC00};
+        0xFFE6B800, 0xFF7CFC00};
 
     private Unbinder mUnbinder;
     private MobileDataService.MobileDataBinder mMobileBinder;
@@ -69,7 +70,8 @@ public class DataUsageActivity extends BaseActivity {
         // set mobile data
         SharedPreferences sharedPreferences = getSharedPreferences(getPackageName(), MODE_PRIVATE);
         long mobileDataBytes = sharedPreferences.getLong("mobileData", 0);
-        mTvDataUsed.setText(getString(R.string.data_used, Util.longToStringFormat(mobileDataBytes)));
+        mTvDataUsed
+            .setText(getString(R.string.data_used, Util.longToStringFormat(mobileDataBytes)));
         initData();
         PieChart pieChart = (PieChart) findViewById(R.id.pieChart);
         pieChart.setPieData(mPieDatas);
@@ -87,14 +89,17 @@ public class DataUsageActivity extends BaseActivity {
         Collections.sort(appInfos, new Comparator<AppInfo>() {
             @Override
             public int compare(AppInfo o1, AppInfo o2) {
-                if (o1.getMobileBytes() < o2.getMobileBytes()) return 1;
-                else if (o1.getMobileBytes() > o2.getMobileBytes()) return -1;
+                if (o1.getMobileBytes() < o2.getMobileBytes()) {
+                    return 1;
+                } else if (o1.getMobileBytes() > o2.getMobileBytes()) {
+                    return -1;
+                }
                 return 0;
             }
         });
         for (int i = 0; i < 5; i++) {
             AppInfo appInfo = appInfos.get(i);
-            LogUtil.d(TAG,appInfo.getAppName()+":"+appInfo.getMobileBytes());
+            LogUtil.d(TAG, appInfo.getAppName() + ":" + appInfo.getMobileBytes());
             PieData pieData = new PieData();
             pieData.setName(appInfo.getAppName());
             pieData.setValue(appInfo.getMobileBytes());
@@ -104,9 +109,9 @@ public class DataUsageActivity extends BaseActivity {
     }
 
     @OnClick(R.id.btn_data_setting)
-    public void setMobileData(){
+    public void setMobileData() {
         try {
-            MobileDataManager.getInstance(this).setMobileDataEnabled(this,false);
+            MobileDataManager.getInstance(this).setMobileDataEnabled(this, true);
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         } catch (NoSuchFieldException e) {

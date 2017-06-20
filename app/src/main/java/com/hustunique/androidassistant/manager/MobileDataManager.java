@@ -1,12 +1,17 @@
 package com.hustunique.androidassistant.manager;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.TrafficStats;
-
+import android.provider.Settings;
+import android.telephony.TelephonyManager;
+import android.widget.Toast;
+import com.hustunique.androidassistant.R;
 import com.hustunique.androidassistant.db.AppDatabase;
 import com.hustunique.androidassistant.model.AppInfo;
 import com.hustunique.androidassistant.model.AppInfo_Table;
@@ -17,7 +22,6 @@ import com.raizlabs.android.dbflow.sql.language.SQLite;
 import com.raizlabs.android.dbflow.structure.ModelAdapter;
 import com.raizlabs.android.dbflow.structure.database.DatabaseWrapper;
 import com.raizlabs.android.dbflow.structure.database.transaction.ITransaction;
-
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -183,17 +187,63 @@ public class MobileDataManager {
         }
     }
 
-    //FIXME
     public void setMobileDataEnabled(Context context, boolean enabled) throws ClassNotFoundException, NoSuchFieldException, IllegalAccessException, NoSuchMethodException, InvocationTargetException {
-        final ConnectivityManager conman = (ConnectivityManager)  context.getSystemService(Context.CONNECTIVITY_SERVICE);
-        final Class conmanClass = Class.forName(conman.getClass().getName());
-        final Field connectivityManagerField = conmanClass.getDeclaredField("mService");
-        connectivityManagerField.setAccessible(true);
-        final Object connectivityManager = connectivityManagerField.get(conman);
-        final Class connectivityManagerClass =  Class.forName(connectivityManager.getClass().getName());
-        final Method setMobileDataEnabledMethod = connectivityManagerClass.getDeclaredMethod("setMobileDataEnabled", Boolean.TYPE);
-        setMobileDataEnabledMethod.setAccessible(true);
+        if (isRoamingDataEnabled(context)) {
+            return;
+        }
+        if (Util.isLollipop()) {
+            Toast.makeText(context, R.string.open_mobile_data, Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(Settings.ACTION_SETTINGS);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            context.startActivity(intent);
+        } else {
+            final ConnectivityManager conman = (ConnectivityManager)  context.getSystemService(Context.CONNECTIVITY_SERVICE);
+            final Class conmanClass = Class.forName(conman.getClass().getName());
+            final Field connectivityManagerField = conmanClass.getDeclaredField("mService");
+            connectivityManagerField.setAccessible(true);
+            final Object connectivityManager = connectivityManagerField.get(conman);
+            final Class connectivityManagerClass =  Class.forName(connectivityManager.getClass().getName());
+            final Method setMobileDataEnabledMethod = connectivityManagerClass.getDeclaredMethod("setMobileDataEnabled", Boolean.TYPE);
+            setMobileDataEnabledMethod.setAccessible(true);
 
-        setMobileDataEnabledMethod.invoke(connectivityManager, enabled);
+            setMobileDataEnabledMethod.invoke(connectivityManager, enabled);
+        }
+
+    }
+
+
+    public boolean isRoamingDataEnabled(Context context) {
+        ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo info = cm.getActiveNetworkInfo();
+        if(info==null || !info.isConnected())
+            return false; //not connected
+        if(info.getType() == ConnectivityManager.TYPE_WIFI)
+            return false;
+        if(info.getType() == ConnectivityManager.TYPE_MOBILE){
+            int networkType = info.getSubtype();
+            switch (networkType) {
+                case TelephonyManager.NETWORK_TYPE_GPRS:
+                case TelephonyManager.NETWORK_TYPE_EDGE:
+                case TelephonyManager.NETWORK_TYPE_CDMA:
+                case TelephonyManager.NETWORK_TYPE_1xRTT:
+                case TelephonyManager.NETWORK_TYPE_IDEN: //api<8 : replace by 11
+                    return true;
+                case TelephonyManager.NETWORK_TYPE_UMTS:
+                case TelephonyManager.NETWORK_TYPE_EVDO_0:
+                case TelephonyManager.NETWORK_TYPE_EVDO_A:
+                case TelephonyManager.NETWORK_TYPE_HSDPA:
+                case TelephonyManager.NETWORK_TYPE_HSUPA:
+                case TelephonyManager.NETWORK_TYPE_HSPA:
+                case TelephonyManager.NETWORK_TYPE_EVDO_B: //api<9 : replace by 14
+                case TelephonyManager.NETWORK_TYPE_EHRPD:  //api<11 : replace by 12
+                case TelephonyManager.NETWORK_TYPE_HSPAP:  //api<13 : replace by 15
+                    return true;
+                case TelephonyManager.NETWORK_TYPE_LTE:    //api<11 : replace by 13
+                    return true;
+                default:
+                    return true;
+            }
+        }
+        return true;
     }
 }
