@@ -28,18 +28,12 @@ import android.view.ViewGroup;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import com.hustunique.androidassistant.R;
-<<<<<<< HEAD
-import com.hustunique.androidassistant.db.LocationQuery;
-import com.hustunique.androidassistant.model.BlockedCallModel;
-=======
->>>>>>> master
 import com.hustunique.androidassistant.db.BlockedCallSaver;
+import com.hustunique.androidassistant.db.LocationQuery;
 import com.hustunique.androidassistant.model.BlockedCallModel;
 import com.hustunique.androidassistant.ui.adapters.BlockedCallAdapter;
 import com.hustunique.androidassistant.ui.adapters.BlockedCallAdapter.BlockedCall;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 /**
