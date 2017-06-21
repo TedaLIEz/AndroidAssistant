@@ -40,12 +40,10 @@ public class LocationDbHelper extends SQLiteOpenHelper {
                     SQLiteDatabase.OPEN_READONLY);
 
         } catch (SQLiteException e) {
-            e.printStackTrace();
-            // database does't exist yet.
-            LogUtil.d(TAG, "Not exist");
+            LogUtil.wtf(TAG, e);
 
         } catch (Exception ep) {
-            ep.printStackTrace();
+            LogUtil.wtf(TAG, ep);
         }
 
         if (checkDB != null) {
