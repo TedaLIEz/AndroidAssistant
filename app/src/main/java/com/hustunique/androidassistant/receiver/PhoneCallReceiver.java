@@ -35,13 +35,16 @@ public class PhoneCallReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        TelephonyManager tm = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
-        LogUtil.d(TAG, "a call receive");
-        if (customPhoneListener == null) {
-            LogUtil.d(TAG, "add new listener");
-            customPhoneListener = new PhoneCallStateListener(context);
-            tm.listen(customPhoneListener, PhoneStateListener.LISTEN_CALL_STATE);
+        if (intent.getAction().equals("android.intent.action.PHONE_STATE")) {
+            TelephonyManager tm = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
+            LogUtil.d(TAG, "a call receive");
+            if (customPhoneListener == null) {
+                LogUtil.d(TAG, "add new listener");
+                customPhoneListener = new PhoneCallStateListener(context);
+                tm.listen(customPhoneListener, PhoneStateListener.LISTEN_CALL_STATE);
+            }
         }
+
     }
 
     private class PhoneCallStateListener extends PhoneStateListener {

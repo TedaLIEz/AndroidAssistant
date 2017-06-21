@@ -22,10 +22,15 @@ android {
     defaultConfig {
         applicationId "com.hustunique.androidassistant"
         minSdkVersion 16
+        //noinspection OldTargetApi
         targetSdkVersion 25
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+    lintOptions {
+        disable 'GradleCompatible','GradleDependency','UnusedResources','UselessParent','ContentDescription',
+                'RelativeOverlap'
     }
     buildTypes {
         release {
@@ -47,6 +52,7 @@ dependencies {
     compile "com.github.Raizlabs.DBFlow:dbflow:${dbflow_version}"
     compile 'de.hdodenhof:circleimageview:2.1.0'
     compile 'com.uniquestudio:checkbox:1.0.10'
+    //noinspection GradleCompatible
     compile 'com.android.support:appcompat-v7:25.0.1'
     compile 'com.android.support:design:25.0.1'
     compile 'com.android.support:support-v4:25.0.1'

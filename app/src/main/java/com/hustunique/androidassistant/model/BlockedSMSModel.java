@@ -7,6 +7,7 @@ import com.raizlabs.android.dbflow.annotation.Table;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 /**
  * Created by sunpe on 2017/6/16.
@@ -39,7 +40,7 @@ public class BlockedSMSModel {
     }
 
     public String getTime() {
-        return new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(new Date(this.time));
+        return new SimpleDateFormat("yyyy/MM/dd HH:mm:ss", Locale.getDefault()).format(new Date(this.time));
     }
 
     public String getPhoneNum() {

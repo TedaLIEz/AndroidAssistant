@@ -70,7 +70,7 @@
   <string name="hint_add_black_num">请输入号码</string>
   <string name="add_num_error">非法的手机号</string>
   <string name="no">Cancel</string>
-  <string name="ok">Ok</string>
+  <string name="ok">OK</string>
   <string name="unknown_area">未知归属地</string>
   <string name="delete_black_num_title">删除黑名单号码</string>
   <string name="delete_black_num_content">确认删除吗？</string>

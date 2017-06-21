@@ -41,10 +41,7 @@
       android:layout_width="match_parent"
       android:layout_height="match_parent">
 
-      <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center">
+
         <LinearLayout
           android:layout_gravity="center"
           android:layout_width="wrap_content"
@@ -87,7 +84,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
         </LinearLayout>
-      </FrameLayout>
 
     </android.support.design.widget.CollapsingToolbarLayout>
   </android.support.design.widget.AppBarLayout>

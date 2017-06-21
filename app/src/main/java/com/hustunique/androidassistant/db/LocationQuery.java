@@ -30,7 +30,9 @@ public class LocationQuery {
 
         String selection = "_id = ?";
         String[] selectionArgs = {subNumber};
-        Cursor c = db.query(
+        Cursor c = null;
+        try {
+            c = db.query(
                 "phone_location",
                 projection,
                 selection,
@@ -38,12 +40,18 @@ public class LocationQuery {
                 null,
                 null,
                 null
-        );
-        if (c.getCount() == 0) {
-            return this.unknown;
+            );
+            if (c.getCount() == 0) {
+                return this.unknown;
+            }
+            c.moveToFirst();
+            String area = c.getString(c.getColumnIndex("area"));
+            return area.replaceAll("\\[.*\\]", "");
+        } finally {
+            if (c != null) {
+                c.close();
+            }
         }
-        c.moveToFirst();
-        String area = c.getString(c.getColumnIndex("area"));
-        return area.replaceAll("\\[.*\\]", "");
+
     }
 }
