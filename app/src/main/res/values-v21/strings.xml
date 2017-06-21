@@ -79,4 +79,5 @@
   <string name="delete_blocked_number_title">删除拦截电话</string>
   <string name="delete_blocked_number_content">确认删除此拦截电话吗？</string>
   <string name="open_mobile_data">请开启流量开关以触发流量监控!</string>
+  <string name="no_data">暂无数据</string>
 </resources>

@@ -40,11 +40,14 @@ public class BlockedCallAdapter extends BaseAdapter<BlockedCallModel, BlockedIte
         lq = new LocationQuery(context);
     }
 
+
     @Override
-    public BlockedItemViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    protected BlockedItemViewHolder createViewHolder(ViewGroup parent) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_blocked, parent, false);
         return new BlockedItemViewHolder(view);
     }
+
+
 
 
     @Override

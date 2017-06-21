@@ -20,12 +20,10 @@ package com.hustunique.androidassistant.ui.adapters;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import com.hustunique.androidassistant.R;
 import com.hustunique.androidassistant.db.LocationQuery;
 import com.hustunique.androidassistant.model.BlackListModel;
 import com.hustunique.androidassistant.ui.viewholders.BlackListViewHolder;
-
 import java.util.List;
 
 /**
@@ -44,10 +42,20 @@ public class BlackListAdapter extends BaseAdapter<BlackListModel, BlackListViewH
 
 
     @Override
-    public BlackListViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    protected BlackListViewHolder createViewHolder(ViewGroup parent) {
         View view = LayoutInflater.from(parent.getContext())
             .inflate(R.layout.item_black_list, parent, false);
         return new BlackListViewHolder(view);
+    }
+
+
+
+    private static class EmptyViewHolder extends BlackListViewHolder {
+
+
+        EmptyViewHolder(View itemView) {
+            super(itemView);
+        }
     }
 
 
@@ -56,5 +64,8 @@ public class BlackListAdapter extends BaseAdapter<BlackListModel, BlackListViewH
         holder.getTvBlockNum().setText(item.getNum());
         holder.getTvBlockLoc().setText(lq.getLocationInfo(item.getNum()));
     }
+
+
+
 
 }

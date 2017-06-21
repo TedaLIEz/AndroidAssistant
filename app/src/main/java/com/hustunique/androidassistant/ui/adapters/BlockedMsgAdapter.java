@@ -19,11 +19,9 @@ package com.hustunique.androidassistant.ui.adapters;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import com.hustunique.androidassistant.R;
 import com.hustunique.androidassistant.model.BlockedSMSModel;
 import com.hustunique.androidassistant.ui.viewholders.BlockedItemViewHolder;
-
 import java.util.List;
 
 /**
@@ -37,10 +35,19 @@ public class BlockedMsgAdapter extends BaseAdapter<BlockedSMSModel, BlockedItemV
         super(data);
     }
 
+
     @Override
-    public BlockedItemViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    protected BlockedItemViewHolder createViewHolder(ViewGroup parent) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_blocked, parent, false);
         return new BlockedItemViewHolder(view);
+    }
+
+
+    private static class EmptyViewHolder extends BlockedItemViewHolder {
+
+        EmptyViewHolder(View itemView) {
+            super(itemView);
+        }
     }
 
     @Override
