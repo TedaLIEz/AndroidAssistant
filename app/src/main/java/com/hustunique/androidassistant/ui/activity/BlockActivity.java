@@ -4,17 +4,14 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.SwitchCompat;
 import android.view.MenuItem;
-import android.widget.Button;
-
-import com.hustunique.androidassistant.R;
-import com.hustunique.androidassistant.manager.PrefManager;
-import com.hustunique.androidassistant.util.LogUtil;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnCheckedChanged;
 import butterknife.OnClick;
 import butterknife.Unbinder;
+import com.hustunique.androidassistant.R;
+import com.hustunique.androidassistant.manager.PrefManager;
+import com.hustunique.androidassistant.util.LogUtil;
 
 /**
  * Created by sunpe on 2017/6/15.
@@ -25,10 +22,6 @@ public class BlockActivity extends BaseActivity {
     private Unbinder mUnbinder;
     @BindView(R.id.block_switch)
     SwitchCompat mBlockSwitch;
-    @BindView(R.id.autoblock_switch)
-    SwitchCompat mAutoBlockSwitch;
-    @BindView(R.id.update_button)
-    Button mUpdateButton;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,8 +35,6 @@ public class BlockActivity extends BaseActivity {
         enabled = PrefManager.getInstance()
                 .getDefaultPreferences(this)
                 .getBoolean("AutoBlockEnable", false);
-        mAutoBlockSwitch.setChecked(enabled);
-        mUpdateButton.setEnabled(enabled);
     }
 
 
@@ -57,15 +48,6 @@ public class BlockActivity extends BaseActivity {
                 .apply();
     }
 
-    @OnCheckedChanged(R.id.autoblock_switch)
-    void onAutoBlockSwitchChecked(boolean checked) {
-        PrefManager.getInstance()
-                .getDefaultPreferences(this)
-                .edit()
-                .putBoolean("AutoBlockEnable", checked)
-                .apply();
-        mUpdateButton.setEnabled(checked);
-    }
 
     @OnClick(R.id.block_add_number)
     public void addBlockNumber() {

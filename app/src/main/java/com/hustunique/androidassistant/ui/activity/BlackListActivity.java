@@ -71,16 +71,16 @@ public class BlackListActivity extends BaseActivity {
             @Override
             public void onItemLongClick(final BlackListModel t) {
                 new Builder(BlackListActivity.this)
-                        .setTitle(getString(R.string.delete_black_num_title))
-                        .setMessage(getString(R.string.delete_black_num_content))
-                        .setPositiveButton(getString(R.string.ok), new OnClickListener() {
+                        .setTitle(R.string.delete_black_num_title)
+                        .setMessage(R.string.delete_black_num_content)
+                        .setPositiveButton(R.string.ok, new OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 blDb.deleteNumberFromBlackList(t.number);
                                 mAdapter.setData(mockList());
                             }
                         })
-                        .setNegativeButton(getString(R.string.no), new OnClickListener() {
+                        .setNegativeButton(R.string.no, new OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 dialog.dismiss();

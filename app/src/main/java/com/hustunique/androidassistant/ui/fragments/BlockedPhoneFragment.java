@@ -80,16 +80,16 @@ public class BlockedPhoneFragment extends Fragment {
             @Override
             public void onItemLongClick(final BlockedCallModel t) {
                 new Builder(getActivity())
-                    .setTitle(getString(R.string.delete_blocked_number_title))
-                    .setMessage(getString(R.string.delete_blocked_number_content))
-                    .setPositiveButton(getString(R.string.ok), new OnClickListener() {
+                    .setTitle(R.string.delete_blocked_number_title)
+                    .setMessage(R.string.delete_blocked_number_content)
+                    .setPositiveButton(R.string.ok, new OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             bc.deleteBlockedCall(t.time);
                             mAdapter.setData(mockList());
                         }
                     })
-                    .setNegativeButton(getString(R.string.no), new OnClickListener() {
+                    .setNegativeButton(R.string.no, new OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             dialog.dismiss();
