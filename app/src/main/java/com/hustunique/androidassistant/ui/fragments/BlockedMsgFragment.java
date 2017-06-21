@@ -78,9 +78,9 @@ public class BlockedMsgFragment extends Fragment {
             @Override
             public void onItemLongClick(final BlockedSMSModel t) {
                 new Builder(getActivity())
-                    .setTitle(getString(R.string.delete_blocked_msg_title))
-                    .setMessage(getString(R.string.delete_blocked_msg_content))
-                    .setPositiveButton(getString(R.string.ok), new OnClickListener() {
+                    .setTitle(R.string.delete_blocked_msg_title)
+                    .setMessage(R.string.delete_blocked_msg_content)
+                    .setPositiveButton(R.string.ok, new OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             bsms.deleteBlockedSMS(t.time);
@@ -101,9 +101,9 @@ public class BlockedMsgFragment extends Fragment {
             public void onItemClick(BlockedSMSModel t) {
                 LogUtil.d(TAG, "click on msg " + t);
                 new Builder(getActivity())
-                        .setTitle(getString(R.string.sms_detail))
+                        .setTitle(R.string.sms_detail)
                         .setMessage(t.getContent())
-                        .setPositiveButton(getString(R.string.ok), new OnClickListener() {
+                        .setPositiveButton(R.string.ok, new OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
                                 dialogInterface.dismiss();

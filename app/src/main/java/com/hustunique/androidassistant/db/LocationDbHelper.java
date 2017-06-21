@@ -25,6 +25,7 @@ public class LocationDbHelper extends SQLiteOpenHelper {
 
     public LocationDbHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
+        LogUtil.d(TAG, context.getFilesDir().getPath());
         db_path = "/data/data/" + context.getPackageName() + "/databases/";
         this.context = context;
     }
